@@ -29,15 +29,32 @@ document.addEventListener('init', function (event)
     }
     else if (page.id === 'change-words')
     {
+        const selectorOfNativePlus = '#native-plus',
+            selectorOfNativeList = '#native';
+
         page.querySelector('#plus-word').addEventListener('click', function ()
         {
-            document.querySelector('#change-words-modal').show(objectOfModal);
+            document.querySelector(selectorOfNavigator).pushPage('change-words-form');
         });
 
-        page.querySelector('#change-words-modal .cancel').addEventListener('click', function ()
+
+        page.querySelector(selectorOfNativePlus).addEventListener('click', function ()
         {
-            document.querySelector('#change-words-modal').hide(objectOfModal)
-        })
+            var numberOfInput = page.querySelectorAll(selectorOfNativeList + ' ons-input').length + 1;
+
+
+            page.querySelector(selectorOfNativeList).innerHTML +=
+                '<ons-input modifier="underbar" placeholder="#'+numberOfInput+'" float="" id="native-'+numberOfInput+'">' +
+                    '<label class="text-input__container">' +
+                        '<input class="text-input text-input--underbar" placeholder="#'+numberOfInput+'">' +
+                        '<span class="_helper text-input__label text-input--underbar__label">#'+numberOfInput+'</span>' +
+                        '<span class="input-label"></span>' +
+                    '</label>' +
+                '</ons-input>';
+
+
+            console.log(page.querySelector(selectorOfNativeList));
+        });
     }
 });
 

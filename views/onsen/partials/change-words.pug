@@ -1,18 +1,28 @@
-ons-toolbar
-    .left
-        ons-back-button Back
-    .center Change words
-    .right
-        ons-if(platform="ios other")
-            ons-toolbar-button#plus-word New
+ons-template#change-words
+    ons-page#change-words
+        ons-toolbar
+            .left
+                ons-back-button Back
+            .center Change words
+            .right
+                ons-if(platform="ios other")
+                    ons-toolbar-button#plus-word New
 
-    #change-words-items
+            #change-words-items
 
-    ons-if(platform="android")
-        ons-fab(position="bottom right")#plus-word
-            ons-icon(icon="md-plus")
+            ons-if(platform="android")
+                ons-fab(position="bottom right")#plus-word
+                    ons-icon(icon="md-plus")
 
 
-ons-modal#change-words-modal
-    ons-button Save
-    ons-button.cancel Cancel
+ons-template#change-words-form
+    ons-page#change-words-form
+        ons-list#native
+            ons-list-header
+                = user.native
+                ons-icon(icon="ion-plus-round")#native-plus
+            ons-input(modifier="underbar" placeholder="#1" float)#native-1
+
+        p.buttons
+            ons-button Save
+            ons-button.cancel Cancel

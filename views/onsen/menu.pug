@@ -3,6 +3,9 @@ extends layout
 block scriptsInHead
     script(src="javascripts/menu.js")
 
+block styles
+    link(rel="stylesheet" href="/stylesheets/modals.css")
+
 block content
     ons-navigator(page="menu")#navigator
 
@@ -14,6 +17,5 @@ block content
                 p
                     ons-button#change-words Add words
 
-    ons-template#change-words
-        ons-page#change-words
-            include partials/change-words
+
+    include partials/change-words
