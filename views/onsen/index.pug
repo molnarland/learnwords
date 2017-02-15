@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    ons-page
+        form#form(method="post")
+            p
+                ons-input(name="name" modifier="underbar" placeholder="Username" float)#name
+            p
+                button(type="submit").button Log in
+
+
+block scriptsInFoot
+    script(src="/libs/js.cookie.js")
+    script(src="javascripts/index.js")

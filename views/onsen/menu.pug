@@ -1,0 +1,19 @@
+extends layout
+
+block scriptsInHead
+    script(src="javascripts/menu.js")
+
+block content
+    ons-navigator(page="menu")#navigator
+
+    ons-template#menu
+        ons-page#menu
+            ons-toolbar
+                .center Menu
+            .menu
+                p
+                    ons-button#change-words Add words
+
+    ons-template#change-words
+        ons-page#change-words
+            include partials/change-words

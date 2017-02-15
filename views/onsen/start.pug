@@ -1,0 +1,13 @@
+extends layout
+
+block content
+    ons-page
+        form(method="post")
+            p
+                ons-input(name="name" placeholder="name" modifier="underbar" float value=name)
+            p
+                ons-input(name="native" placeholder="Your native language" modifier="underbar" float)
+            p
+                ons-input(name="learnable" placeholder="Language what you want to learn" modifier="underbar" float)
+            p
+                button(type="submit").button Start, seriously

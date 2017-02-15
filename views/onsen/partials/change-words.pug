@@ -1,0 +1,18 @@
+ons-toolbar
+    .left
+        ons-back-button Back
+    .center Change words
+    .right
+        ons-if(platform="ios other")
+            ons-toolbar-button#plus-word New
+
+    #change-words-items
+
+    ons-if(platform="android")
+        ons-fab(position="bottom right")#plus-word
+            ons-icon(icon="md-plus")
+
+
+ons-modal#change-words-modal
+    ons-button Save
+    ons-button.cancel Cancel

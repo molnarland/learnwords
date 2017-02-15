@@ -1,0 +1,14 @@
+doctype html
+html(lang="en")
+    head
+        title= title
+        script(src="libs/onsen/onsenui.min.js")
+        block scriptsInHead
+        link(rel="stylesheet" href="/libs/onsen/onsenui.css")
+        link(rel="stylesheet" href="/libs/onsen/onsen-css-components.css")
+        //link(rel="stylesheet" href="/stylesheets/style.css")
+        block styles
+    body
+        block content
+
+        block scriptsInFoot

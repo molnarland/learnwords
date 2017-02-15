@@ -1,5 +1,6 @@
 (function ()
 {
+    window.location.hash = '';
     document.getElementById('name').value = Cookies.get('name') || '';
 }());
 
