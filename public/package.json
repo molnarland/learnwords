@@ -22,5 +22,9 @@
   },
   "optionalDependencies": {
     "gulp-notify": "^3.0.0"
+  },
+  "dependencies": {
+    "js-cookie": "^2.1.3",
+    "onsenui": "^2.1.0"
   }
 }

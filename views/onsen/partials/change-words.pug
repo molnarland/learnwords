@@ -15,31 +15,4 @@ ons-template#change-words
                     ons-icon(icon="md-plus")
 
 
-ons-template#change-words-form
-    ons-page#change-words-form
-        ons-toolbar
-            .left
-                ons-back-button All words
-            .center
-
-        each val in ['native', 'learnable']
-            section
-                ons-list(id=val)
-                    ons-list-header
-                        = user[val]
-                        ons-icon(icon="ion-plus-round" id=val+"-plus")
-                    .input-wrapper
-                        ons-input(modifier="underbar" placeholder="#1" float id=val+"-1")
-
-        section#upload
-            input(type="file")#upload-file.none
-            p
-                label(for="upload-file")
-                    ons-button#file-upload-button Upload file
-            p
-                ons-input(modifier="underbar" placeholder="URL of file" float)#file-upload-input
-
-
-
-        p
-            ons-button#save(modifier="large") Save
+include change-words-form

@@ -1,8 +1,8 @@
-(function ()
-{
-    window.location.hash = '';
-    document.getElementById('name').value = Cookies.get('name') || '';
-}());
+import Cookies from 'js-cookie';
+
+
+window.location.hash = '';
+document.getElementById('name').value = Cookies.get('name') || '';
 
 
 

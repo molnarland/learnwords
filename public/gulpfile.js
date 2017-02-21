@@ -38,14 +38,16 @@ var webpackObjectMaker = function (task)
             pathinfo: false
         },
         module: {
-            loaders: [{
-                test: /\.js$/,
-                exclude: /node_modules/,
-                loader: 'babel-loader',
-                query: {
-                    presets: ['es2017', 'es2016', 'es2015']
+            loaders: [
+                {
+                    test: /\.js$/,
+                    exclude: /node_modules/,
+                    loader: 'babel-loader',
+                    query: {
+                        presets: ['es2017', 'es2016', 'es2015']
+                    }
                 }
-            }]
+            ]
         },
         devtool: 'source-map',
         debug: false
@@ -62,7 +64,7 @@ var notifyObjectMaker = function (task)
 };
 
 
-
+//running one time
 gulp.task('jsIndex', function ()
 {
     gulp.src(paths.jsIndex)
@@ -79,10 +81,33 @@ gulp.task('jsMenu', function ()
         .pipe(notify(notifyObjectMaker('jsMenu')));
 });
 
+gulp.task('sass', function ()
+{
+    gulp.src(paths.sass, {base: './'})
+        .pipe(sass({indentedSyntax: true})).on('error', sass.logError)
+        .pipe(gulp.dest('./'))
+        .pipe(notify(notifyObjectMaker('sass')));
+});
 
-
-gulp.task('default', ['jsIndex', 'jsMenu'], function ()
+//watchers
+gulp.task('watch-index', ['jsIndex'], function ()
 {
     gulp.watch(paths.jsIndex, ['jsIndex']);
+});
+
+gulp.task('watch-menu', ['jsMenu'], function ()
+{
     gulp.watch(paths.jsMenu, ['jsMenu']);
 });
+
+gulp.task('watch-sass', ['sass'], function ()
+{
+    gulp.watch(paths.sass, ['sass']);
+});
+
+//mixed watches
+gulp.task('wis', ['watch-index', 'watch-sass']);
+gulp.task('wms', ['watch-menu', 'watch-sass']);
+
+
+gulp.task('default', ['jsIndex', 'jsMenu']);

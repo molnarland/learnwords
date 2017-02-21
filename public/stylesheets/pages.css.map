@@ -1,9 +1,0 @@
-{
-	"version": 3,
-	"file": "pages.css",
-	"sources": [
-		"pages.sass"
-	],
-	"mappings": "AAAA,AACE,mBADiB,CACjB,UAAU,CAAC;EACT,MAAM,EAAE,GAAI,GAAG",
-	"names": []
-}
