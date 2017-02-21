@@ -2,8 +2,8 @@ ons-template#change-words
     ons-page#change-words
         ons-toolbar
             .left
-                ons-back-button Back
-            .center Change words
+                ons-back-button Main
+            .center Add words
             .right
                 ons-if(platform="ios other")
                     ons-toolbar-button#plus-word New
@@ -17,12 +17,29 @@ ons-template#change-words
 
 ons-template#change-words-form
     ons-page#change-words-form
-        ons-list#native
-            ons-list-header
-                = user.native
-                ons-icon(icon="ion-plus-round")#native-plus
-            ons-input(modifier="underbar" placeholder="#1" float)#native-1
+        ons-toolbar
+            .left
+                ons-back-button All words
+            .center
 
-        p.buttons
-            ons-button Save
-            ons-button.cancel Cancel
+        each val in ['native', 'learnable']
+            section
+                ons-list(id=val)
+                    ons-list-header
+                        = user[val]
+                        ons-icon(icon="ion-plus-round" id=val+"-plus")
+                    .input-wrapper
+                        ons-input(modifier="underbar" placeholder="#1" float id=val+"-1")
+
+        section#upload
+            input(type="file")#upload-file.none
+            p
+                label(for="upload-file")
+                    ons-button#file-upload-button Upload file
+            p
+                ons-input(modifier="underbar" placeholder="URL of file" float)#file-upload-input
+
+
+
+        p
+            ons-button#save(modifier="large") Save

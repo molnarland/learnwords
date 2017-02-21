@@ -4,7 +4,9 @@ block scriptsInHead
     script(src="javascripts/menu.js")
 
 block styles
-    link(rel="stylesheet" href="/stylesheets/modals.css")
+    link(rel="stylesheet" href="/stylesheets/style.css")
+    link(rel="stylesheet" href="/stylesheets/menu.css")
+    link(rel="stylesheet" href="/stylesheets/change-words.css")
 
 block content
     ons-navigator(page="menu")#navigator
@@ -12,10 +14,13 @@ block content
     ons-template#menu
         ons-page#menu
             ons-toolbar
-                .center Menu
+                .center Main menu
             .menu
                 p
-                    ons-button#change-words Add words
+                    ons-button(modifier="large")#change-words Add words
+                p
+                    ons-button(modifier="large")#change-labels Add labels
 
 
     include partials/change-words
+    include partials/change-labels

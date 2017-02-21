@@ -1,0 +1,15 @@
+ons-template#change-labels
+    ons-page#change-labels
+        ons-toolbar
+            .left
+                ons-back-button Main
+            .center Add labels
+            .right
+                ons-if(platform="ios other")
+                    ons-toolbar-button#plus-label New
+
+            #change-labels-items
+
+            ons-if(platform="android")
+                ons-fab(position="bottom right")#plus-label
+                    ons-icon(icon="md-plus")
