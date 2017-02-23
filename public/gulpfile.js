@@ -31,7 +31,7 @@ var paths = new Paths();
 var webpackObjectMaker = function (task)
 {
     return {
-        entry: [/*'babel-polyfill', */paths.changePathForWebpackEntry(task)],
+        entry: paths.changePathForWebpackEntry(task),
         output: {
             path: __dirname + '/javascripts',
             filename: paths.getOutputFileName(task),
@@ -110,4 +110,4 @@ gulp.task('wis', ['watch-index', 'watch-sass']);
 gulp.task('wms', ['watch-menu', 'watch-sass']);
 
 
-gulp.task('default', ['jsIndex', 'jsMenu']);
+gulp.task('default', ['watch-index', 'watch-menu', 'watch-sass']);
