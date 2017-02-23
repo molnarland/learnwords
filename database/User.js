@@ -1,39 +1,38 @@
-function User ()
+const Broad = require('./Broad');
+
+class User extends Broad
 {
-    var MongoConnect = require('./MongoConnect');
-    MongoConnect = new MongoConnect();
-
-    var table = 'names';
-
-    this.findNameMaybeInsert = function (name, callback)
+    constructor ()
     {
-        MongoConnect.connect(function (db, programCallback)
+        super();
+
+        this.table = 'names';
+    }
+
+    findNameMaybeInsert (name, callback)
+    {
+        this.findName(name, (result) =>
         {
-            this.findName(name, function (result)
+            if (result)
             {
-                if (result)
+                return callback(result)
+            }
+
+            this.insertOnlyName(name, () =>
+            {
+                this.findName(name, (result) =>
                 {
-                    programCallback();
-                    return callback(result)
-                }
-
-                db.collection(table).insertOne({name: name}, function ()
-                {
-                    this.findName(name, function (result)
-                    {
-                        programCallback();
-                        return callback(result);
-                    });
-                }.bind(this));
+                    return callback(result);
+                });
             });
-        }.bind(this));
+        });
     };
 
-    this.deleteAllNames = function (callback)
+    /*deleteAllNames (callback)
     {
-        MongoConnect.connect(function (db, programCallback)
+        this.MongoConnect.connect((db, programCallback) =>
         {
-            db.collection(table).deleteOne({name: 'molnarland'}, function (err, result)
+            db.collection(this.table).deleteOne({name: 'molnarland'}, (err, result) =>
             {
                 if (err) {throw err;}
 
@@ -41,35 +40,22 @@ function User ()
                 return callback(result);
             });
         });
-    };
+    };*/
 
-    this.findName = function (name, callback)
+    findName (name, callback)
     {
-        MongoConnect.connect(function (db, programCallback)
-        {
-            db.collection(table).findOne({name: name}, function (err, result)
-            {
-                if (err) {throw err;}
-
-                programCallback();
-                return callback(result);
-            });
-        });
+        this.findOne(this.table, {name: name}, callback)
     };
 
-    this.insertName = function (name, native, learnable, callback)
+    insertNameWithDatas (name, native, learnable, callback)
     {
-        MongoConnect.connect(function (db, programCallback)
-        {
-            db.collection(table).insertOne({name: name, native: native, learnable: learnable}, function (err, result)
-            {
-                if (err) {throw err;}
-
-                programCallback();
-                return callback(result);
-            })
-        });
+        this.insertOne(this.table, {name: name, native: native, learnable: learnable}, callback);
     };
+
+    insertOnlyName (name, callback)
+    {
+        this.insertOne(this.table, {name: name}, callback);
+    }
 }
 
 module.exports = User;

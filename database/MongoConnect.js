@@ -1,24 +1,27 @@
-var MongoClient = require('mongodb').MongoClient,
-    assert = require('assert');
-
-var url = 'mongodb://localhost:27017/learnwords';
-
-function MongoConnect ()
-{ }
-
-MongoConnect.prototype.connect = function (callback)
+class MongoConnect
 {
-    MongoClient.connect(url, function(err, db)
+    constructor ()
     {
-        if (err) throw err;
-        assert.equal(null, err);
+        this.MongoClient = require('mongodb').MongoClient;
+        this.assert = require('assert');
 
+        this.url = 'mongodb://localhost:27017/learnwords';
+    }
 
-        callback(db, function ()
+    connect (callback)
+    {
+        this.MongoClient.connect(this.url, (err, db) =>
         {
-            db.close();
+            if (err) throw err;
+            this.assert.equal(null, err);
+
+
+            callback(db, () =>
+            {
+                db.close();
+            });
         });
-    });
-};
+    };
+}
 
 module.exports = MongoConnect;
