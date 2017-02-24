@@ -4,6 +4,8 @@ var gulp = require('gulp'),
     babel = require('gulp-babel'),
     notify = require('gulp-notify');
 
+var uglify = require('webpack/lib/optimize/UglifyJsPlugin');
+
 function Paths ()
 {
     this.es6Root = './javascripts/es6/';
@@ -49,6 +51,9 @@ var webpackObjectMaker = function (task)
                 }
             ]
         },
+        plugins: [
+            new uglify()
+        ],
         devtool: 'source-map',
         debug: false
     };

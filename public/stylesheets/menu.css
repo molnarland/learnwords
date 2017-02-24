@@ -1,2 +1,34 @@
-.menu {
-  padding: 10px; }
+#change-words-form section {
+  margin-top: 17px;
+  margin-bottom: 17px; }
+  #change-words-form section:first-child {
+    margin-top: 0; }
+
+#change-words-form .text-input {
+  height: 35px; }
+
+#change-words-form #save {
+  text-align: center; }
+
+#native-plus, #learnable-plus {
+  vertical-align: 0;
+  cursor: pointer;
+  margin-left: 10%; }
+
+.input-wrapper {
+  width: 100%; }
+  .input-wrapper .ons-icon {
+    width: 10%;
+    height: 25px;
+    vertical-align: -50%;
+    cursor: pointer; }
+  .input-wrapper ons-input, .input-wrapper .text-input {
+    width: 90%; }
+
+#upload {
+  text-align: center; }
+  #upload p {
+    margin: 4px 0; }
+
+#label {
+  width: 100%; }

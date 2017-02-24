@@ -4,6 +4,7 @@ import Menu from './Menu';
 import ChangeWords from './ChangeWords';
 import ChangeWordsForm from './ChangeWordsForm';
 import ChangeLabels from './ChangeLabels';
+import ChangeLabelsForm from './ChangeLabelsForm';
 
 
 document.addEventListener('init', function (event)
@@ -11,11 +12,11 @@ document.addEventListener('init', function (event)
     const page = event.target;
 
 
-    const selectorOfBackButton = '.left ons-back-button';
+    /*const selectorOfBackButton = '.left ons-back-button';
     const objectOfModal =  {
         animation: 'fade',
         animationOptions: {timing: 'ease-in'}
-    };
+    };*/
 
     switch (page.id)
     {
@@ -31,40 +32,24 @@ document.addEventListener('init', function (event)
         case 'change-labels':
             new ChangeLabels(page);
             break;
+        case 'change-label-form':
+            new ChangeLabelsForm(page);
+            break;
         default:
             break;
     }
 });
 
-function getAjax(url, callback)
-{
-    var xobj = new XMLHttpRequest();
-    xobj.overrideMimeType("application/json");
-    xobj.open('GET', url, true);
-    xobj.onreadystatechange = function ()
-    {
-        if (xobj.readyState == 4 && xobj.status == "200")
-        {
-            callback(JSON.parse(xobj.responseText));
-        }
-    };
-    xobj.send(null);
-
-}
-
-function postAjax()
-{
-
-}
 
 
-(function () {
-    getAjax('/ajax/all-words', function (response)
-    {
-        var changeWordsItems = document.getElementById('change-words-items');
-        for (var index in response)
-        {
-            changeWordsItems.innerHTML += response[index];
-        }
-    });
-}());
+
+// (function () {
+//     getAjax('/ajax/all-words', function (response)
+//     {
+//         var changeWordsItems = document.getElementById('change-words-items');
+//         for (var index in response)
+//         {
+//             changeWordsItems.innerHTML += response[index];
+//         }
+//     });
+// }());

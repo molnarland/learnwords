@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-var User = require('../database/User');
+let User = require('../database/User');
 User = new User();
 
 router.route('/')
@@ -11,7 +11,7 @@ router.route('/')
     })
     .post(function (req, res, next)
     {
-        var name = req.body.name;
+        const name = req.body.name;
 
         User.findName(name, function (result)
         {
@@ -40,11 +40,11 @@ router.route('/start')
     })
     .post(function (req, res, next)
     {
-        var name = req.body.name,
+        const name = req.body.name,
             native = req.body.native,
             learnable = req.body.learnable;
 
-        User.insertName(name, native, learnable, function ()
+        User.insertNameWithDatas(name, native, learnable, function ()
         {
             User.findName(name, function (result)
             {
