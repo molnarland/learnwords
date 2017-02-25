@@ -1,11 +1,11 @@
 import ons from 'onsenui';
 
+
 import Menu from './Menu';
 import ChangeWords from './ChangeWords';
 import ChangeWordsForm from './ChangeWordsForm';
 import ChangeLabels from './ChangeLabels';
 import ChangeLabelsForm from './ChangeLabelsForm';
-
 
 document.addEventListener('init', function (event)
 {
@@ -39,17 +39,3 @@ document.addEventListener('init', function (event)
             break;
     }
 });
-
-
-
-
-// (function () {
-//     getAjax('/ajax/all-words', function (response)
-//     {
-//         var changeWordsItems = document.getElementById('change-words-items');
-//         for (var index in response)
-//         {
-//             changeWordsItems.innerHTML += response[index];
-//         }
-//     });
-// }());

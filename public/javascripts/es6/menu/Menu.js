@@ -16,9 +16,8 @@ export default class Menu extends Global
         for (let index in this.infoOfMainPages)
         {
             const infoOfPage = this.infoOfMainPages[index];
-            this.page.querySelector(infoOfPage.button).addEventListener('click', () =>
+            this.initByClickPushPage(infoOfPage.button, infoOfPage.onsPage, null, () =>
             {
-                document.querySelector(this.selectorOfNavigator).pushPage(infoOfPage.onsPage);
                 window.location.hash = infoOfPage.urlHash;
             });
         }

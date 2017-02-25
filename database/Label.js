@@ -9,9 +9,14 @@ class Label extends Broad
         this.table = 'labels';
     }
 
-    insertLabel (label, callback)
+    insertLabel (userId, label, callback)
     {
-        this.insertOne(this.table, {name: label}, callback);
+        this.insertOne(this.table, {name: label, userId: userId}, callback);
+    }
+
+    getAllLabels (userId, callback)
+    {
+        this.getAll(this.table, callback, {userId: userId});
     }
 }
 

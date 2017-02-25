@@ -4,17 +4,39 @@ export default class ChangeLabels extends Global
 {
     constructor(page)
     {
-        super();
+        super(page);
 
         this.plusLabelButton = '#plus-label';
         this.changeLabelForm = 'change-label-form';
         this.titleOfChangeLabelsForm = 'New label';
 
-        page.querySelector(this.plusLabelButton).addEventListener('click', () =>
+        this.selectorOfLabelList = '#change-labels-items';
+        this.urlOfGetAllLabels = '/all-labels';
+
+
+        this.showLabels();
+        this.initOfPushToForm();
+    }
+
+    showLabels ()
+    {
+        this.downAndShow({
+            url: this.urlOfGetAllLabels,
+            showWhere: this.selectorOfLabelList,
+            showableHtml: (label) =>
+            {
+                const name = label.name;
+
+                return `<p>${name}</p>`;
+            }
+        });
+    }
+
+    initOfPushToForm ()
+    {
+        this.page.querySelector(this.plusLabelButton).addEventListener('click', () =>
         {
-            document.querySelector(this.selectorOfNavigator).pushPage(this.changeLabelForm, {
-                data: {title: this.titleOfChangeLabelsForm}
-            });
+            this.pushPage(this.changeLabelForm, { title: this.titleOfChangeLabelsForm });
         });
     }
 }

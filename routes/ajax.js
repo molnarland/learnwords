@@ -17,9 +17,17 @@ router.post('/save-label', (req, res, next) =>
 {
     const label = req.body.label;
 
-    Labels.insertLabel(label, () =>
+    Labels.insertLabel(req.session.user._id, label, () =>
     {
         res.send(true);
+    });
+});
+
+router.get('/all-labels', (req, res, next) =>
+{
+    Labels.getAllLabels(req.session.user._id, (result) =>
+    {
+        res.send(result);
     });
 });
 

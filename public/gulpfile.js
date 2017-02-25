@@ -52,7 +52,7 @@ var webpackObjectMaker = function (task)
             ]
         },
         plugins: [
-            new uglify()
+            // new uglify()
         ],
         devtool: 'source-map',
         debug: false

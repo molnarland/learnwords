@@ -7,11 +7,16 @@ class Broad extends MongoConnect
         super();
     }
 
-    getAll (table, callback)
+    /**
+     * @param {string} table
+     * @param {function} callback
+     * @param {object} object
+     */
+    getAll (table, callback, object = {})
     {
         this.connect((db, programCallback) =>
         {
-            db.collection(table).find().toArray((err, docs) =>
+            db.collection(table).find(object).toArray((err, docs) =>
             {
                 if (err) {throw err;}
 
@@ -21,6 +26,11 @@ class Broad extends MongoConnect
         });
     }
 
+    /**
+     * @param {string} table
+     * @param {object} object
+     * @param {function} callback
+     */
     insertOne (table, object, callback)
     {
         this.connect((db, programCallback) =>
@@ -35,6 +45,12 @@ class Broad extends MongoConnect
         });
     }
 
+    /**
+     *
+     * @param {string} table
+     * @param {object} object
+     * @param {function} callback
+     */
     findOne (table, object, callback)
     {
         this.connect((db, programCallback) =>

@@ -5,28 +5,28 @@ let User = require('../database/User');
 User = new User();
 
 router.route('/')
-    .get(function(req, res, next)
+    .get((req, res, next) =>
     {
         res.render(global.onsenViewDirectory + 'index');
     })
-    .post(function (req, res, next)
+    .post((req, res, next) =>
     {
         const name = req.body.name;
 
-        User.findName(name, function (result)
+        User.findName(name, (result) =>
         {
             if (result)
             {
-                User.findNameMaybeInsert(name, function (result)
+                User.findNameMaybeInsert(name, (result) =>
                 {
-                    global.user = result;
+                    req.session.user = result;
 
                     res.redirect('/menu');
                 });
             }
             else
             {
-                global.user = {name: name};
+                req.session.user = { name: name };
 
                 res.redirect('/start');
             }
@@ -34,22 +34,21 @@ router.route('/')
     });
 
 router.route('/start')
-    .get(function (req, res, next)
+    .get((req, res, next) =>
     {
-        res.render(global.onsenViewDirectory + 'start', {name: global.user.name});
+        res.render(global.onsenViewDirectory + 'start', { name: req.session.user.name });
     })
-    .post(function (req, res, next)
+    .post((req, res, next) =>
     {
         const name = req.body.name,
             native = req.body.native,
             learnable = req.body.learnable;
 
-        User.insertNameWithDatas(name, native, learnable, function ()
+        User.insertNameWithDatas(name, native, learnable, () =>
         {
-            User.findName(name, function (result)
+            User.findName(name, (result) =>
             {
-                console.log(result);
-                global.user = result;
+                req.session.user = result;
 
                 res.redirect('/menu');
             });
