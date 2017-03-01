@@ -1,4 +1,5 @@
 import Global from './Global';
+import ChangeLabels from './ChangeLabels';
 
 export default class ChangeLabelsForm extends Global
 {
@@ -20,7 +21,7 @@ export default class ChangeLabelsForm extends Global
             {
                 if (response)
                 {
-                    this.page.querySelector(this.backButton).click();
+                    document.querySelector(this.selectorOfNavigator).popPage({refresh: true});
                 }
             });
         });

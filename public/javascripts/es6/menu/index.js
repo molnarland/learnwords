@@ -30,6 +30,7 @@ document.addEventListener('init', function (event)
             new ChangeWordsForm(page);
             break;
         case 'change-labels':
+            console.log('ewewew');
             new ChangeLabels(page);
             break;
         case 'change-label-form':

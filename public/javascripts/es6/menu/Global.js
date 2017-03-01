@@ -20,7 +20,6 @@ export default class Global
     {
         document.querySelector(this.selectorOfNavigator).pushPage(where, {
             data: data,
-            options: { refresh: true } //TODO refresh page when click back button 'cause labels aren't realoading
         });
     }
 

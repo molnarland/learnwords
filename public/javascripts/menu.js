@@ -92,6 +92,7 @@
 	            new _ChangeWordsForm2.default(page);
 	            break;
 	        case 'change-labels':
+	            console.log('ewewew');
 	            new _ChangeLabels2.default(page);
 	            break;
 	        case 'change-label-form':
@@ -27933,8 +27934,7 @@
 	            var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 	
 	            document.querySelector(this.selectorOfNavigator).pushPage(where, {
-	                data: data,
-	                options: { refresh: true }
+	                data: data
 	            });
 	        }
 	
@@ -28376,6 +28376,10 @@
 	
 	var _Global3 = _interopRequireDefault(_Global2);
 	
+	var _ChangeLabels = __webpack_require__(10);
+	
+	var _ChangeLabels2 = _interopRequireDefault(_ChangeLabels);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -28402,7 +28406,7 @@
 	
 	            _this.postAjax(_this.urlOfSaveOneLabel, { label: label }, function (response) {
 	                if (response) {
-	                    _this.page.querySelector(_this.backButton).click();
+	                    document.querySelector(_this.selectorOfNavigator).popPage({ refresh: true });
 	                }
 	            });
 	        });
