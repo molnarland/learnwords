@@ -73,13 +73,8 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	document.addEventListener('init', function (event) {
-	    var page = event.target;
 	
-	    /*const selectorOfBackButton = '.left ons-back-button';
-	    const objectOfModal =  {
-	        animation: 'fade',
-	        animationOptions: {timing: 'ease-in'}
-	    };*/
+	    var page = event.target;
 	
 	    switch (page.id) {
 	        case 'menu':
@@ -27852,6 +27847,8 @@
 	    value: true
 	});
 	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
 	var _Global2 = __webpack_require__(7);
 	
 	var _Global3 = _interopRequireDefault(_Global2);
@@ -27879,18 +27876,51 @@
 	            addLabels: { button: '#change-labels', urlHash: 'change_labels', onsPage: 'change-labels' }
 	        };
 	
-	        var _loop = function _loop(index) {
-	            var infoOfPage = _this.infoOfMainPages[index];
-	            _this.initByClickPushPage(infoOfPage.button, infoOfPage.onsPage, null, function () {
-	                window.location.hash = infoOfPage.urlHash;
-	            });
-	        };
+	        _this.goToPageByButtonClick();
 	
-	        for (var index in _this.infoOfMainPages) {
-	            _loop(index);
-	        }
+	        _this.goToPageByHash();
+	        /*if ("onhashchange" in window)
+	        {
+	            window.addEventListener("hashchange", () => this.goToPageByHash(), false);
+	        }*/
 	        return _this;
 	    }
+	
+	    _createClass(Menu, [{
+	        key: 'goToPageByButtonClick',
+	        value: function goToPageByButtonClick() {
+	            var _this2 = this;
+	
+	            var _loop = function _loop(index) {
+	                var infoOfPage = _this2.infoOfMainPages[index];
+	                _this2.initByClickPushPage(infoOfPage.button, infoOfPage.onsPage, null, function () {
+	                    window.location.hash = infoOfPage.urlHash;
+	                });
+	            };
+	
+	            for (var index in this.infoOfMainPages) {
+	                _loop(index);
+	            }
+	        }
+	    }, {
+	        key: 'goToPageByHash',
+	        value: function goToPageByHash() {
+	            var infoOfCurrentPage = null;
+	            for (var index in this.infoOfMainPages) {
+	                var info = this.infoOfMainPages[index];
+	                if (info.urlHash === window.location.hash.substring(1)) {
+	                    infoOfCurrentPage = info;
+	                    break;
+	                }
+	            }
+	
+	            // const infoOfCurrentPage = this.infoOfMainPages.find(info => info.urlHash === window.location.hash.substring(1));
+	
+	            if (infoOfCurrentPage) {
+	                this.page.querySelector(infoOfCurrentPage.button).click();
+	            }
+	        }
+	    }]);
 	
 	    return Menu;
 	}(_Global3.default);
@@ -28109,6 +28139,16 @@
 	    }, {
 	        key: 'labelListItem',
 	        value: function labelListItem(name) {}
+	
+	        /**
+	         * @param {string} hash
+	         */
+	
+	    }, {
+	        key: 'changeHash',
+	        value: function changeHash(hash) {
+	            window.location.hash = hash;
+	        }
 	    }]);
 	
 	    return Global;
@@ -28179,6 +28219,10 @@
 	
 	var _Global3 = _interopRequireDefault(_Global2);
 	
+	var _onsenui = __webpack_require__(1);
+	
+	var _onsenui2 = _interopRequireDefault(_onsenui);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -28246,23 +28290,38 @@
 	    }, {
 	        key: 'addPlusEvent',
 	        value: function addPlusEvent(selectorOfPlus, selectorOfList, whichLanguage) {
-	            console.log(selectorOfPlus, this.page);
+	            var _this2 = this;
 	
-	            //TODO it is not working correctly in first calling (native)
-	            // this.page.querySelector(selectorOfPlus).parentNode.addEventListener(
-	            //     'click',
-	            //     this.plus(selectorOfPlus, selectorOfList, whichLanguage).bind(this),
-	            //     false
-	            // );
+	            this.page.querySelector(selectorOfPlus).parentNode.addEventListener('click', function () {
+	                return _this2.plus(selectorOfPlus, selectorOfList, whichLanguage);
+	            }, false);
 	        }
 	    }, {
 	        key: 'plus',
 	        value: function plus(selectorOfPlus, selectorOfList, whichLanguage) {
 	            var numberOfInput = this.page.querySelectorAll(selectorOfList + ' ons-input').length + 1;
 	
-	            this.page.querySelector(selectorOfList).innerHTML += '<div class="input-wrapper">' + '<ons-input modifier="underbar" placeholder="#' + numberOfInput + '" float="" id="' + whichLanguage + '-' + numberOfInput + '">' + '<label class="text-input__container">' + '<input class="text-input text-input--underbar" placeholder="#' + numberOfInput + '">' + '<span class="_helper text-input__label text-input--underbar__label text-input--material__label--active">#' + numberOfInput + '' + '</span>' + '<span class="input-label"></span>' + '</label>' + '</ons-input>' + '<ons-icon icon="ion-minus-round" class="ons-icon ion-minus-round ons-icon--ion"></ons-icon>' + '</div>';
+	            /*this.page.querySelector(selectorOfList).innerHTML +=
+	                '<div class="input-wrapper">' +
+	                    '<ons-input modifier="underbar" placeholder="#'+numberOfInput+'" float="" id="'+whichLanguage+'-'+numberOfInput+'">' +
+	                    '<label class="text-input__container">' +
+	                        '<input class="text-input text-input--underbar" placeholder="#'+numberOfInput+'">' +
+	                        '<span class="_helper text-input__label text-input--underbar__label text-input--material__label--active">#'+numberOfInput+'' +'</span>' +
+	                        '<span class="input-label"></span>' +
+	                    '</label>' +
+	                    '</ons-input>' +
+	                    '<ons-icon icon="ion-minus-round" class="ons-icon ion-minus-round ons-icon--ion"></ons-icon>' +
+	                '</div>';*/
 	
-	            this.addPlusEvent(selectorOfPlus, selectorOfList, whichLanguage);
+	            var inputWrapper = document.createElement('div');
+	            inputWrapper.className = 'input-wrapper';
+	
+	            inputWrapper.appendChild(_onsenui2.default._util.createElement('<ons-input \n                modifier="underbar" \n                placeholder="#' + numberOfInput + '" \n                float \n                id="' + whichLanguage + '-' + numberOfInput + '">\n            </ons-input>\''));
+	            inputWrapper.appendChild(_onsenui2.default._util.createElement('<ons-icon icon="ion-minus-round"></ons-icon>'));
+	
+	            this.page.querySelector(selectorOfList).appendChild(inputWrapper);
+	
+	            // this.addPlusEvent(selectorOfPlus, selectorOfList, whichLanguage);
 	
 	            this.addMinusEvent();
 	        }

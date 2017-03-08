@@ -52,46 +52,76 @@ var webpackObjectMaker = function (task)
             ]
         },
         plugins: [
-            // new uglify()
+
         ],
         devtool: 'source-map',
         debug: false
     };
 };
 
-var notifyObjectMaker = function (task)
+var notifyObjectMaker = function (task, error)
 {
-    return {
-        title: task,
-        message: 'Compiled',
-        onLast: true
+    if (error)
+    {
+        return {
+            title: task,
+            message: error,
+            onLast: true,
+            emitError: true
+        }
+    }
+    else
+    {
+        return {
+            title: task,
+            message: 'Compiled',
+            onLast: true,
+            emitError: true
+        }
     }
 };
 
+var taskNames = {
+    index: 'jsIndex',
+    menu: 'jsMenu',
+    sass: 'sass'
+};
 
 //running one time
-gulp.task('jsIndex', function ()
+gulp.task(taskNames.index, function ()
 {
     gulp.src(paths.jsIndex)
-        .pipe(webpack(webpackObjectMaker('jsIndex')))
+        .pipe(webpack(webpackObjectMaker(taskNames.index), null, function (error, stats)
+        {
+            if (stats.compilation.errors.length > 0)
+            {
+                notify(notifyObjectMaker(taskNames.menu, stats.compilation.errors[0].error.error));
+            }
+        }))
         .pipe(gulp.dest(paths.output))
-        .pipe(notify(notifyObjectMaker('jsIndex')));
+        .pipe(notify(notifyObjectMaker(taskNames.index)));
 });
 
-gulp.task('jsMenu', function ()
+gulp.task(taskNames.menu, function ()
 {
     gulp.src(paths.jsMenu)
-        .pipe(webpack(webpackObjectMaker('jsMenu')))
+        .pipe(webpack(webpackObjectMaker(taskNames.menu), null, function (error, stats)
+        {
+            if (stats.compilation.errors.length > 0)
+            {
+                notify(notifyObjectMaker(taskNames.menu, stats.compilation.errors[0].error.error));
+            }
+        }))
         .pipe(gulp.dest(paths.output))
-        .pipe(notify(notifyObjectMaker('jsMenu')));
+        .pipe(notify(notifyObjectMaker(taskNames.menu)));
 });
 
-gulp.task('sass', function ()
+gulp.task(taskNames.sass, function ()
 {
     gulp.src(paths.sass, {base: './'})
         .pipe(sass({indentedSyntax: true})).on('error', sass.logError)
         .pipe(gulp.dest('./'))
-        .pipe(notify(notifyObjectMaker('sass')));
+        .pipe(notify(notifyObjectMaker(taskNames.sass)));
 });
 
 //watchers

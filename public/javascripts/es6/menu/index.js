@@ -1,22 +1,17 @@
 import ons from 'onsenui';
 
-
 import Menu from './Menu';
 import ChangeWords from './ChangeWords';
 import ChangeWordsForm from './ChangeWordsForm';
 import ChangeLabels from './ChangeLabels';
 import ChangeLabelsForm from './ChangeLabelsForm';
 
-document.addEventListener('init', function (event)
+
+document.addEventListener('init', (event) =>
 {
+
     const page = event.target;
 
-
-    /*const selectorOfBackButton = '.left ons-back-button';
-    const objectOfModal =  {
-        animation: 'fade',
-        animationOptions: {timing: 'ease-in'}
-    };*/
 
     switch (page.id)
     {

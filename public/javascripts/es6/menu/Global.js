@@ -7,9 +7,6 @@ export default class Global
         this.selectorOfNavigator = '#navigator';
         this.selectorOfTitle = 'ons-toolbar .center';
         this.backButton = 'ons-back-button';
-
-
-
     }
 
     /**
@@ -144,5 +141,13 @@ export default class Global
     labelListItem (name)
     {
 
+    }
+
+    /**
+     * @param {string} hash
+     */
+    changeHash (hash)
+    {
+        window.location.hash = hash;
     }
 }

@@ -1,4 +1,5 @@
 import Global from './Global';
+import ons from 'onsenui';
 
 export default class ChangeWordsForm extends Global
 {
@@ -61,21 +62,18 @@ export default class ChangeWordsForm extends Global
 
     addPlusEvent (selectorOfPlus, selectorOfList, whichLanguage)
     {
-        console.log(selectorOfPlus, this.page);
-
-        //TODO it is not working correctly in first calling (native)
-        // this.page.querySelector(selectorOfPlus).parentNode.addEventListener(
-        //     'click',
-        //     this.plus(selectorOfPlus, selectorOfList, whichLanguage).bind(this),
-        //     false
-        // );
+        this.page.querySelector(selectorOfPlus).parentNode.addEventListener(
+            'click',
+            () => this.plus(selectorOfPlus, selectorOfList, whichLanguage),
+            false
+        );
     };
 
     plus (selectorOfPlus, selectorOfList, whichLanguage)
     {
         const numberOfInput = this.page.querySelectorAll(selectorOfList + ' ons-input').length + 1;
 
-        this.page.querySelector(selectorOfList).innerHTML +=
+        /*this.page.querySelector(selectorOfList).innerHTML +=
             '<div class="input-wrapper">' +
                 '<ons-input modifier="underbar" placeholder="#'+numberOfInput+'" float="" id="'+whichLanguage+'-'+numberOfInput+'">' +
                 '<label class="text-input__container">' +
@@ -85,9 +83,26 @@ export default class ChangeWordsForm extends Global
                 '</label>' +
                 '</ons-input>' +
                 '<ons-icon icon="ion-minus-round" class="ons-icon ion-minus-round ons-icon--ion"></ons-icon>' +
-            '</div>';
+            '</div>';*/
 
-        this.addPlusEvent(selectorOfPlus, selectorOfList, whichLanguage);
+        let inputWrapper = document.createElement('div');
+        inputWrapper.className = 'input-wrapper';
+
+        inputWrapper.appendChild(ons._util.createElement(
+            `<ons-input 
+                modifier="underbar" 
+                placeholder="#${numberOfInput}" 
+                float 
+                id="${whichLanguage}-${numberOfInput}">
+            </ons-input>'`
+        ));
+        inputWrapper.appendChild(ons._util.createElement(
+            `<ons-icon icon="ion-minus-round"></ons-icon>`
+        ));
+
+        this.page.querySelector(selectorOfList).appendChild(inputWrapper);
+
+        // this.addPlusEvent(selectorOfPlus, selectorOfList, whichLanguage);
 
         this.addMinusEvent();
     };
