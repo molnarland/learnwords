@@ -68,7 +68,6 @@ app.use((err, req, res, next) =>
 app.listen(3000, '192.168.0.4', () =>
 {
     console.log('192.168.0.4:3000');
-    console.log(process.platform);
 });
 
 module.exports = app;

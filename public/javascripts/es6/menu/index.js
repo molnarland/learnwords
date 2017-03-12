@@ -6,10 +6,10 @@ import ChangeWordsForm from './ChangeWordsForm';
 import ChangeLabels from './ChangeLabels';
 import ChangeLabelsForm from './ChangeLabelsForm';
 
+window.labels = [];
 
 document.addEventListener('init', (event) =>
 {
-
     const page = event.target;
 
 
@@ -25,7 +25,6 @@ document.addEventListener('init', (event) =>
             new ChangeWordsForm(page);
             break;
         case 'change-labels':
-            console.log('ewewew');
             new ChangeLabels(page);
             break;
         case 'change-label-form':

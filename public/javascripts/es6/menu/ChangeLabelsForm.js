@@ -12,18 +12,46 @@ export default class ChangeLabelsForm extends Global
 
         this.urlOfSaveOneLabel = '/save-label';
 
+        this.init();
+    }
 
-        this.page.querySelector(this.saveButton).addEventListener('click', () =>
+    init ()
+    {
+        this.page.querySelector('ons-toolbar .center').innerHTML = this.page.data.title;
+
+        let listenerOfSabeButtonClick = this.setNewLabel; //this is default
+        if (this.page.data.title === this.page.data.titleOfEdit && typeof this.page.data.item === 'object')
         {
-            const label = document.querySelector(this.labelInput).value;
+            this.page.querySelector(this.labelInput).value = this.page.data.item.name;
+            listenerOfSabeButtonClick = this.editLabel; //if wanna edit
+        }
 
-            this.postAjax(this.urlOfSaveOneLabel, {label: label}, (response) =>
+        this.page.querySelector(this.saveButton).addEventListener('click', listenerOfSabeButtonClick);
+    }
+
+    setNewLabel ()
+    {
+        const label = this.getLabelFromInput();
+
+        this.postAjax(this.urlOfSaveOneLabel, {label: label}, (response) =>
+        {
+            if (response)
             {
-                if (response)
-                {
-                    document.querySelector(this.selectorOfNavigator).popPage({refresh: true});
-                }
-            });
+                document.querySelector(this.selectorOfNavigator).popPage({refresh: true});
+            }
         });
+    }
+
+    editLabel ()
+    {
+        const editedLabel = this.getLabelFromInput();
+
+
+    }
+
+
+    getLabelFromInput ()
+    {
+        return this.page.querySelector(this.labelInput).value;
     }
 }

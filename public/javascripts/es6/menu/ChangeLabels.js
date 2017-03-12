@@ -1,4 +1,5 @@
 import Global from './Global';
+import ons from 'onsenui';
 
 export default class ChangeLabels extends Global
 {
@@ -8,12 +9,19 @@ export default class ChangeLabels extends Global
 
         this.plusLabelButton = '#plus-label';
         this.changeLabelForm = 'change-label-form';
-        this.titleOfChangeLabelsForm = 'New label';
+
+        this.titleOfNewLabelsForm = 'New label';
+        this.titleOfEditLabelsForm = 'Edit label';
 
         this.selectorOfLabelList = '#change-labels-items';
         this.urlOfGetAllLabels = '/all-labels';
+        this.selectorOfChangeItem = `${this.selectorOfLabelList} ons-list-item`;
 
+        this.init();
+    }
 
+    init ()
+    {
         this.showLabels();
         this.initOfPushToForm();
     }
@@ -25,9 +33,30 @@ export default class ChangeLabels extends Global
             showWhere: this.selectorOfLabelList,
             showableHtml: (label) =>
             {
+                const id = label._id;
                 const name = label.name;
 
-                return `<p>${name}</p>`;
+                return ons._util.createElement(
+                    `<ons-list-item data-id="${id}" tabbable>
+                        <div class="center">${name}</div>
+                        <div class="right"><ons-icon icon="ion-edit"></ons-icon></div>
+                    </ons-list-item>`
+                );
+            },
+            store: 'labels',
+            after: () =>
+            {
+                let clickableItems = this.page.querySelectorAll(this.selectorOfChangeItem);
+                for (let clickableItem of clickableItems)
+                {
+                    clickableItem.addEventListener('click', () =>
+                    {
+                        this.pushPage(this.changeLabelForm, {
+                            title: this.titleOfEditLabelsForm,
+                            item: window.labels.find((label) => label._id == clickableItem.dataset.id),
+                        }, 'lift');
+                    });
+                }
             }
         });
     }
@@ -36,7 +65,23 @@ export default class ChangeLabels extends Global
     {
         this.page.querySelector(this.plusLabelButton).addEventListener('click', () =>
         {
-            this.pushPage(this.changeLabelForm, { title: this.titleOfChangeLabelsForm });
+            this.pushPage(this.changeLabelForm, { title: this.titleOfNewLabelsForm });
         });
+    }
+
+    /**
+     * Send 'titleOfNewLabelsForm' and 'titleOfEditLabelsForm' arguments to next page automatically
+     * as titleOfNew and titleOfEdit
+     *
+     * @param {string} where
+     * @param {object} data
+     * @param {string} animation
+     */
+    pushPage (where, data = {}, animation = '')
+    {
+        data.titleOfNew = this.titleOfNewLabelsForm;
+        data.titleOfEdit = this.titleOfEditLabelsForm;
+
+        super.pushPage(where, data, animation);
     }
 }

@@ -72,8 +72,9 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	document.addEventListener('init', function (event) {
+	window.labels = [];
 	
+	document.addEventListener('init', function (event) {
 	    var page = event.target;
 	
 	    switch (page.id) {
@@ -87,7 +88,6 @@
 	            new _ChangeWordsForm2.default(page);
 	            break;
 	        case 'change-labels':
-	            console.log('ewewew');
 	            new _ChangeLabels2.default(page);
 	            break;
 	        case 'change-label-form':
@@ -27877,7 +27877,6 @@
 	        };
 	
 	        _this.goToPageByButtonClick();
-	
 	        _this.goToPageByHash();
 	        /*if ("onhashchange" in window)
 	        {
@@ -27937,6 +27936,8 @@
 	    value: true
 	});
 	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -27955,6 +27956,7 @@
 	    /**
 	     * @param {string} where
 	     * @param {object} data
+	     * @param {string} animation
 	     */
 	
 	
@@ -27962,9 +27964,11 @@
 	        key: 'pushPage',
 	        value: function pushPage(where) {
 	            var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+	            var animation = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
 	
 	            document.querySelector(this.selectorOfNavigator).pushPage(where, {
-	                data: data
+	                data: data,
+	                animation: animation
 	            });
 	        }
 	
@@ -28044,8 +28048,9 @@
 	                _ref$after = _ref.after,
 	                after = _ref$after === undefined ? new Function() : _ref$after;
 	
-	            var html = '';
+	            var aimDom = this.page.querySelector(where);
 	
+	            aimDom.innerHTML = '';
 	            var _iteratorNormalCompletion = true;
 	            var _didIteratorError = false;
 	            var _iteratorError = undefined;
@@ -28054,7 +28059,16 @@
 	                for (var _iterator = datas[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 	                    var data = _step.value;
 	
-	                    html += returnHtml(data);
+	                    var plusHtml = returnHtml(data),
+	                        typeOfPlusHtml = typeof plusHtml === 'undefined' ? 'undefined' : _typeof(plusHtml);
+	
+	                    if (typeOfPlusHtml === 'object') {
+	                        aimDom.appendChild(plusHtml);
+	                    } else if (typeOfPlusHtml === 'string') {
+	                        aimDom.innerHTML += plusHtml;
+	                    } else {
+	                        console.warn('result of returnHtml does not object or string so I cannot add it to DOM');
+	                    }
 	                }
 	            } catch (err) {
 	                _didIteratorError = true;
@@ -28071,7 +28085,6 @@
 	                }
 	            }
 	
-	            this.page.querySelector(where).innerHTML = html;
 	            return after();
 	        }
 	
@@ -28079,6 +28092,7 @@
 	         * @param {string} url
 	         * @param {string} showWhere
 	         * @param {function} showableHtml
+	         * @param {string} store - name of variable on window object, data save here
 	         * @param {function} [after]
 	         */
 	
@@ -28090,9 +28104,12 @@
 	            var url = _ref2.url,
 	                showWhere = _ref2.showWhere,
 	                showableHtml = _ref2.showableHtml,
+	                store = _ref2.store,
 	                after = _ref2.after;
 	
 	            this.getAjax(url, function (response) {
+	                window[store] = response;
+	
 	                return _this2.showEveryDatas({
 	                    where: showWhere,
 	                    datas: response,
@@ -28360,9 +28377,15 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
 	var _Global2 = __webpack_require__(7);
 	
 	var _Global3 = _interopRequireDefault(_Global2);
+	
+	var _onsenui = __webpack_require__(1);
+	
+	var _onsenui2 = _interopRequireDefault(_onsenui);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -28382,10 +28405,13 @@
 	
 	        _this.plusLabelButton = '#plus-label';
 	        _this.changeLabelForm = 'change-label-form';
-	        _this.titleOfChangeLabelsForm = 'New label';
+	
+	        _this.titleOfNewLabelsForm = 'New label';
+	        _this.titleOfEditLabelsForm = 'Edit label';
 	
 	        _this.selectorOfLabelList = '#change-labels-items';
 	        _this.urlOfGetAllLabels = '/all-labels';
+	        _this.selectorOfChangeItem = _this.selectorOfLabelList + ' ons-list-item';
 	
 	        _this.showLabels();
 	        _this.initOfPushToForm();
@@ -28395,24 +28421,88 @@
 	    _createClass(ChangeLabels, [{
 	        key: 'showLabels',
 	        value: function showLabels() {
+	            var _this2 = this;
+	
 	            this.downAndShow({
 	                url: this.urlOfGetAllLabels,
 	                showWhere: this.selectorOfLabelList,
 	                showableHtml: function showableHtml(label) {
+	                    var id = label._id;
 	                    var name = label.name;
 	
-	                    return '<p>' + name + '</p>';
+	                    return _onsenui2.default._util.createElement('<ons-list-item data-id="' + id + '" tabbable>\n                        <div class="center">' + name + '</div>\n                        <div class="right"><ons-icon icon="ion-edit"></ons-icon></div>\n                    </ons-list-item>');
+	                },
+	                store: 'labels',
+	                after: function after() {
+	                    var clickableItems = _this2.page.querySelectorAll(_this2.selectorOfChangeItem);
+	                    var _iteratorNormalCompletion = true;
+	                    var _didIteratorError = false;
+	                    var _iteratorError = undefined;
+	
+	                    try {
+	                        var _loop = function _loop() {
+	                            var clickableItem = _step.value;
+	
+	                            clickableItem.addEventListener('click', function () {
+	                                console.log(clickableItem.dataset.id);
+	                                _this2.pushPage(_this2.changeLabelForm, {
+	                                    title: _this2.titleOfEditLabelsForm,
+	                                    item: window.labels.find(function (label) {
+	                                        return label._id == clickableItem.dataset.id;
+	                                    })
+	                                }, 'lift');
+	                            });
+	                        };
+	
+	                        for (var _iterator = clickableItems[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	                            _loop();
+	                        }
+	                    } catch (err) {
+	                        _didIteratorError = true;
+	                        _iteratorError = err;
+	                    } finally {
+	                        try {
+	                            if (!_iteratorNormalCompletion && _iterator.return) {
+	                                _iterator.return();
+	                            }
+	                        } finally {
+	                            if (_didIteratorError) {
+	                                throw _iteratorError;
+	                            }
+	                        }
+	                    }
 	                }
 	            });
 	        }
 	    }, {
 	        key: 'initOfPushToForm',
 	        value: function initOfPushToForm() {
-	            var _this2 = this;
+	            var _this3 = this;
 	
 	            this.page.querySelector(this.plusLabelButton).addEventListener('click', function () {
-	                _this2.pushPage(_this2.changeLabelForm, { title: _this2.titleOfChangeLabelsForm });
+	                _this3.pushPage(_this3.changeLabelForm, { title: _this3.titleOfNewLabelsForm });
 	            });
+	        }
+	
+	        /**
+	         * Send 'titleOfNewLabelsForm' and 'titleOfEditLabelsForm' arguments to next page automatically
+	         * as titleOfNew and titleOfEdit
+	         *
+	         * @param {string} where
+	         * @param {object} data
+	         * @param {string} animation
+	         */
+	
+	    }, {
+	        key: 'pushPage',
+	        value: function pushPage(where) {
+	            var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+	            var animation = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+	
+	            data.titleOfNew = this.titleOfNewLabelsForm;
+	            data.titleOfEdit = this.titleOfEditLabelsForm;
+	
+	            _get(ChangeLabels.prototype.__proto__ || Object.getPrototypeOf(ChangeLabels.prototype), 'pushPage', this).call(this, where, data, animation);
 	        }
 	    }]);
 	
@@ -28430,6 +28520,10 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _Global2 = __webpack_require__(7);
 	
@@ -28460,17 +28554,37 @@
 	
 	        _this.urlOfSaveOneLabel = '/save-label';
 	
-	        _this.page.querySelector(_this.saveButton).addEventListener('click', function () {
-	            var label = document.querySelector(_this.labelInput).value;
+	        _this.page.querySelector('ons-toolbar .center').innerHTML = _this.page.data.title;
 	
-	            _this.postAjax(_this.urlOfSaveOneLabel, { label: label }, function (response) {
-	                if (response) {
-	                    document.querySelector(_this.selectorOfNavigator).popPage({ refresh: true });
-	                }
-	            });
-	        });
+	        var listenerOfSabeButtonClick = _this.setNewLabel; //this is default
+	        if (_this.page.data.title === _this.page.data.titleOfEdit && _typeof(_this.page.data.item) === 'object') {
+	            _this.page.querySelector(_this.labelInput).value = _this.page.data.item.name;
+	            listenerOfSabeButtonClick = _this.editLabel; //if wanna edit
+	        }
+	
+	        _this.page.querySelector(_this.saveButton).addEventListener('click', listenerOfSabeButtonClick);
 	        return _this;
 	    }
+	
+	    _createClass(ChangeLabelsForm, [{
+	        key: 'setNewLabel',
+	        value: function setNewLabel() {
+	            var _this2 = this;
+	
+	            var label = this.page.querySelector(this.labelInput).value;
+	
+	            this.postAjax(this.urlOfSaveOneLabel, { label: label }, function (response) {
+	                if (response) {
+	                    document.querySelector(_this2.selectorOfNavigator).popPage({ refresh: true });
+	                }
+	            });
+	        }
+	    }, {
+	        key: 'editLabel',
+	        value: function editLabel() {
+	            // const editedLabel = document.querySelector(this.)
+	        }
+	    }]);
 	
 	    return ChangeLabelsForm;
 	}(_Global3.default);

@@ -12,11 +12,13 @@ export default class Global
     /**
      * @param {string} where
      * @param {object} data
+     * @param {string} animation
      */
-    pushPage (where, data = {})
+    pushPage (where, data = {}, animation = '')
     {
         document.querySelector(this.selectorOfNavigator).pushPage(where, {
             data: data,
+            animation: animation
         });
     }
 
@@ -82,14 +84,28 @@ export default class Global
      */
     showEveryDatas ({where, datas, returnHtml, after = new Function()})
     {
-        let html = '';
+        let aimDom = this.page.querySelector(where);
 
+        aimDom.innerHTML = '';
         for (let data of datas)
         {
-            html += returnHtml(data);
+            const plusHtml = returnHtml(data),
+                typeOfPlusHtml = typeof plusHtml;
+
+            if (typeOfPlusHtml === 'object')
+            {
+                aimDom.appendChild(plusHtml);
+            }
+            else if (typeOfPlusHtml === 'string')
+            {
+                aimDom.innerHTML += plusHtml;
+            }
+            else
+            {
+                console.warn('result of returnHtml does not object or string so I cannot add it to DOM');
+            }
         }
 
-        this.page.querySelector(where).innerHTML = html;
         return after();
     }
 
@@ -97,12 +113,15 @@ export default class Global
      * @param {string} url
      * @param {string} showWhere
      * @param {function} showableHtml
+     * @param {string} store - name of variable on window object, data save here
      * @param {function} [after]
      */
-    downAndShow ({url, showWhere, showableHtml, after})
+    downAndShow ({url, showWhere, showableHtml, store, after})
     {
         this.getAjax(url, (response) =>
         {
+            window[store] = response;
+
             return this.showEveryDatas({
                 where: showWhere,
                 datas: response,

@@ -13,7 +13,6 @@ export default class Menu extends Global
         };
 
         this.goToPageByButtonClick();
-
         this.goToPageByHash();
         /*if ("onhashchange" in window)
         {
