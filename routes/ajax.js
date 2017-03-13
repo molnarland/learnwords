@@ -43,6 +43,16 @@ router.post('/update-label', (req, res, next) =>
     })
 });
 
+router.post('/delete-label', (req, res, next) =>
+{
+    const id = req.body.id;
+
+    Labels.deleteLabel(id, () =>
+    {
+        res.send(true);
+    })
+});
+
 module.exports = router;
 
 

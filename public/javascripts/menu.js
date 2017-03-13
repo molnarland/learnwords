@@ -28628,6 +28628,7 @@
 	
 	        _this.urlOfSaveOneLabel = '/save-label';
 	        _this.urlOfEditOneLabel = '/update-label';
+	        _this.urlOfDeleteOneLabel = '/delete-label';
 	
 	        _this.init();
 	        return _this;
@@ -28692,7 +28693,13 @@
 	                where: '#delete-wrapper',
 	                html: '<ons-button modifier="large" id="delete" class="red">Delete</ons-button>',
 	                callback: function callback() {
-	                    _this4.q(_this4.selectorOfDeleteButton).addEventListener('click', function () {});
+	                    _this4.q(_this4.selectorOfDeleteButton).addEventListener('click', function () {
+	                        var id = _this4.page.data.item._id;
+	
+	                        _this4.postAjax(_this4.urlOfDeleteOneLabel, { id: id }, function () {
+	                            _this4.pushBackWithRefresh();
+	                        });
+	                    });
 	                }
 	            });
 	        }

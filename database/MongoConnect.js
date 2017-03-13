@@ -2,7 +2,8 @@ class MongoConnect
 {
     constructor ()
     {
-        this.MongoClient = require('mongodb').MongoClient;
+        this.mongo = require('mongodb');
+        this.MongoClient = this.mongo.MongoClient;
         this.assert = require('assert');
 
         this.url = 'mongodb://localhost:27017/learnwords';
@@ -22,6 +23,15 @@ class MongoConnect
             });
         });
     };
+
+    /**
+     * @param {string} id
+     * @return {*}
+     */
+    objectId (id)
+    {
+        return this.mongo.ObjectID(id);
+    }
 }
 
 module.exports = MongoConnect;

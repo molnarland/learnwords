@@ -13,6 +13,7 @@ export default class ChangeLabelsForm extends Global
 
         this.urlOfSaveOneLabel = '/save-label';
         this.urlOfEditOneLabel = '/update-label';
+        this.urlOfDeleteOneLabel = '/delete-label';
 
         this.init();
     }
@@ -76,7 +77,12 @@ export default class ChangeLabelsForm extends Global
             {
                 this.q(this.selectorOfDeleteButton).addEventListener('click', () =>
                 {
+                    const id = this.page.data.item._id;
 
+                    this.postAjax(this.urlOfDeleteOneLabel, {id: id}, () =>
+                    {
+                        this.pushBackWithRefresh();
+                    });
                 });
             }
         });
