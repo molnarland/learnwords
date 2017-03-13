@@ -18,6 +18,11 @@ class Label extends Broad
     {
         this.getAll(this.table, callback, {userId: userId});
     }
+
+    updateLabel (userId, oldLabel, newLabel, callback)
+    {
+        this.updateOne(this.table, {userId: userId, name: oldLabel}, { $set: {name: newLabel} }, callback);
+    }
 }
 
 module.exports = Label;

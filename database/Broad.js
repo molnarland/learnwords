@@ -64,6 +64,26 @@ class Broad extends MongoConnect
             });
         });
     }
+
+    /**
+     * @param {string} table
+     * @param {object} filter
+     * @param {object} update
+     * @param {function} callback
+     */
+    updateOne (table, filter, update, callback)
+    {
+        this.connect((db, programCallback) =>
+        {
+            db.collection(table).updateOne(filter, update, (err, result) =>
+            {
+                if (err) {throw err;}
+
+                programCallback();
+                return callback(result);
+            });
+        })
+    }
 }
 
 module.exports = Broad;

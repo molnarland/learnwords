@@ -31,6 +31,18 @@ router.get('/all-labels', (req, res, next) =>
     });
 });
 
+router.post('/update-label', (req, res, next) =>
+{
+    const userId = req.body.userId; //TODO user id and label name
+    const newLabel = req.body.newLabel;
+    const oldLabel = req.body.oldLabel;
+
+    Labels.updateLabel(userId, oldLabel, newLabel, () =>
+    {
+        res.send(true);
+    })
+});
+
 module.exports = router;
 
 

@@ -10,6 +10,12 @@ window.labels = [];
 
 document.addEventListener('init', (event) =>
 {
+    const platform = ons.platform;
+    let body = document.querySelector('body');
+    if (platform.isAndroid()) {body.className = 'android';}
+    else {body.className = 'ios';}
+
+
     const page = event.target;
 
 

@@ -11,6 +11,7 @@ export default class ChangeLabelsForm extends Global
         this.saveButton = '#save';
 
         this.urlOfSaveOneLabel = '/save-label';
+        this.urlOfEditOneLabel = '/update-label';
 
         this.init();
     }
@@ -19,14 +20,14 @@ export default class ChangeLabelsForm extends Global
     {
         this.page.querySelector('ons-toolbar .center').innerHTML = this.page.data.title;
 
-        let listenerOfSabeButtonClick = this.setNewLabel; //this is default
+        let listenerOfSabeButtonClick = this.setNewLabel.bind(this); //this is default
         if (this.page.data.title === this.page.data.titleOfEdit && typeof this.page.data.item === 'object')
         {
             this.page.querySelector(this.labelInput).value = this.page.data.item.name;
-            listenerOfSabeButtonClick = this.editLabel; //if wanna edit
+            listenerOfSabeButtonClick = this.editLabel.bind(this); //if wanna edit
         }
 
-        this.page.querySelector(this.saveButton).addEventListener('click', listenerOfSabeButtonClick);
+        this.page.querySelector(this.saveButton).addEventListener('click', () => listenerOfSabeButtonClick());
     }
 
     setNewLabel ()
@@ -37,21 +38,40 @@ export default class ChangeLabelsForm extends Global
         {
             if (response)
             {
-                document.querySelector(this.selectorOfNavigator).popPage({refresh: true});
+                this.pushBackWithRefresh();
             }
         });
     }
 
     editLabel ()
     {
+        const userId = this.page.data.item.userId;
+        const oldLabel = this.page.data.item.name;
         const editedLabel = this.getLabelFromInput();
 
-
+        this.postAjax(this.urlOfEditOneLabel, {
+            userId: userId,
+            oldLabel: oldLabel,
+            newLabel: editedLabel
+        }, (response) =>
+        {
+            console.log(response);
+            if (response)
+            {
+                this.pushBackWithRefresh();
+            }
+        });
     }
+
 
 
     getLabelFromInput ()
     {
         return this.page.querySelector(this.labelInput).value;
+    }
+
+    pushBackWithRefresh ()
+    {
+        document.querySelector(this.selectorOfNavigator).popPage({refresh: true});
     }
 }

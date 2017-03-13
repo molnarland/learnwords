@@ -75,6 +75,14 @@
 	window.labels = [];
 	
 	document.addEventListener('init', function (event) {
+	    var platform = _onsenui2.default.platform;
+	    var body = document.querySelector('body');
+	    if (platform.isAndroid()) {
+	        body.className = 'android';
+	    } else {
+	        body.className = 'ios';
+	    }
+	
 	    var page = event.target;
 	
 	    switch (page.id) {
@@ -28413,12 +28421,17 @@
 	        _this.urlOfGetAllLabels = '/all-labels';
 	        _this.selectorOfChangeItem = _this.selectorOfLabelList + ' ons-list-item';
 	
-	        _this.showLabels();
-	        _this.initOfPushToForm();
+	        _this.init();
 	        return _this;
 	    }
 	
 	    _createClass(ChangeLabels, [{
+	        key: 'init',
+	        value: function init() {
+	            this.showLabels();
+	            this.initOfPushToForm();
+	        }
+	    }, {
 	        key: 'showLabels',
 	        value: function showLabels() {
 	            var _this2 = this;
@@ -28444,7 +28457,6 @@
 	                            var clickableItem = _step.value;
 	
 	                            clickableItem.addEventListener('click', function () {
-	                                console.log(clickableItem.dataset.id);
 	                                _this2.pushPage(_this2.changeLabelForm, {
 	                                    title: _this2.titleOfEditLabelsForm,
 	                                    item: window.labels.find(function (label) {
@@ -28553,36 +28565,69 @@
 	        _this.saveButton = '#save';
 	
 	        _this.urlOfSaveOneLabel = '/save-label';
+	        _this.urlOfEditOneLabel = '/update-label';
 	
-	        _this.page.querySelector('ons-toolbar .center').innerHTML = _this.page.data.title;
-	
-	        var listenerOfSabeButtonClick = _this.setNewLabel; //this is default
-	        if (_this.page.data.title === _this.page.data.titleOfEdit && _typeof(_this.page.data.item) === 'object') {
-	            _this.page.querySelector(_this.labelInput).value = _this.page.data.item.name;
-	            listenerOfSabeButtonClick = _this.editLabel; //if wanna edit
-	        }
-	
-	        _this.page.querySelector(_this.saveButton).addEventListener('click', listenerOfSabeButtonClick);
+	        _this.init();
 	        return _this;
 	    }
 	
 	    _createClass(ChangeLabelsForm, [{
+	        key: 'init',
+	        value: function init() {
+	            this.page.querySelector('ons-toolbar .center').innerHTML = this.page.data.title;
+	
+	            var listenerOfSabeButtonClick = this.setNewLabel.bind(this); //this is default
+	            if (this.page.data.title === this.page.data.titleOfEdit && _typeof(this.page.data.item) === 'object') {
+	                this.page.querySelector(this.labelInput).value = this.page.data.item.name;
+	                listenerOfSabeButtonClick = this.editLabel.bind(this); //if wanna edit
+	            }
+	
+	            this.page.querySelector(this.saveButton).addEventListener('click', function () {
+	                return listenerOfSabeButtonClick();
+	            });
+	        }
+	    }, {
 	        key: 'setNewLabel',
 	        value: function setNewLabel() {
 	            var _this2 = this;
 	
-	            var label = this.page.querySelector(this.labelInput).value;
+	            var label = this.getLabelFromInput();
 	
 	            this.postAjax(this.urlOfSaveOneLabel, { label: label }, function (response) {
 	                if (response) {
-	                    document.querySelector(_this2.selectorOfNavigator).popPage({ refresh: true });
+	                    _this2.pushBackWithRefresh();
 	                }
 	            });
 	        }
 	    }, {
 	        key: 'editLabel',
 	        value: function editLabel() {
-	            // const editedLabel = document.querySelector(this.)
+	            var _this3 = this;
+	
+	            var userId = this.page.data.item.userId;
+	            var oldLabel = this.page.data.item.name;
+	            var editedLabel = this.getLabelFromInput();
+	
+	            this.postAjax(this.urlOfEditOneLabel, {
+	                userId: userId,
+	                oldLabel: oldLabel,
+	                newLabel: editedLabel
+	            }, function (response) {
+	                console.log(response);
+	                if (response) {
+	                    _this3.pushBackWithRefresh();
+	                }
+	            });
+	        }
+	    }, {
+	        key: 'getLabelFromInput',
+	        value: function getLabelFromInput() {
+	            return this.page.querySelector(this.labelInput).value;
+	        }
+	    }, {
+	        key: 'pushBackWithRefresh',
+	        value: function pushBackWithRefresh() {
+	            document.querySelector(this.selectorOfNavigator).popPage({ refresh: true });
 	        }
 	    }]);
 	
