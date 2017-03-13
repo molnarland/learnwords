@@ -27936,7 +27936,7 @@
 
 /***/ },
 /* 7 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -27947,6 +27947,12 @@
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _onsenui = __webpack_require__(1);
+	
+	var _onsenui2 = _interopRequireDefault(_onsenui);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -28067,16 +28073,12 @@
 	                for (var _iterator = datas[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 	                    var data = _step.value;
 	
-	                    var plusHtml = returnHtml(data),
-	                        typeOfPlusHtml = typeof plusHtml === 'undefined' ? 'undefined' : _typeof(plusHtml);
+	                    var html = returnHtml(data);
 	
-	                    if (typeOfPlusHtml === 'object') {
-	                        aimDom.appendChild(plusHtml);
-	                    } else if (typeOfPlusHtml === 'string') {
-	                        aimDom.innerHTML += plusHtml;
-	                    } else {
-	                        console.warn('result of returnHtml does not object or string so I cannot add it to DOM');
-	                    }
+	                    this.setDomElement({
+	                        where: aimDom,
+	                        html: html
+	                    });
 	                }
 	            } catch (err) {
 	                _didIteratorError = true;
@@ -28097,6 +28099,47 @@
 	        }
 	
 	        /**
+	         * @param {string} html
+	         * @return {Element|*}
+	         */
+	
+	    }, {
+	        key: 'createOnsElement',
+	        value: function createOnsElement(html) {
+	            return _onsenui2.default._util.createElement(html);
+	        }
+	
+	        /**
+	         * @param {Element|string} where
+	         * @param {Element|string} html
+	         * @param {function} callback
+	         */
+	
+	    }, {
+	        key: 'setDomElement',
+	        value: function setDomElement(_ref2) {
+	            var where = _ref2.where,
+	                html = _ref2.html,
+	                _ref2$callback = _ref2.callback,
+	                callback = _ref2$callback === undefined ? new Function() : _ref2$callback;
+	
+	            if (typeof where === 'string') {
+	                where = this.q(where);
+	            }
+	
+	            var typeOfHtml = typeof html === 'undefined' ? 'undefined' : _typeof(html);
+	            if (typeOfHtml === 'object') {
+	                where.appendChild(html);
+	            } else if (typeOfHtml === 'string') {
+	                where.innerHTML += html;
+	            } else {
+	                console.warn('result of returnHtml does not object or string so I cannot add it to DOM');
+	            }
+	
+	            return callback();
+	        }
+	
+	        /**
 	         * @param {string} url
 	         * @param {string} showWhere
 	         * @param {function} showableHtml
@@ -28106,14 +28149,14 @@
 	
 	    }, {
 	        key: 'downAndShow',
-	        value: function downAndShow(_ref2) {
+	        value: function downAndShow(_ref3) {
 	            var _this2 = this;
 	
-	            var url = _ref2.url,
-	                showWhere = _ref2.showWhere,
-	                showableHtml = _ref2.showableHtml,
-	                store = _ref2.store,
-	                after = _ref2.after;
+	            var url = _ref3.url,
+	                showWhere = _ref3.showWhere,
+	                showableHtml = _ref3.showableHtml,
+	                store = _ref3.store,
+	                after = _ref3.after;
 	
 	            this.getAjax(url, function (response) {
 	                window[store] = response;
@@ -28138,15 +28181,15 @@
 	
 	    }, {
 	        key: 'upDownAndShow',
-	        value: function upDownAndShow(_ref3) {
+	        value: function upDownAndShow(_ref4) {
 	            var _this3 = this;
 	
-	            var upUrl = _ref3.upUrl,
-	                upData = _ref3.upData,
-	                downUrl = _ref3.downUrl,
-	                showWhere = _ref3.showWhere,
-	                showableHtml = _ref3.showableHtml,
-	                after = _ref3.after;
+	            var upUrl = _ref4.upUrl,
+	                upData = _ref4.upData,
+	                downUrl = _ref4.downUrl,
+	                showWhere = _ref4.showWhere,
+	                showableHtml = _ref4.showableHtml,
+	                after = _ref4.after;
 	
 	            this.postAjax(upUrl, upData, function (response) {
 	                if (response) {
@@ -28173,6 +28216,28 @@
 	        key: 'changeHash',
 	        value: function changeHash(hash) {
 	            window.location.hash = hash;
+	        }
+	
+	        /**
+	         * @param {string} selector
+	         * @return {Element}
+	         */
+	
+	    }, {
+	        key: 'q',
+	        value: function q(selector) {
+	            return this.page.querySelector(selector);
+	        }
+	
+	        /**
+	         * @param {string} selector
+	         * @return {NodeList}
+	         */
+	
+	    }, {
+	        key: 'qAll',
+	        value: function qAll(selector) {
+	            return this.page.querySelectorAll(selector);
 	        }
 	    }]);
 	
@@ -28391,10 +28456,6 @@
 	
 	var _Global3 = _interopRequireDefault(_Global2);
 	
-	var _onsenui = __webpack_require__(1);
-	
-	var _onsenui2 = _interopRequireDefault(_onsenui);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -28443,7 +28504,7 @@
 	                    var id = label._id;
 	                    var name = label.name;
 	
-	                    return _onsenui2.default._util.createElement('<ons-list-item data-id="' + id + '" tabbable>\n                        <div class="center">' + name + '</div>\n                        <div class="right"><ons-icon icon="ion-edit"></ons-icon></div>\n                    </ons-list-item>');
+	                    return _this2.createOnsElement('<ons-list-item data-id="' + id + '" tabbable>\n                        <div class="center">' + name + '</div>\n                        <div class="right"><ons-icon icon="ion-edit"></ons-icon></div>\n                    </ons-list-item>');
 	                },
 	                store: 'labels',
 	                after: function after() {
@@ -28561,8 +28622,9 @@
 	
 	        var _this = _possibleConstructorReturn(this, (ChangeLabelsForm.__proto__ || Object.getPrototypeOf(ChangeLabelsForm)).call(this, page));
 	
-	        _this.labelInput = '#label';
-	        _this.saveButton = '#save';
+	        _this.selectorOfLabelInput = '#label';
+	        _this.selectorOfSaveButton = '#save';
+	        _this.selectorOfDeleteButton = '#delete';
 	
 	        _this.urlOfSaveOneLabel = '/save-label';
 	        _this.urlOfEditOneLabel = '/update-label';
@@ -28578,11 +28640,13 @@
 	
 	            var listenerOfSabeButtonClick = this.setNewLabel.bind(this); //this is default
 	            if (this.page.data.title === this.page.data.titleOfEdit && _typeof(this.page.data.item) === 'object') {
-	                this.page.querySelector(this.labelInput).value = this.page.data.item.name;
-	                listenerOfSabeButtonClick = this.editLabel.bind(this); //if wanna edit
+	                this.page.querySelector(this.selectorOfLabelInput).value = this.page.data.item.name;
+	                listenerOfSabeButtonClick = this.editLabel.bind(this); //if wanna
+	
+	                this.setUpDeleteButton();
 	            }
 	
-	            this.page.querySelector(this.saveButton).addEventListener('click', function () {
+	            this.page.querySelector(this.selectorOfSaveButton).addEventListener('click', function () {
 	                return listenerOfSabeButtonClick();
 	            });
 	        }
@@ -28620,9 +28684,22 @@
 	            });
 	        }
 	    }, {
+	        key: 'setUpDeleteButton',
+	        value: function setUpDeleteButton() {
+	            var _this4 = this;
+	
+	            this.setDomElement({
+	                where: '#delete-wrapper',
+	                html: '<ons-button modifier="large" id="delete" class="red">Delete</ons-button>',
+	                callback: function callback() {
+	                    _this4.q(_this4.selectorOfDeleteButton).addEventListener('click', function () {});
+	                }
+	            });
+	        }
+	    }, {
 	        key: 'getLabelFromInput',
 	        value: function getLabelFromInput() {
-	            return this.page.querySelector(this.labelInput).value;
+	            return this.page.querySelector(this.selectorOfLabelInput).value;
 	        }
 	    }, {
 	        key: 'pushBackWithRefresh',

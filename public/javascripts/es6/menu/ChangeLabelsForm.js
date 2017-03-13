@@ -7,8 +7,9 @@ export default class ChangeLabelsForm extends Global
     {
         super(page);
 
-        this.labelInput = '#label';
-        this.saveButton = '#save';
+        this.selectorOfLabelInput = '#label';
+        this.selectorOfSaveButton = '#save';
+        this.selectorOfDeleteButton = '#delete';
 
         this.urlOfSaveOneLabel = '/save-label';
         this.urlOfEditOneLabel = '/update-label';
@@ -23,11 +24,13 @@ export default class ChangeLabelsForm extends Global
         let listenerOfSabeButtonClick = this.setNewLabel.bind(this); //this is default
         if (this.page.data.title === this.page.data.titleOfEdit && typeof this.page.data.item === 'object')
         {
-            this.page.querySelector(this.labelInput).value = this.page.data.item.name;
-            listenerOfSabeButtonClick = this.editLabel.bind(this); //if wanna edit
+            this.page.querySelector(this.selectorOfLabelInput).value = this.page.data.item.name;
+            listenerOfSabeButtonClick = this.editLabel.bind(this); //if wanna
+
+            this.setUpDeleteButton();
         }
 
-        this.page.querySelector(this.saveButton).addEventListener('click', () => listenerOfSabeButtonClick());
+        this.page.querySelector(this.selectorOfSaveButton).addEventListener('click', () => listenerOfSabeButtonClick());
     }
 
     setNewLabel ()
@@ -63,11 +66,25 @@ export default class ChangeLabelsForm extends Global
         });
     }
 
+    setUpDeleteButton ()
+    {
 
+        this.setDomElement({
+            where: '#delete-wrapper',
+            html: '<ons-button modifier="large" id="delete" class="red">Delete</ons-button>',
+            callback: () =>
+            {
+                this.q(this.selectorOfDeleteButton).addEventListener('click', () =>
+                {
+
+                });
+            }
+        });
+    }
 
     getLabelFromInput ()
     {
-        return this.page.querySelector(this.labelInput).value;
+        return this.page.querySelector(this.selectorOfLabelInput).value;
     }
 
     pushBackWithRefresh ()

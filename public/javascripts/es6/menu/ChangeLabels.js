@@ -1,5 +1,4 @@
 import Global from './Global';
-import ons from 'onsenui';
 
 export default class ChangeLabels extends Global
 {
@@ -36,7 +35,7 @@ export default class ChangeLabels extends Global
                 const id = label._id;
                 const name = label.name;
 
-                return ons._util.createElement(
+                return this.createOnsElement(
                     `<ons-list-item data-id="${id}" tabbable>
                         <div class="center">${name}</div>
                         <div class="right"><ons-icon icon="ion-edit"></ons-icon></div>

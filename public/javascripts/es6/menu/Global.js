@@ -1,3 +1,5 @@
+import ons from 'onsenui';
+
 export default class Global
 {
     constructor(page)
@@ -89,24 +91,53 @@ export default class Global
         aimDom.innerHTML = '';
         for (let data of datas)
         {
-            const plusHtml = returnHtml(data),
-                typeOfPlusHtml = typeof plusHtml;
+            const html = returnHtml(data);
 
-            if (typeOfPlusHtml === 'object')
-            {
-                aimDom.appendChild(plusHtml);
-            }
-            else if (typeOfPlusHtml === 'string')
-            {
-                aimDom.innerHTML += plusHtml;
-            }
-            else
-            {
-                console.warn('result of returnHtml does not object or string so I cannot add it to DOM');
-            }
+            this.setDomElement({
+                where: aimDom,
+                html: html
+            });
         }
 
         return after();
+    }
+
+    /**
+     * @param {string} html
+     * @return {Element|*}
+     */
+    createOnsElement (html)
+    {
+        return ons._util.createElement(html);
+    }
+
+    /**
+     * @param {Element|string} where
+     * @param {Element|string} html
+     * @param {function} callback
+     */
+    setDomElement ({where, html, callback = new Function()})
+    {
+        if (typeof where === 'string')
+        {
+            where = this.q(where);
+        }
+
+        const typeOfHtml = typeof html;
+        if (typeOfHtml === 'object')
+        {
+            where.appendChild(html);
+        }
+        else if (typeOfHtml === 'string')
+        {
+            where.innerHTML += html;
+        }
+        else
+        {
+            console.warn('result of returnHtml does not object or string so I cannot add it to DOM');
+        }
+
+        return callback();
     }
 
     /**
@@ -168,5 +199,23 @@ export default class Global
     changeHash (hash)
     {
         window.location.hash = hash;
+    }
+
+    /**
+     * @param {string} selector
+     * @return {Element}
+     */
+    q (selector)
+    {
+        return this.page.querySelector(selector);
+    }
+
+    /**
+     * @param {string} selector
+     * @return {NodeList}
+     */
+    qAll (selector)
+    {
+        return this.page.querySelectorAll(selector);
     }
 }
