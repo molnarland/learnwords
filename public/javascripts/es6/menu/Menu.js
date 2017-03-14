@@ -49,7 +49,7 @@ export default class Menu extends Global
 
         if (infoOfCurrentPage)
         {
-            this.page.querySelector(infoOfCurrentPage.button).click();
+            this.q(infoOfCurrentPage.button).click();
         }
     }
 }

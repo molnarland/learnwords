@@ -27924,7 +27924,7 @@
 	            // const infoOfCurrentPage = this.infoOfMainPages.find(info => info.urlHash === window.location.hash.substring(1));
 	
 	            if (infoOfCurrentPage) {
-	                this.page.querySelector(infoOfCurrentPage.button).click();
+	                this.q(infoOfCurrentPage.button).click();
 	            }
 	        }
 	    }]);
@@ -27965,6 +27965,9 @@
 	        this.selectorOfNavigator = '#navigator';
 	        this.selectorOfTitle = 'ons-toolbar .center';
 	        this.backButton = 'ons-back-button';
+	
+	        this.urlOfWordMethods = '/words';
+	        this.urlOfLabelMethods = '/labels';
 	    }
 	
 	    /**
@@ -28001,10 +28004,30 @@
 	            var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 	            var callback = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : new Function();
 	
-	            this.page.querySelector(selectorOfButton).addEventListener('click', function () {
+	            this.q(selectorOfButton).addEventListener('click', function () {
 	                document.querySelector(_this.selectorOfNavigator).pushPage(where, data);
 	                callback();
 	            });
+	        }
+	
+	        /**
+	         * @param {string} method
+	         * @param {string} url
+	         * @param {object} [data]
+	         * @param {function} callback
+	         */
+	
+	    }, {
+	        key: 'ajax',
+	        value: function ajax(method, url) {
+	            var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+	            var callback = arguments[3];
+	
+	            if (method == 'GET' || method == 'get') {
+	                this.getAjax(url, callback);
+	            } else {
+	                this.postBasedAjax(method, url, data, callback);
+	            }
 	        }
 	
 	        /**
@@ -28027,16 +28050,17 @@
 	        }
 	
 	        /**
+	         * @param {string} method
 	         * @param {string} url
 	         * @param {object} data
 	         * @param{function(object)}  callback
 	         */
 	
 	    }, {
-	        key: 'postAjax',
-	        value: function postAjax(url, data, callback) {
+	        key: 'postBasedAjax',
+	        value: function postBasedAjax(method, url, data, callback) {
 	            var xobj = new XMLHttpRequest();
-	            xobj.open('POST', '/ajax' + url, true);
+	            xobj.open(method, '/ajax' + url, true);
 	            xobj.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 	            xobj.onreadystatechange = function () {
 	                if (xobj.readyState == 4 && xobj.status == "200") {
@@ -28062,7 +28086,7 @@
 	                _ref$after = _ref.after,
 	                after = _ref$after === undefined ? new Function() : _ref$after;
 	
-	            var aimDom = this.page.querySelector(where);
+	            var aimDom = this.q(where);
 	
 	            aimDom.innerHTML = '';
 	            var _iteratorNormalCompletion = true;
@@ -28280,7 +28304,7 @@
 	        _this.changeWordsForm = 'change-words-form';
 	        _this.titleOfChangeWordsForm = 'New word';
 	
-	        page.querySelector(_this.plusWordButton).addEventListener('click', function () {
+	        _this.q(_this.plusWordButton).addEventListener('click', function () {
 	            document.querySelector(_this.selectorOfNavigator).pushPage(_this.changeWordsForm, {
 	                data: { title: _this.titleOfChangeWordsForm }
 	            });
@@ -28344,11 +28368,11 @@
 	            }
 	        };
 	
-	        _this.page.querySelector(_this.selectorOfTitle).innerHTML = _this.page.data.title;
+	        _this.q(_this.selectorOfTitle).innerHTML = _this.page.data.title;
 	
 	        _this.initInputs();
 	
-	        _this.page.querySelector('#upload-file').addEventListener('change', function (event) {
+	        _this.q('#upload-file').addEventListener('change', function (event) {
 	            var elem = event.target,
 	                files = elem.files;
 	            if (files && files.length > 0) {
@@ -28356,8 +28380,8 @@
 	            }
 	        });
 	
-	        _this.page.querySelector('#save').addEventListener('click', function () {
-	            var nativeInputs = _this.page.querySelectorAll(selectorOfNativeList + ' input'),
+	        _this.q('#save').addEventListener('click', function () {
+	            var nativeInputs = _this.qAll(selectorOfNativeList + ' input'),
 	                numberOfNativeInputs = nativeInputs.length;
 	
 	            for (var index = 0; index < numberOfNativeInputs; index++) {
@@ -28382,16 +28406,16 @@
 	        value: function addPlusEvent(selectorOfPlus, selectorOfList, whichLanguage) {
 	            var _this2 = this;
 	
-	            this.page.querySelector(selectorOfPlus).parentNode.addEventListener('click', function () {
+	            this.q(selectorOfPlus).parentNode.addEventListener('click', function () {
 	                return _this2.plus(selectorOfPlus, selectorOfList, whichLanguage);
 	            }, false);
 	        }
 	    }, {
 	        key: 'plus',
 	        value: function plus(selectorOfPlus, selectorOfList, whichLanguage) {
-	            var numberOfInput = this.page.querySelectorAll(selectorOfList + ' ons-input').length + 1;
+	            var numberOfInput = this.qAll(selectorOfList + ' ons-input').length + 1;
 	
-	            /*this.page.querySelector(selectorOfList).innerHTML +=
+	            /*this.q(selectorOfList).innerHTML +=
 	                '<div class="input-wrapper">' +
 	                    '<ons-input modifier="underbar" placeholder="#'+numberOfInput+'" float="" id="'+whichLanguage+'-'+numberOfInput+'">' +
 	                    '<label class="text-input__container">' +
@@ -28409,7 +28433,7 @@
 	            inputWrapper.appendChild(_onsenui2.default._util.createElement('<ons-input \n                modifier="underbar" \n                placeholder="#' + numberOfInput + '" \n                float \n                id="' + whichLanguage + '-' + numberOfInput + '">\n            </ons-input>\''));
 	            inputWrapper.appendChild(_onsenui2.default._util.createElement('<ons-icon icon="ion-minus-round"></ons-icon>'));
 	
-	            this.page.querySelector(selectorOfList).appendChild(inputWrapper);
+	            this.q(selectorOfList).appendChild(inputWrapper);
 	
 	            // this.addPlusEvent(selectorOfPlus, selectorOfList, whichLanguage);
 	
@@ -28418,7 +28442,7 @@
 	    }, {
 	        key: 'addMinusEvent',
 	        value: function addMinusEvent() {
-	            var minusIcons = this.page.querySelectorAll('.input-wrapper ons-icon');
+	            var minusIcons = this.qAll('.input-wrapper ons-icon');
 	            var numberOfMinusIcons = minusIcons.length;
 	
 	            for (var index = 0; index < numberOfMinusIcons; index++) {
@@ -28479,8 +28503,12 @@
 	        _this.titleOfEditLabelsForm = 'Edit label';
 	
 	        _this.selectorOfLabelList = '#change-labels-items';
-	        _this.urlOfGetAllLabels = '/all-labels';
 	        _this.selectorOfChangeItem = _this.selectorOfLabelList + ' ons-list-item';
+	
+	        _this.ajaxOfGetAllLabels = {
+	            url: _this.urlOfLabelMethods + '/',
+	            method: 'GET'
+	        };
 	
 	        _this.init();
 	        return _this;
@@ -28498,7 +28526,7 @@
 	            var _this2 = this;
 	
 	            this.downAndShow({
-	                url: this.urlOfGetAllLabels,
+	                url: this.ajaxOfGetAllLabels.url,
 	                showWhere: this.selectorOfLabelList,
 	                showableHtml: function showableHtml(label) {
 	                    var id = label._id;
@@ -28508,7 +28536,7 @@
 	                },
 	                store: 'labels',
 	                after: function after() {
-	                    var clickableItems = _this2.page.querySelectorAll(_this2.selectorOfChangeItem);
+	                    var clickableItems = _this2.q(_this2.selectorOfChangeItem);
 	                    var _iteratorNormalCompletion = true;
 	                    var _didIteratorError = false;
 	                    var _iteratorError = undefined;
@@ -28626,9 +28654,18 @@
 	        _this.selectorOfSaveButton = '#save';
 	        _this.selectorOfDeleteButton = '#delete';
 	
-	        _this.urlOfSaveOneLabel = '/save-label';
-	        _this.urlOfEditOneLabel = '/update-label';
-	        _this.urlOfDeleteOneLabel = '/delete-label';
+	        _this.ajaxOfSaveOneLabel = {
+	            url: _this.urlOfLabelMethods + '/',
+	            method: 'POST'
+	        };
+	        _this.ajaxOfEditOneLabel = {
+	            url: _this.urlOfLabelMethods + '/',
+	            method: 'PUT'
+	        };
+	        _this.ajaxOfDeleteOneLabel = {
+	            url: _this.urlOfLabelMethods + '/',
+	            method: 'DELETE'
+	        };
 	
 	        _this.init();
 	        return _this;
@@ -28637,17 +28674,17 @@
 	    _createClass(ChangeLabelsForm, [{
 	        key: 'init',
 	        value: function init() {
-	            this.page.querySelector('ons-toolbar .center').innerHTML = this.page.data.title;
+	            this.q('ons-toolbar .center').innerHTML = this.page.data.title;
 	
 	            var listenerOfSabeButtonClick = this.setNewLabel.bind(this); //this is default
 	            if (this.page.data.title === this.page.data.titleOfEdit && _typeof(this.page.data.item) === 'object') {
-	                this.page.querySelector(this.selectorOfLabelInput).value = this.page.data.item.name;
+	                this.q(this.selectorOfLabelInput).value = this.page.data.item.name;
 	                listenerOfSabeButtonClick = this.editLabel.bind(this); //if wanna
 	
 	                this.setUpDeleteButton();
 	            }
 	
-	            this.page.querySelector(this.selectorOfSaveButton).addEventListener('click', function () {
+	            this.q(this.selectorOfSaveButton).addEventListener('click', function () {
 	                return listenerOfSabeButtonClick();
 	            });
 	        }
@@ -28658,7 +28695,7 @@
 	
 	            var label = this.getLabelFromInput();
 	
-	            this.postAjax(this.urlOfSaveOneLabel, { label: label }, function (response) {
+	            this.ajax(this.ajaxOfSaveOneLabel.method, this.ajaxOfSaveOneLabel.url, { label: label }, function (response) {
 	                if (response) {
 	                    _this2.pushBackWithRefresh();
 	                }
@@ -28673,12 +28710,11 @@
 	            var oldLabel = this.page.data.item.name;
 	            var editedLabel = this.getLabelFromInput();
 	
-	            this.postAjax(this.urlOfEditOneLabel, {
+	            this.ajax(this.ajaxOfEditOneLabel.method, this.ajaxOfEditOneLabel.url, {
 	                userId: userId,
 	                oldLabel: oldLabel,
 	                newLabel: editedLabel
 	            }, function (response) {
-	                console.log(response);
 	                if (response) {
 	                    _this3.pushBackWithRefresh();
 	                }
@@ -28696,7 +28732,7 @@
 	                    _this4.q(_this4.selectorOfDeleteButton).addEventListener('click', function () {
 	                        var id = _this4.page.data.item._id;
 	
-	                        _this4.postAjax(_this4.urlOfDeleteOneLabel, { id: id }, function () {
+	                        _this4.ajax(_this4.ajaxOfDeleteOneLabel.method, _this4.ajaxOfDeleteOneLabel.url, { id: id }, function () {
 	                            _this4.pushBackWithRefresh();
 	                        });
 	                    });
@@ -28706,7 +28742,7 @@
 	    }, {
 	        key: 'getLabelFromInput',
 	        value: function getLabelFromInput() {
-	            return this.page.querySelector(this.selectorOfLabelInput).value;
+	            return this.q(this.selectorOfLabelInput).value;
 	        }
 	    }, {
 	        key: 'pushBackWithRefresh',

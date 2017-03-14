@@ -9,6 +9,9 @@ export default class Global
         this.selectorOfNavigator = '#navigator';
         this.selectorOfTitle = 'ons-toolbar .center';
         this.backButton = 'ons-back-button';
+
+        this.urlOfWordMethods = '/words';
+        this.urlOfLabelMethods = '/labels';
     }
 
     /**
@@ -32,12 +35,31 @@ export default class Global
      */
     initByClickPushPage (selectorOfButton, where, data = {}, callback = new Function())
     {
-        this.page.querySelector(selectorOfButton).addEventListener('click', () =>
+        this.q(selectorOfButton).addEventListener('click', () =>
         {
             document.querySelector(this.selectorOfNavigator).pushPage(where, data);
             callback();
         });
     }
+
+    /**
+     * @param {string} method
+     * @param {string} url
+     * @param {object} [data]
+     * @param {function} callback
+     */
+    ajax (method, url, data = {}, callback)
+    {
+        if (method == 'GET' || method == 'get')
+        {
+            this.getAjax(url, callback);
+        }
+        else
+        {
+            this.postBasedAjax(method, url, data, callback);
+        }
+    }
+
 
     /**
      * @param {string} url
@@ -59,14 +81,15 @@ export default class Global
     }
 
     /**
+     * @param {string} method
      * @param {string} url
      * @param {object} data
      * @param{function(object)}  callback
      */
-    postAjax(url, data, callback)
+    postBasedAjax(method, url, data, callback)
     {
         let xobj = new XMLHttpRequest();
-        xobj.open('POST', `/ajax${url}`, true);
+        xobj.open(method, `/ajax${url}`, true);
         xobj.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xobj.onreadystatechange = () =>
         {
@@ -86,7 +109,7 @@ export default class Global
      */
     showEveryDatas ({where, datas, returnHtml, after = new Function()})
     {
-        let aimDom = this.page.querySelector(where);
+        let aimDom = this.q(where);
 
         aimDom.innerHTML = '';
         for (let data of datas)

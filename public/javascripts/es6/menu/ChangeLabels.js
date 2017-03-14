@@ -13,8 +13,12 @@ export default class ChangeLabels extends Global
         this.titleOfEditLabelsForm = 'Edit label';
 
         this.selectorOfLabelList = '#change-labels-items';
-        this.urlOfGetAllLabels = '/all-labels';
         this.selectorOfChangeItem = `${this.selectorOfLabelList} ons-list-item`;
+
+        this.ajaxOfGetAllLabels = {
+            url: `${this.urlOfLabelMethods}/`,
+            method: 'GET'
+        };
 
         this.init();
     }
@@ -28,7 +32,7 @@ export default class ChangeLabels extends Global
     showLabels ()
     {
         this.downAndShow({
-            url: this.urlOfGetAllLabels,
+            url: this.ajaxOfGetAllLabels.url,
             showWhere: this.selectorOfLabelList,
             showableHtml: (label) =>
             {
@@ -45,7 +49,7 @@ export default class ChangeLabels extends Global
             store: 'labels',
             after: () =>
             {
-                let clickableItems = this.page.querySelectorAll(this.selectorOfChangeItem);
+                let clickableItems = this.q(this.selectorOfChangeItem);
                 for (let clickableItem of clickableItems)
                 {
                     clickableItem.addEventListener('click', () =>

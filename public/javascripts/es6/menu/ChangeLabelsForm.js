@@ -11,34 +11,43 @@ export default class ChangeLabelsForm extends Global
         this.selectorOfSaveButton = '#save';
         this.selectorOfDeleteButton = '#delete';
 
-        this.urlOfSaveOneLabel = '/save-label';
-        this.urlOfEditOneLabel = '/update-label';
-        this.urlOfDeleteOneLabel = '/delete-label';
+        this.ajaxOfSaveOneLabel = {
+            url: `${this.urlOfLabelMethods}/`,
+            method: 'POST'
+        };
+        this.ajaxOfEditOneLabel = {
+            url: `${this.urlOfLabelMethods}/`,
+            method: 'PUT'
+        };
+        this.ajaxOfDeleteOneLabel = {
+            url: `${this.urlOfLabelMethods}/`,
+            method: 'DELETE'
+        };
 
         this.init();
     }
 
     init ()
     {
-        this.page.querySelector('ons-toolbar .center').innerHTML = this.page.data.title;
+        this.q('ons-toolbar .center').innerHTML = this.page.data.title;
 
         let listenerOfSabeButtonClick = this.setNewLabel.bind(this); //this is default
         if (this.page.data.title === this.page.data.titleOfEdit && typeof this.page.data.item === 'object')
         {
-            this.page.querySelector(this.selectorOfLabelInput).value = this.page.data.item.name;
+            this.q(this.selectorOfLabelInput).value = this.page.data.item.name;
             listenerOfSabeButtonClick = this.editLabel.bind(this); //if wanna
 
             this.setUpDeleteButton();
         }
 
-        this.page.querySelector(this.selectorOfSaveButton).addEventListener('click', () => listenerOfSabeButtonClick());
+        this.q(this.selectorOfSaveButton).addEventListener('click', () => listenerOfSabeButtonClick());
     }
 
     setNewLabel ()
     {
         const label = this.getLabelFromInput();
 
-        this.postAjax(this.urlOfSaveOneLabel, {label: label}, (response) =>
+        this.ajax(this.ajaxOfSaveOneLabel.method, this.ajaxOfSaveOneLabel.url, {label: label}, (response) =>
         {
             if (response)
             {
@@ -53,13 +62,12 @@ export default class ChangeLabelsForm extends Global
         const oldLabel = this.page.data.item.name;
         const editedLabel = this.getLabelFromInput();
 
-        this.postAjax(this.urlOfEditOneLabel, {
+        this.ajax(this.ajaxOfEditOneLabel.method, this.ajaxOfEditOneLabel.url, {
             userId: userId,
             oldLabel: oldLabel,
             newLabel: editedLabel
         }, (response) =>
         {
-            console.log(response);
             if (response)
             {
                 this.pushBackWithRefresh();
@@ -79,7 +87,7 @@ export default class ChangeLabelsForm extends Global
                 {
                     const id = this.page.data.item._id;
 
-                    this.postAjax(this.urlOfDeleteOneLabel, {id: id}, () =>
+                    this.ajax(this.ajaxOfDeleteOneLabel.method, this.ajaxOfDeleteOneLabel.url, {id: id}, () =>
                     {
                         this.pushBackWithRefresh();
                     });
@@ -90,7 +98,7 @@ export default class ChangeLabelsForm extends Global
 
     getLabelFromInput ()
     {
-        return this.page.querySelector(this.selectorOfLabelInput).value;
+        return this.q(this.selectorOfLabelInput).value;
     }
 
     pushBackWithRefresh ()

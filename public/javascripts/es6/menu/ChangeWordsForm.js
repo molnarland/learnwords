@@ -22,11 +22,11 @@ export default class ChangeWordsForm extends Global
             }
         };
 
-        this.page.querySelector(this.selectorOfTitle).innerHTML = this.page.data.title;
+        this.q(this.selectorOfTitle).innerHTML = this.page.data.title;
 
         this.initInputs();
 
-        this.page.querySelector('#upload-file').addEventListener('change', (event) =>
+        this.q('#upload-file').addEventListener('change', (event) =>
         {
             let elem = event.target,
                 files = elem.files;
@@ -36,9 +36,9 @@ export default class ChangeWordsForm extends Global
             }
         });
 
-        this.page.querySelector('#save').addEventListener('click', () =>
+        this.q('#save').addEventListener('click', () =>
         {
-            let nativeInputs = this.page.querySelectorAll(selectorOfNativeList + ' input'),
+            let nativeInputs = this.qAll(selectorOfNativeList + ' input'),
                 numberOfNativeInputs = nativeInputs.length;
 
             for (let index = 0; index < numberOfNativeInputs; index++)
@@ -62,7 +62,7 @@ export default class ChangeWordsForm extends Global
 
     addPlusEvent (selectorOfPlus, selectorOfList, whichLanguage)
     {
-        this.page.querySelector(selectorOfPlus).parentNode.addEventListener(
+        this.q(selectorOfPlus).parentNode.addEventListener(
             'click',
             () => this.plus(selectorOfPlus, selectorOfList, whichLanguage),
             false
@@ -71,9 +71,9 @@ export default class ChangeWordsForm extends Global
 
     plus (selectorOfPlus, selectorOfList, whichLanguage)
     {
-        const numberOfInput = this.page.querySelectorAll(selectorOfList + ' ons-input').length + 1;
+        const numberOfInput = this.qAll(selectorOfList + ' ons-input').length + 1;
 
-        /*this.page.querySelector(selectorOfList).innerHTML +=
+        /*this.q(selectorOfList).innerHTML +=
             '<div class="input-wrapper">' +
                 '<ons-input modifier="underbar" placeholder="#'+numberOfInput+'" float="" id="'+whichLanguage+'-'+numberOfInput+'">' +
                 '<label class="text-input__container">' +
@@ -100,7 +100,7 @@ export default class ChangeWordsForm extends Global
             `<ons-icon icon="ion-minus-round"></ons-icon>`
         ));
 
-        this.page.querySelector(selectorOfList).appendChild(inputWrapper);
+        this.q(selectorOfList).appendChild(inputWrapper);
 
         // this.addPlusEvent(selectorOfPlus, selectorOfList, whichLanguage);
 
@@ -109,7 +109,7 @@ export default class ChangeWordsForm extends Global
 
     addMinusEvent ()
     {
-        let minusIcons = this.page.querySelectorAll('.input-wrapper ons-icon');
+        let minusIcons = this.qAll('.input-wrapper ons-icon');
         const numberOfMinusIcons = minusIcons.length;
 
         for (let index = 0; index < numberOfMinusIcons; index++)
