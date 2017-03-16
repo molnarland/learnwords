@@ -49,7 +49,7 @@ export default class ChangeLabels extends Global
             store: 'labels',
             after: () =>
             {
-                let clickableItems = this.q(this.selectorOfChangeItem);
+                let clickableItems = this.qAll(this.selectorOfChangeItem);
                 for (let clickableItem of clickableItems)
                 {
                     clickableItem.addEventListener('click', () =>

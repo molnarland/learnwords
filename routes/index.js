@@ -19,6 +19,9 @@ router.route('/')
             {
                 User.findNameMaybeInsert(name, (result) =>
                 {
+                    result.native = uppercaseFirstCharAndLowerOthers(result.native);
+                    result.learnable = uppercaseFirstCharAndLowerOthers(result.learnable);
+
                     req.session.user = result;
 
                     res.redirect('/menu');
@@ -55,5 +58,9 @@ router.route('/start')
         });
     });
 
+const uppercaseFirstCharAndLowerOthers = function (string)
+{
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
+};
 
 module.exports = router;

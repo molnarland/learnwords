@@ -1,0 +1,29 @@
+mixin ios-form-list-item(inputName, id)
+    - var inputTag = 'ons-input';
+    if attributes.tag
+        - inputTag = 'ons-' + attributes.tag;
+
+    - var inputType = 'text';
+    if attributes.type
+        - inputType = attributes.type
+        
+    - var placeholder = 'type any text...';
+    if attributes.placeholder
+        - placeholder = attributes.placeholder
+            
+    ons-list-item
+        label.center= inputName + ':'
+        #{inputTag}(id=id placeholder=placeholder type=inputType).right.wide
+
+
+mixin android-form-list-item(inputName, id)
+    - var inputTag = 'ons-input';
+    if attributes.tag
+        - inputTag = 'ons-' + attributes.tag;
+
+    - var inputType = 'text';
+    if attributes.type
+        - inputType = attributes.type
+
+    ons-list-item
+        #{inputTag}(placeholder=inputName id=id type=inputType float modifier="underbar").center.wide

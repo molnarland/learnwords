@@ -4,7 +4,7 @@ export default class ChangeWords extends Global
 {
     constructor(page)
     {
-        super();
+        super(page);
 
         this.plusWordButton = '#plus-word';
         this.changeWordsForm = 'change-words-form';
@@ -12,9 +12,7 @@ export default class ChangeWords extends Global
 
         this.q(this.plusWordButton).addEventListener('click', () =>
         {
-            document.querySelector(this.selectorOfNavigator).pushPage(this.changeWordsForm, {
-                data: {title: this.titleOfChangeWordsForm}
-            });
+            this.pushPage(this.changeWordsForm, {title: this.titleOfChangeWordsForm});
         });
     }
 }

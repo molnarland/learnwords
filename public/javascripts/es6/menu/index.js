@@ -7,6 +7,7 @@ import ChangeLabels from './ChangeLabels';
 import ChangeLabelsForm from './ChangeLabelsForm';
 
 window.labels = [];
+window.posts = [];
 
 document.addEventListener('init', (event) =>
 {

@@ -1,7 +1,13 @@
-.ios .button {
+body.ios .button {
   background-color: #007aff; }
-  .ios .button.red {
+  body.ios .button.red {
     background-color: #ff3b30; }
+
+body.android #native .text-input--material__label, body.android #learnable .text-input--material__label {
+  top: initial; }
+
+body.android #change-words-form .list__item--material__center {
+  background-image: none; }
 
 .none {
   display: none; }

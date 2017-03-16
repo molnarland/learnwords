@@ -73,6 +73,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	window.labels = [];
+	window.posts = [];
 	
 	document.addEventListener('init', function (event) {
 	    var platform = _onsenui2.default.platform;
@@ -28228,9 +28229,6 @@
 	                return false;
 	            });
 	        }
-	    }, {
-	        key: 'labelListItem',
-	        value: function labelListItem(name) {}
 	
 	        /**
 	         * @param {string} hash
@@ -28298,16 +28296,14 @@
 	    function ChangeWords(page) {
 	        _classCallCheck(this, ChangeWords);
 	
-	        var _this = _possibleConstructorReturn(this, (ChangeWords.__proto__ || Object.getPrototypeOf(ChangeWords)).call(this));
+	        var _this = _possibleConstructorReturn(this, (ChangeWords.__proto__ || Object.getPrototypeOf(ChangeWords)).call(this, page));
 	
 	        _this.plusWordButton = '#plus-word';
 	        _this.changeWordsForm = 'change-words-form';
 	        _this.titleOfChangeWordsForm = 'New word';
 	
 	        _this.q(_this.plusWordButton).addEventListener('click', function () {
-	            document.querySelector(_this.selectorOfNavigator).pushPage(_this.changeWordsForm, {
-	                data: { title: _this.titleOfChangeWordsForm }
-	            });
+	            _this.pushPage(_this.changeWordsForm, { title: _this.titleOfChangeWordsForm });
 	        });
 	        return _this;
 	    }
@@ -28351,9 +28347,7 @@
 	    function ChangeWordsForm(page) {
 	        _classCallCheck(this, ChangeWordsForm);
 	
-	        var _this = _possibleConstructorReturn(this, (ChangeWordsForm.__proto__ || Object.getPrototypeOf(ChangeWordsForm)).call(this));
-	
-	        _this.page = page;
+	        var _this = _possibleConstructorReturn(this, (ChangeWordsForm.__proto__ || Object.getPrototypeOf(ChangeWordsForm)).call(this, page));
 	
 	        _this.datasForInputs = {
 	            native: {
@@ -28367,32 +28361,99 @@
 	                whichLanguage: 'learnable'
 	            }
 	        };
+	        _this.selectorOfUploadFile = '#upload-file';
+	        _this.selectorOfSaveButton = '#save';
+	        _this.selectorOfLabel = '#label-input';
+	
+	        _this.ajaxOfGetAllLabels = {
+	            url: _this.urlOfLabelMethods + '/',
+	            method: 'GET'
+	        };
 	
 	        _this.q(_this.selectorOfTitle).innerHTML = _this.page.data.title;
 	
-	        _this.initInputs();
-	
-	        _this.q('#upload-file').addEventListener('change', function (event) {
-	            var elem = event.target,
-	                files = elem.files;
-	            if (files && files.length > 0) {
-	                document.querySelector('#file-upload-input').value = files[0].name;
-	            }
-	        });
-	
-	        _this.q('#save').addEventListener('click', function () {
-	            var nativeInputs = _this.qAll(selectorOfNativeList + ' input'),
-	                numberOfNativeInputs = nativeInputs.length;
-	
-	            for (var index = 0; index < numberOfNativeInputs; index++) {
-	                console.log(nativeInputs[index].value, index);
-	            }
-	        });
-	
+	        _this.setOptionsOfLabelInput();
+	        _this.handlingOfUploadFile();
+	        _this.handlingOfSaveButton();
+	        //this.initInputs();
 	        return _this;
 	    }
 	
 	    _createClass(ChangeWordsForm, [{
+	        key: 'handlingOfUploadFile',
+	        value: function handlingOfUploadFile() {
+	            this.q(this.selectorOfUploadFile).addEventListener('change', function (event) {
+	                var elem = event.target,
+	                    files = elem.files;
+	                if (files && files.length > 0) {
+	                    document.querySelector('#file-upload-input').value = files[0].name;
+	                }
+	            });
+	        }
+	    }, {
+	        key: 'handlingOfSaveButton',
+	        value: function handlingOfSaveButton() {
+	            var _this2 = this;
+	
+	            this.q(this.selectorOfSaveButton).addEventListener('click', function () {
+	                var nativeInputs = _this2.qAll(selectorOfNativeList + ' input'),
+	                    numberOfNativeInputs = nativeInputs.length;
+	
+	                for (var index = 0; index < numberOfNativeInputs; index++) {
+	                    console.log(nativeInputs[index].value, index);
+	                }
+	            });
+	        }
+	    }, {
+	        key: 'setOptionsOfLabelInput',
+	        value: function setOptionsOfLabelInput() {
+	            var _this3 = this;
+	
+	            if (window.labels.length === 0) {
+	                this.ajax(this.ajaxOfGetAllLabels.method, this.ajaxOfGetAllLabels.url, {}, function (result) {
+	                    window.labels = result;
+	
+	                    _this3.showLabelsInInput();
+	                });
+	            }
+	
+	            return this.showLabelsInInput();
+	        }
+	    }, {
+	        key: 'showLabelsInInput',
+	        value: function showLabelsInInput() {
+	            var labelInput = this.q(this.selectorOfLabel);
+	
+	            var _iteratorNormalCompletion = true;
+	            var _didIteratorError = false;
+	            var _iteratorError = undefined;
+	
+	            try {
+	                for (var _iterator = window.labels[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	                    var label = _step.value;
+	
+	                    var option = document.createElement('option');
+	                    option.value = label._id;
+	                    option.text = label.name;
+	
+	                    labelInput.add(option);
+	                }
+	            } catch (err) {
+	                _didIteratorError = true;
+	                _iteratorError = err;
+	            } finally {
+	                try {
+	                    if (!_iteratorNormalCompletion && _iterator.return) {
+	                        _iterator.return();
+	                    }
+	                } finally {
+	                    if (_didIteratorError) {
+	                        throw _iteratorError;
+	                    }
+	                }
+	            }
+	        }
+	    }, {
 	        key: 'initInputs',
 	        value: function initInputs() {
 	            var native = this.datasForInputs.native;
@@ -28404,38 +28465,24 @@
 	    }, {
 	        key: 'addPlusEvent',
 	        value: function addPlusEvent(selectorOfPlus, selectorOfList, whichLanguage) {
-	            var _this2 = this;
+	            var _this4 = this;
 	
 	            this.q(selectorOfPlus).parentNode.addEventListener('click', function () {
-	                return _this2.plus(selectorOfPlus, selectorOfList, whichLanguage);
+	                return _this4.plus(selectorOfList, whichLanguage);
 	            }, false);
 	        }
 	    }, {
 	        key: 'plus',
-	        value: function plus(selectorOfPlus, selectorOfList, whichLanguage) {
+	        value: function plus(selectorOfList, whichLanguage) {
 	            var numberOfInput = this.qAll(selectorOfList + ' ons-input').length + 1;
-	
-	            /*this.q(selectorOfList).innerHTML +=
-	                '<div class="input-wrapper">' +
-	                    '<ons-input modifier="underbar" placeholder="#'+numberOfInput+'" float="" id="'+whichLanguage+'-'+numberOfInput+'">' +
-	                    '<label class="text-input__container">' +
-	                        '<input class="text-input text-input--underbar" placeholder="#'+numberOfInput+'">' +
-	                        '<span class="_helper text-input__label text-input--underbar__label text-input--material__label--active">#'+numberOfInput+'' +'</span>' +
-	                        '<span class="input-label"></span>' +
-	                    '</label>' +
-	                    '</ons-input>' +
-	                    '<ons-icon icon="ion-minus-round" class="ons-icon ion-minus-round ons-icon--ion"></ons-icon>' +
-	                '</div>';*/
 	
 	            var inputWrapper = document.createElement('div');
 	            inputWrapper.className = 'input-wrapper';
 	
-	            inputWrapper.appendChild(_onsenui2.default._util.createElement('<ons-input \n                modifier="underbar" \n                placeholder="#' + numberOfInput + '" \n                float \n                id="' + whichLanguage + '-' + numberOfInput + '">\n            </ons-input>\''));
-	            inputWrapper.appendChild(_onsenui2.default._util.createElement('<ons-icon icon="ion-minus-round"></ons-icon>'));
+	            inputWrapper.appendChild(this.createOnsElement('<ons-input \n                modifier="underbar" \n                placeholder="#' + numberOfInput + '" \n                float \n                id="' + whichLanguage + '-' + numberOfInput + '">\n            </ons-input>'));
+	            inputWrapper.appendChild(this.createOnsElement('<ons-icon icon="ion-minus-round"></ons-icon>'));
 	
 	            this.q(selectorOfList).appendChild(inputWrapper);
-	
-	            // this.addPlusEvent(selectorOfPlus, selectorOfList, whichLanguage);
 	
 	            this.addMinusEvent();
 	        }
@@ -28536,7 +28583,7 @@
 	                },
 	                store: 'labels',
 	                after: function after() {
-	                    var clickableItems = _this2.q(_this2.selectorOfChangeItem);
+	                    var clickableItems = _this2.qAll(_this2.selectorOfChangeItem);
 	                    var _iteratorNormalCompletion = true;
 	                    var _didIteratorError = false;
 	                    var _iteratorError = undefined;

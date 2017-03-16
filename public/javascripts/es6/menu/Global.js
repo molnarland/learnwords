@@ -211,11 +211,6 @@ export default class Global
         });
     }
 
-    labelListItem (name)
-    {
-
-    }
-
     /**
      * @param {string} hash
      */
