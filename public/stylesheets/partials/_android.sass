@@ -1,3 +1,5 @@
+@import "../reusable/android_values"
+
 body.android
   #native, #learnable
     .text-input--material__label
@@ -6,3 +8,17 @@ body.android
   #change-words-form
     .list__item--material__center
       background-image: none
+
+  //ons-input, ons-select, .list__item
+    &.error
+      input
+        background-image: linear-gradient($android-red, $android-red), linear-gradient(to top, transparent 1px, #afafaf 1px)
+
+
+
+  ons-input, ons-select, .list__item
+    &.error, &[data-error]
+      &:after
+        color: $android-red
+      input
+        background-image: linear-gradient($android-red, $android-red), linear-gradient(to top, transparent 1px, #afafaf 1px)

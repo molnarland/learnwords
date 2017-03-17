@@ -1,6 +1,19 @@
 .wide, .wide > * {
   width: 100%; }
 
+ons-input.error:after, ons-input[data-error]:after, ons-select.error:after, ons-select[data-error]:after, .list__item.error:after, .list__item[data-error]:after {
+  content: attr(data-error);
+  font-size: 12px;
+  position: absolute; }
+
+.list__item.error:after, .list__item[data-error]:after {
+  left: 16px;
+  bottom: 0; }
+
+ons-input.error:after, ons-input[data-error]:after, ons-select.error:after, ons-select[data-error]:after {
+  left: 0;
+  bottom: -2px; }
+
 #change-words-form section {
   margin-top: 17px;
   margin-bottom: 17px; }
@@ -18,8 +31,6 @@
 
 #upload, #label {
   text-align: center; }
-  #upload p, #label p {
-    margin: 4px 0; }
 
 #label {
   width: 100%; }

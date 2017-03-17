@@ -5,3 +5,13 @@ body.ios
     background-color: $ios-blue
     &.red
       background-color: $ios-red
+
+  ons-input, ons-select, .list__item
+    &.error, &[data-error]
+      &:after
+        color: $ios-red
+
+  .list__item
+    &.error, &[data-error]
+      > .center
+        color: $ios-red

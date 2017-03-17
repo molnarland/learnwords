@@ -3,11 +3,23 @@ body.ios .button {
   body.ios .button.red {
     background-color: #ff3b30; }
 
+body.ios ons-input.error:after, body.ios ons-input[data-error]:after, body.ios ons-select.error:after, body.ios ons-select[data-error]:after, body.ios .list__item.error:after, body.ios .list__item[data-error]:after {
+  color: #ff3b30; }
+
+body.ios .list__item.error > .center, body.ios .list__item[data-error] > .center {
+  color: #ff3b30; }
+
 body.android #native .text-input--material__label, body.android #learnable .text-input--material__label {
   top: initial; }
 
 body.android #change-words-form .list__item--material__center {
   background-image: none; }
+
+body.android ons-input.error:after, body.android ons-input[data-error]:after, body.android ons-select.error:after, body.android ons-select[data-error]:after, body.android .list__item.error:after, body.android .list__item[data-error]:after {
+  color: #f44336; }
+
+body.android ons-input.error input, body.android ons-input[data-error] input, body.android ons-select.error input, body.android ons-select[data-error] input, body.android .list__item.error input, body.android .list__item[data-error] input {
+  background-image: linear-gradient(#f44336, #f44336), linear-gradient(to top, transparent 1px, #afafaf 1px); }
 
 .none {
   display: none; }
