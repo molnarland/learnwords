@@ -6,6 +6,9 @@ body.ios .button {
 body.ios ons-input.error:after, body.ios ons-input[data-error]:after, body.ios ons-select.error:after, body.ios ons-select[data-error]:after, body.ios .list__item.error:after, body.ios .list__item[data-error]:after {
   color: #ff3b30; }
 
+body.ios .list__item.error:after, body.ios .list__item[data-error]:after {
+  bottom: -13px; }
+
 body.ios .list__item.error > .center, body.ios .list__item[data-error] > .center {
   color: #ff3b30; }
 

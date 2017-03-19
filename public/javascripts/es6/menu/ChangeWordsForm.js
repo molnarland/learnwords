@@ -20,6 +20,7 @@ export default class ChangeWordsForm extends Global
             }
         };
         this.selectorOfUploadFile = '#upload-file';
+        this.selectorOfShowedUploadInput = '#file-upload-input';
         this.selectorOfSaveButton = '#save';
         this.selectorOfLabel = '#label-input';
 
@@ -45,7 +46,21 @@ export default class ChangeWordsForm extends Global
                 files = elem.files;
             if (files && files.length > 0)
             {
-                document.querySelector('#file-upload-input').value = files[0].name;
+                const file = files[0];
+                const showedUploadInput = document.querySelector(this.selectorOfShowedUploadInput);
+
+                showedUploadInput.value = file.name;
+
+                if (file.type.split('/')[0] !== 'image')
+                {
+                    showedUploadInput.dataset.error = 'Just images uploadable';
+                    this.q(this.selectorOfSaveButton).disabled = true;
+                }
+                else
+                {
+                    delete showedUploadInput.dataset.error;
+                    this.q(this.selectorOfSaveButton).disabled = false;
+                }
             }
         });
     }

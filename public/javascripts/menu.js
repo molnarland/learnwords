@@ -28401,6 +28401,7 @@
 	            }
 	        };
 	        _this.selectorOfUploadFile = '#upload-file';
+	        _this.selectorOfShowedUploadInput = '#file-upload-input';
 	        _this.selectorOfSaveButton = '#save';
 	        _this.selectorOfLabel = '#label-input';
 	
@@ -28421,21 +28422,34 @@
 	    _createClass(ChangeWordsForm, [{
 	        key: 'handlingOfUploadFile',
 	        value: function handlingOfUploadFile() {
+	            var _this2 = this;
+	
 	            this.q(this.selectorOfUploadFile).addEventListener('change', function (event) {
 	                var elem = event.target,
 	                    files = elem.files;
 	                if (files && files.length > 0) {
-	                    document.querySelector('#file-upload-input').value = files[0].name;
+	                    var file = files[0];
+	                    var showedUploadInput = document.querySelector(_this2.selectorOfShowedUploadInput);
+	
+	                    showedUploadInput.value = file.name;
+	
+	                    if (file.type.split('/')[0] !== 'image') {
+	                        showedUploadInput.dataset.error = 'Just images uploadable';
+	                        _this2.q(_this2.selectorOfSaveButton).disabled = true;
+	                    } else {
+	                        delete showedUploadInput.dataset.error;
+	                        _this2.q(_this2.selectorOfSaveButton).disabled = false;
+	                    }
 	                }
 	            });
 	        }
 	    }, {
 	        key: 'handlingOfSaveButton',
 	        value: function handlingOfSaveButton() {
-	            var _this2 = this;
+	            var _this3 = this;
 	
 	            this.q(this.selectorOfSaveButton).addEventListener('click', function () {
-	                var nativeInputs = _this2.qAll(selectorOfNativeList + ' input'),
+	                var nativeInputs = _this3.qAll(selectorOfNativeList + ' input'),
 	                    numberOfNativeInputs = nativeInputs.length;
 	
 	                for (var index = 0; index < numberOfNativeInputs; index++) {
@@ -28446,13 +28460,13 @@
 	    }, {
 	        key: 'setOptionsOfLabelInput',
 	        value: function setOptionsOfLabelInput() {
-	            var _this3 = this;
+	            var _this4 = this;
 	
 	            if (window.labels.length === 0) {
 	                this.ajax(this.ajaxOfGetAllLabels.method, this.ajaxOfGetAllLabels.url, {}, function (result) {
 	                    window.labels = result;
 	
-	                    _this3.showLabelsInInput();
+	                    _this4.showLabelsInInput();
 	                });
 	            }
 	
@@ -28504,10 +28518,10 @@
 	    }, {
 	        key: 'addPlusEvent',
 	        value: function addPlusEvent(selectorOfPlus, selectorOfList, whichLanguage) {
-	            var _this4 = this;
+	            var _this5 = this;
 	
 	            this.q(selectorOfPlus).parentNode.addEventListener('click', function () {
-	                return _this4.plus(selectorOfList, whichLanguage);
+	                return _this5.plus(selectorOfList, whichLanguage);
 	            }, false);
 	        }
 	    }, {
