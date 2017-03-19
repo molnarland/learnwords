@@ -4,8 +4,7 @@ export default class Menu extends Global
 {
     constructor (page)
     {
-        super();
-        this.page = page;
+        super(page);
 
         this.infoOfMainPages = {
             addWords: {button: '#change-words', urlHash: 'change_words', onsPage: 'change-words'},

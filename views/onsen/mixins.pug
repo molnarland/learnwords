@@ -12,6 +12,8 @@ mixin ios-form-list-item(inputName, id)
         - placeholder = attributes.placeholder
             
     ons-list-item
+        if inputTag === 'ons-input'
+            ons-icon(icon="times-circle").input-cleaner
         label.center= inputName + ':'
         #{inputTag}(id=id placeholder=placeholder type=inputType).right.wide
 
@@ -26,4 +28,6 @@ mixin android-form-list-item(inputName, id)
         - inputType = attributes.type
 
     ons-list-item
+        if inputTag === 'ons-input'
+            ons-icon(icon="times").input-cleaner
         #{inputTag}(placeholder=inputName id=id type=inputType float modifier="underbar").center.wide

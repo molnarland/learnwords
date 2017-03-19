@@ -9,9 +9,27 @@ export default class Global
         this.selectorOfNavigator = '#navigator';
         this.selectorOfTitle = 'ons-toolbar .center';
         this.backButton = 'ons-back-button';
+        this.selectorOfCleaner = '.input-cleaner';
 
         this.urlOfWordMethods = '/words';
         this.urlOfLabelMethods = '/labels';
+
+        this.initInputCleaners();
+    }
+
+    initInputCleaners ()
+    {
+        const cleaners = this.qAll(this.selectorOfCleaner);
+        for (const cleaner of cleaners)
+        {
+            cleaner.addEventListener('click', () =>
+            {
+                let input = cleaner.parentNode.querySelector('input');
+
+                input.value = '';
+                input.focus();
+            });
+        }
     }
 
     /**

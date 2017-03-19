@@ -9,6 +9,10 @@ body.ios ons-input.error:after, body.ios ons-input[data-error]:after, body.ios o
 body.ios .list__item.error > .center, body.ios .list__item[data-error] > .center {
   color: #ff3b30; }
 
+body.ios .input-cleaner {
+  padding: 10px;
+  right: 1%; }
+
 body.android #native .text-input--material__label, body.android #learnable .text-input--material__label {
   top: initial; }
 
@@ -20,6 +24,10 @@ body.android ons-input.error:after, body.android ons-input[data-error]:after, bo
 
 body.android ons-input.error input, body.android ons-input[data-error] input, body.android ons-select.error input, body.android ons-select[data-error] input, body.android .list__item.error input, body.android .list__item[data-error] input {
   background-image: linear-gradient(#f44336, #f44336), linear-gradient(to top, transparent 1px, #afafaf 1px); }
+
+body.android .input-cleaner {
+  right: 5%;
+  padding: 6px; }
 
 .none {
   display: none; }

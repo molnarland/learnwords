@@ -27876,9 +27876,7 @@
 	    function Menu(page) {
 	        _classCallCheck(this, Menu);
 	
-	        var _this = _possibleConstructorReturn(this, (Menu.__proto__ || Object.getPrototypeOf(Menu)).call(this));
-	
-	        _this.page = page;
+	        var _this = _possibleConstructorReturn(this, (Menu.__proto__ || Object.getPrototypeOf(Menu)).call(this, page));
 	
 	        _this.infoOfMainPages = {
 	            addWords: { button: '#change-words', urlHash: 'change_words', onsPage: 'change-words' },
@@ -27966,19 +27964,60 @@
 	        this.selectorOfNavigator = '#navigator';
 	        this.selectorOfTitle = 'ons-toolbar .center';
 	        this.backButton = 'ons-back-button';
+	        this.selectorOfCleaner = '.input-cleaner';
 	
 	        this.urlOfWordMethods = '/words';
 	        this.urlOfLabelMethods = '/labels';
+	
+	        this.initInputCleaners();
 	    }
 	
-	    /**
-	     * @param {string} where
-	     * @param {object} data
-	     * @param {string} animation
-	     */
-	
-	
 	    _createClass(Global, [{
+	        key: 'initInputCleaners',
+	        value: function initInputCleaners() {
+	            var cleaners = this.qAll(this.selectorOfCleaner);
+	            var _iteratorNormalCompletion = true;
+	            var _didIteratorError = false;
+	            var _iteratorError = undefined;
+	
+	            try {
+	                var _loop = function _loop() {
+	                    var cleaner = _step.value;
+	
+	                    cleaner.addEventListener('click', function () {
+	                        var input = cleaner.parentNode.querySelector('input');
+	
+	                        input.value = '';
+	                        input.focus();
+	                    });
+	                };
+	
+	                for (var _iterator = cleaners[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	                    _loop();
+	                }
+	            } catch (err) {
+	                _didIteratorError = true;
+	                _iteratorError = err;
+	            } finally {
+	                try {
+	                    if (!_iteratorNormalCompletion && _iterator.return) {
+	                        _iterator.return();
+	                    }
+	                } finally {
+	                    if (_didIteratorError) {
+	                        throw _iteratorError;
+	                    }
+	                }
+	            }
+	        }
+	
+	        /**
+	         * @param {string} where
+	         * @param {object} data
+	         * @param {string} animation
+	         */
+	
+	    }, {
 	        key: 'pushPage',
 	        value: function pushPage(where) {
 	            var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -28090,13 +28129,13 @@
 	            var aimDom = this.q(where);
 	
 	            aimDom.innerHTML = '';
-	            var _iteratorNormalCompletion = true;
-	            var _didIteratorError = false;
-	            var _iteratorError = undefined;
+	            var _iteratorNormalCompletion2 = true;
+	            var _didIteratorError2 = false;
+	            var _iteratorError2 = undefined;
 	
 	            try {
-	                for (var _iterator = datas[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	                    var data = _step.value;
+	                for (var _iterator2 = datas[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	                    var data = _step2.value;
 	
 	                    var html = returnHtml(data);
 	
@@ -28106,16 +28145,16 @@
 	                    });
 	                }
 	            } catch (err) {
-	                _didIteratorError = true;
-	                _iteratorError = err;
+	                _didIteratorError2 = true;
+	                _iteratorError2 = err;
 	            } finally {
 	                try {
-	                    if (!_iteratorNormalCompletion && _iterator.return) {
-	                        _iterator.return();
+	                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	                        _iterator2.return();
 	                    }
 	                } finally {
-	                    if (_didIteratorError) {
-	                        throw _iteratorError;
+	                    if (_didIteratorError2) {
+	                        throw _iteratorError2;
 	                    }
 	                }
 	            }
