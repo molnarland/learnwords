@@ -28054,20 +28054,72 @@
 	         * @param {string} method
 	         * @param {string} url
 	         * @param {object} [data]
-	         * @param {function} callback
+	         * @param {function} success
+	         * @param {boolean} [file]
 	         */
 	
 	    }, {
 	        key: 'ajax',
-	        value: function ajax(method, url) {
-	            var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-	            var callback = arguments[3];
+	        value: function ajax(_ref) {
+	            var method = _ref.method,
+	                url = _ref.url,
+	                _ref$data = _ref.data,
+	                data = _ref$data === undefined ? {} : _ref$data,
+	                success = _ref.success,
+	                _ref$file = _ref.file,
+	                file = _ref$file === undefined ? false : _ref$file;
 	
-	            if (method == 'GET' || method == 'get') {
-	                this.getAjax(url, callback);
+	            if (!file) {
+	                if (method == 'GET' || method == 'get') {
+	                    this.getAjax(url, success);
+	                } else {
+	                    this.postBasedAjax(method, url, data, success);
+	                }
 	            } else {
-	                this.postBasedAjax(method, url, data, callback);
+	                this.ajaxFileUpload(url, data, success);
 	            }
+	        }
+	
+	        /**
+	         * Try return json in callback, if cannot then return with official variable
+	         *
+	         * @param {string} response
+	         * @param {function} callback
+	         * @return {json|*}
+	         */
+	
+	    }, {
+	        key: 'checkJson',
+	        value: function checkJson(response, callback) {
+	            try {
+	                callback(JSON.parse(response));
+	            } catch (e) {
+	                callback(response);
+	            }
+	        }
+	
+	        /**
+	         * @param {string} url
+	         * @param {file}  file
+	         * @param {function} success
+	         */
+	
+	    }, {
+	        key: 'ajaxFileUpload',
+	        value: function ajaxFileUpload(url, file, success) {
+	            var _this2 = this;
+	
+	            var formData = new FormData();
+	            formData.append('file', file);
+	
+	            var xobj = new XMLHttpRequest();
+	            xobj.open('POST', '/ajax' + url, true);
+	            xobj.onreadystatechange = function () {
+	                if (xobj.readyState == 4 && xobj.status == "200") {
+	                    return _this2.checkJson(xobj.responseText, success);
+	                }
+	            };
+	            xobj.send(formData);
 	        }
 	
 	        /**
@@ -28078,12 +28130,14 @@
 	    }, {
 	        key: 'getAjax',
 	        value: function getAjax(url, callback) {
+	            var _this3 = this;
+	
 	            var xobj = new XMLHttpRequest();
 	            xobj.open('GET', '/ajax' + url, true);
 	            xobj.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 	            xobj.onreadystatechange = function () {
 	                if (xobj.readyState == 4 && xobj.status == "200") {
-	                    callback(JSON.parse(xobj.responseText));
+	                    return _this3.checkJson(xobj.responseText, callback);
 	                }
 	            };
 	            xobj.send(null);
@@ -28099,12 +28153,14 @@
 	    }, {
 	        key: 'postBasedAjax',
 	        value: function postBasedAjax(method, url, data, callback) {
+	            var _this4 = this;
+	
 	            var xobj = new XMLHttpRequest();
 	            xobj.open(method, '/ajax' + url, true);
 	            xobj.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 	            xobj.onreadystatechange = function () {
 	                if (xobj.readyState == 4 && xobj.status == "200") {
-	                    callback(JSON.parse(xobj.responseText));
+	                    return _this4.checkJson(xobj.responseText, callback);
 	                }
 	            };
 	            xobj.send(JSON.stringify(data));
@@ -28119,12 +28175,12 @@
 	
 	    }, {
 	        key: 'showEveryDatas',
-	        value: function showEveryDatas(_ref) {
-	            var where = _ref.where,
-	                datas = _ref.datas,
-	                returnHtml = _ref.returnHtml,
-	                _ref$after = _ref.after,
-	                after = _ref$after === undefined ? new Function() : _ref$after;
+	        value: function showEveryDatas(_ref2) {
+	            var where = _ref2.where,
+	                datas = _ref2.datas,
+	                returnHtml = _ref2.returnHtml,
+	                _ref2$after = _ref2.after,
+	                after = _ref2$after === undefined ? new Function() : _ref2$after;
 	
 	            var aimDom = this.q(where);
 	
@@ -28181,11 +28237,11 @@
 	
 	    }, {
 	        key: 'setDomElement',
-	        value: function setDomElement(_ref2) {
-	            var where = _ref2.where,
-	                html = _ref2.html,
-	                _ref2$callback = _ref2.callback,
-	                callback = _ref2$callback === undefined ? new Function() : _ref2$callback;
+	        value: function setDomElement(_ref3) {
+	            var where = _ref3.where,
+	                html = _ref3.html,
+	                _ref3$callback = _ref3.callback,
+	                callback = _ref3$callback === undefined ? new Function() : _ref3$callback;
 	
 	            if (typeof where === 'string') {
 	                where = this.q(where);
@@ -28213,19 +28269,19 @@
 	
 	    }, {
 	        key: 'downAndShow',
-	        value: function downAndShow(_ref3) {
-	            var _this2 = this;
+	        value: function downAndShow(_ref4) {
+	            var _this5 = this;
 	
-	            var url = _ref3.url,
-	                showWhere = _ref3.showWhere,
-	                showableHtml = _ref3.showableHtml,
-	                store = _ref3.store,
-	                after = _ref3.after;
+	            var url = _ref4.url,
+	                showWhere = _ref4.showWhere,
+	                showableHtml = _ref4.showableHtml,
+	                store = _ref4.store,
+	                after = _ref4.after;
 	
 	            this.getAjax(url, function (response) {
 	                window[store] = response;
 	
-	                return _this2.showEveryDatas({
+	                return _this5.showEveryDatas({
 	                    where: showWhere,
 	                    datas: response,
 	                    returnHtml: showableHtml,
@@ -28245,19 +28301,19 @@
 	
 	    }, {
 	        key: 'upDownAndShow',
-	        value: function upDownAndShow(_ref4) {
-	            var _this3 = this;
+	        value: function upDownAndShow(_ref5) {
+	            var _this6 = this;
 	
-	            var upUrl = _ref4.upUrl,
-	                upData = _ref4.upData,
-	                downUrl = _ref4.downUrl,
-	                showWhere = _ref4.showWhere,
-	                showableHtml = _ref4.showableHtml,
-	                after = _ref4.after;
+	            var upUrl = _ref5.upUrl,
+	                upData = _ref5.upData,
+	                downUrl = _ref5.downUrl,
+	                showWhere = _ref5.showWhere,
+	                showableHtml = _ref5.showableHtml,
+	                after = _ref5.after;
 	
 	            this.postAjax(upUrl, upData, function (response) {
 	                if (response) {
-	                    return _this3.downAndShow({
+	                    return _this6.downAndShow({
 	                        url: downUrl,
 	                        showWhere: showWhere,
 	                        showableHtml: showableHtml,
@@ -28400,6 +28456,9 @@
 	                whichLanguage: 'learnable'
 	            }
 	        };
+	
+	        _this.selectorOfNative = '#native';
+	        _this.selectorOfLearnable = '#learnable';
 	        _this.selectorOfUploadFile = '#upload-file';
 	        _this.selectorOfShowedUploadInput = '#file-upload-input';
 	        _this.selectorOfSaveButton = '#save';
@@ -28449,12 +28508,26 @@
 	            var _this3 = this;
 	
 	            this.q(this.selectorOfSaveButton).addEventListener('click', function () {
-	                var nativeInputs = _this3.qAll(selectorOfNativeList + ' input'),
-	                    numberOfNativeInputs = nativeInputs.length;
-	
-	                for (var index = 0; index < numberOfNativeInputs; index++) {
-	                    console.log(nativeInputs[index].value, index);
-	                }
+	                _this3.ajax({
+	                    url: '/files/photo',
+	                    data: _this3.q(_this3.selectorOfUploadFile).files[0],
+	                    file: true,
+	                    success: function success(response) {
+	                        _this3.ajax({
+	                            method: 'post',
+	                            url: _this3.urlOfWordMethods + '/',
+	                            data: {
+	                                native: _this3.q(_this3.selectorOfNative).value,
+	                                learnable: _this3.q(_this3.selectorOfLearnable).value,
+	                                photo: response,
+	                                label: _this3.q(_this3.selectorOfLabel).value
+	                            },
+	                            success: function success(response) {
+	                                console.log(response);
+	                            }
+	                        });
+	                    }
+	                });
 	            });
 	        }
 	    }, {
@@ -28463,10 +28536,14 @@
 	            var _this4 = this;
 	
 	            if (window.labels.length === 0) {
-	                this.ajax(this.ajaxOfGetAllLabels.method, this.ajaxOfGetAllLabels.url, {}, function (result) {
-	                    window.labels = result;
+	                this.ajax({
+	                    method: this.ajaxOfGetAllLabels.method,
+	                    url: this.ajaxOfGetAllLabels.url,
+	                    success: function success(result) {
+	                        window.labels = result;
 	
-	                    _this4.showLabelsInInput();
+	                        _this4.showLabelsInInput();
+	                    }
 	                });
 	            }
 	
@@ -28795,9 +28872,14 @@
 	
 	            var label = this.getLabelFromInput();
 	
-	            this.ajax(this.ajaxOfSaveOneLabel.method, this.ajaxOfSaveOneLabel.url, { label: label }, function (response) {
-	                if (response) {
-	                    _this2.pushBackWithRefresh();
+	            this.ajax({
+	                method: this.ajaxOfSaveOneLabel.method,
+	                url: this.ajaxOfSaveOneLabel.url,
+	                data: { label: label },
+	                success: function success(response) {
+	                    if (response) {
+	                        _this2.pushBackWithRefresh();
+	                    }
 	                }
 	            });
 	        }
@@ -28810,13 +28892,18 @@
 	            var oldLabel = this.page.data.item.name;
 	            var editedLabel = this.getLabelFromInput();
 	
-	            this.ajax(this.ajaxOfEditOneLabel.method, this.ajaxOfEditOneLabel.url, {
-	                userId: userId,
-	                oldLabel: oldLabel,
-	                newLabel: editedLabel
-	            }, function (response) {
-	                if (response) {
-	                    _this3.pushBackWithRefresh();
+	            this.ajax({
+	                method: this.ajaxOfEditOneLabel.method,
+	                url: this.ajaxOfEditOneLabel.url,
+	                data: {
+	                    userId: userId,
+	                    oldLabel: oldLabel,
+	                    newLabel: editedLabel
+	                },
+	                success: function success(response) {
+	                    if (response) {
+	                        _this3.pushBackWithRefresh();
+	                    }
 	                }
 	            });
 	        }
@@ -28832,8 +28919,13 @@
 	                    _this4.q(_this4.selectorOfDeleteButton).addEventListener('click', function () {
 	                        var id = _this4.page.data.item._id;
 	
-	                        _this4.ajax(_this4.ajaxOfDeleteOneLabel.method, _this4.ajaxOfDeleteOneLabel.url, { id: id }, function () {
-	                            _this4.pushBackWithRefresh();
+	                        _this4.ajax({
+	                            method: _this4.ajaxOfDeleteOneLabel.method,
+	                            url: _this4.ajaxOfDeleteOneLabel.url,
+	                            data: { id: id },
+	                            success: function success() {
+	                                _this4.pushBackWithRefresh();
+	                            }
 	                        });
 	                    });
 	                }

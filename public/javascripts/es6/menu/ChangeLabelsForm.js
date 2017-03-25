@@ -47,11 +47,16 @@ export default class ChangeLabelsForm extends Global
     {
         const label = this.getLabelFromInput();
 
-        this.ajax(this.ajaxOfSaveOneLabel.method, this.ajaxOfSaveOneLabel.url, {label: label}, (response) =>
-        {
-            if (response)
+        this.ajax({
+            method: this.ajaxOfSaveOneLabel.method,
+            url: this.ajaxOfSaveOneLabel.url,
+            data: {label: label},
+            success: (response) =>
             {
-                this.pushBackWithRefresh();
+                if (response)
+                {
+                    this.pushBackWithRefresh();
+                }
             }
         });
     }
@@ -62,15 +67,20 @@ export default class ChangeLabelsForm extends Global
         const oldLabel = this.page.data.item.name;
         const editedLabel = this.getLabelFromInput();
 
-        this.ajax(this.ajaxOfEditOneLabel.method, this.ajaxOfEditOneLabel.url, {
-            userId: userId,
-            oldLabel: oldLabel,
-            newLabel: editedLabel
-        }, (response) =>
-        {
-            if (response)
+        this.ajax({
+            method: this.ajaxOfEditOneLabel.method,
+            url: this.ajaxOfEditOneLabel.url,
+            data: {
+                userId: userId,
+                oldLabel: oldLabel,
+                newLabel: editedLabel
+            },
+            success: (response) =>
             {
-                this.pushBackWithRefresh();
+                if (response)
+                {
+                    this.pushBackWithRefresh();
+                }
             }
         });
     }
@@ -87,9 +97,14 @@ export default class ChangeLabelsForm extends Global
                 {
                     const id = this.page.data.item._id;
 
-                    this.ajax(this.ajaxOfDeleteOneLabel.method, this.ajaxOfDeleteOneLabel.url, {id: id}, () =>
-                    {
-                        this.pushBackWithRefresh();
+                    this.ajax({
+                        method: this.ajaxOfDeleteOneLabel.method,
+                        url: this.ajaxOfDeleteOneLabel.url,
+                        data: {id: id},
+                        success: () =>
+                        {
+                            this.pushBackWithRefresh();
+                        }
                     });
                 });
             }

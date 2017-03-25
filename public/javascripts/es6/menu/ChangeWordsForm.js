@@ -19,6 +19,9 @@ export default class ChangeWordsForm extends Global
                 whichLanguage: 'learnable'
             }
         };
+
+        this.selectorOfNative = '#native';
+        this.selectorOfLearnable = '#learnable';
         this.selectorOfUploadFile = '#upload-file';
         this.selectorOfShowedUploadInput = '#file-upload-input';
         this.selectorOfSaveButton = '#save';
@@ -69,13 +72,28 @@ export default class ChangeWordsForm extends Global
     {
         this.q(this.selectorOfSaveButton).addEventListener('click', () =>
         {
-            let nativeInputs = this.qAll(selectorOfNativeList + ' input'),
-                numberOfNativeInputs = nativeInputs.length;
-
-            for (let index = 0; index < numberOfNativeInputs; index++)
-            {
-                console.log(nativeInputs[index].value, index);
-            }
+            this.ajax({
+                url:'/files/photo',
+                data: this.q(this.selectorOfUploadFile).files[0],
+                file: true,
+                success: (response) =>
+                {
+                    this.ajax({
+                        method: 'post',
+                        url: `${this.urlOfWordMethods}/`,
+                        data: {
+                            native: this.q(this.selectorOfNative).value,
+                            learnable: this.q(this.selectorOfLearnable).value,
+                            photo: response,
+                            label: this.q(this.selectorOfLabel).value
+                        },
+                        success: (response) =>
+                        {
+                            console.log(response);
+                        }
+                    })
+                }
+            });
         });
     }
 
@@ -83,11 +101,15 @@ export default class ChangeWordsForm extends Global
     {
         if (window.labels.length === 0)
         {
-            this.ajax(this.ajaxOfGetAllLabels.method, this.ajaxOfGetAllLabels.url, {}, (result) =>
-            {
-                window.labels = result;
+            this.ajax({
+                method: this.ajaxOfGetAllLabels.method,
+                url: this.ajaxOfGetAllLabels.url,
+                success: (result) =>
+                {
+                    window.labels = result;
 
-                this.showLabelsInInput();
+                    this.showLabelsInInput();
+                }
             });
         }
 

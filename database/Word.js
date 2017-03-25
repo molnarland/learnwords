@@ -13,6 +13,17 @@ class Word extends Broad
     {
         this.getAll(this.table, callback);
     }
+
+    insertWord (userId, native, learnable, photo, labelId, callback)
+    {
+        this.insertOne(this.table, {
+            userId: userId,
+            native: native,
+            learnable: learnable,
+            photo: photo,
+            labelId: labelId
+        }, callback);
+    }
 }
 
 module.exports = Word;

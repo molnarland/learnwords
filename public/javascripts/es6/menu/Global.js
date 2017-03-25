@@ -64,20 +64,69 @@ export default class Global
      * @param {string} method
      * @param {string} url
      * @param {object} [data]
-     * @param {function} callback
+     * @param {function} success
+     * @param {boolean} [file]
      */
-    ajax (method, url, data = {}, callback)
+    ajax ({method, url, data = {}, success, file = false})
     {
-        if (method == 'GET' || method == 'get')
+        if (!file)
         {
-            this.getAjax(url, callback);
+            if (method == 'GET' || method == 'get')
+            {
+                this.getAjax(url, success);
+            }
+            else
+            {
+                this.postBasedAjax(method, url, data, success);
+            }
         }
         else
         {
-            this.postBasedAjax(method, url, data, callback);
+            this.ajaxFileUpload(url, data, success);
         }
     }
 
+
+    /**
+     * Try return json in callback, if cannot then return with official variable
+     *
+     * @param {string} response
+     * @param {function} callback
+     * @return {json|*}
+     */
+    checkJson (response, callback)
+    {
+        try
+        {
+            callback(JSON.parse(response));
+        }
+        catch (e)
+        {
+            callback(response);
+        }
+    }
+
+    /**
+     * @param {string} url
+     * @param {file}  file
+     * @param {function} success
+     */
+    ajaxFileUpload (url, file, success)
+    {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        let xobj = new XMLHttpRequest();
+        xobj.open('POST', `/ajax${url}`, true);
+        xobj.onreadystatechange = () =>
+        {
+            if (xobj.readyState == 4 && xobj.status == "200")
+            {
+                return this.checkJson(xobj.responseText, success)
+            }
+        };
+        xobj.send(formData);
+    }
 
     /**
      * @param {string} url
@@ -92,7 +141,7 @@ export default class Global
         {
             if (xobj.readyState == 4 && xobj.status == "200")
             {
-                callback(JSON.parse(xobj.responseText));
+                return this.checkJson(xobj.responseText, callback)
             }
         };
         xobj.send(null);
@@ -113,7 +162,7 @@ export default class Global
         {
             if (xobj.readyState == 4 && xobj.status == "200")
             {
-                callback(JSON.parse(xobj.responseText));
+                return this.checkJson(xobj.responseText, callback)
             }
         };
         xobj.send(JSON.stringify(data));
