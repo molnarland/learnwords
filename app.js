@@ -1,22 +1,33 @@
-let express = require('express');
-let path = require('path');
-let favicon = require('serve-favicon');
-let logger = require('morgan');
-let cookieParser = require('cookie-parser');
-let bodyParser = require('body-parser');
-let session = require('express-session');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const fs = require('fs');
 
-let index = require('./routes/index');
-let menu = require('./routes/menu');
-let ajax = require('./routes/ajax');
+//load globals
+const globalDirectory = 'global';
+const globalFiles = fs.readdirSync(globalDirectory);
+for (const file of globalFiles)
+{
+    if (file !== '.' && file !== '..')
+    {
+        const fileNameWithoutExtension = file.split('.')[0];
+        global[fileNameWithoutExtension] = require(`./${globalDirectory}/${fileNameWithoutExtension}`);
+    }
+}
 
-//middlewares
-let chechAuth = require('./middleware/checkAuth');
+//load routes
+const index = require('./routes/index');
+const menu = require('./routes/menu');
+const ajax = require('./routes/ajax');
 
-global.onsenViewDirectory = 'onsen/';
-global.uniqueViewDirectory = 'unique/';
+//load middlewares
+const chechAuth = require('./middleware/checkAuth');
 
-let app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -48,7 +59,7 @@ app.use('/ajax', ajax);
 // catch 404 and forward to error handler
 app.use((req, res, next) =>
 {
-  let err = new Error('Not Found');
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
@@ -64,6 +75,8 @@ app.use((err, req, res, next) =>
   res.status(err.status || 500);
   res.render('error');
 });
+
+
 
 app.listen(3000, '192.168.0.4', () =>
 {
