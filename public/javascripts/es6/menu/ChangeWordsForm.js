@@ -20,6 +20,8 @@ export default class ChangeWordsForm extends Global
             }
         };
 
+        console.log(this.page.data);
+
         this.selectorOfNative = '#native';
         this.selectorOfLearnable = '#learnable';
         this.selectorOfUploadFile = '#upload-file';
@@ -72,29 +74,41 @@ export default class ChangeWordsForm extends Global
     {
         this.q(this.selectorOfSaveButton).addEventListener('click', () =>
         {
-            this.ajax({
-                url:'/files/photo',
-                data: this.q(this.selectorOfUploadFile).files[0],
-                file: true,
-                success: (response) =>
-                {
-                    this.ajax({
-                        method: 'post',
-                        url: `${this.urlOfWordMethods}/`,
-                        data: {
-                            native: this.q(this.selectorOfNative).value,
-                            learnable: this.q(this.selectorOfLearnable).value,
-                            photo: response,
-                            label: this.q(this.selectorOfLabel).value
-                        },
-                        success: (response) =>
-                        {
-                            console.log(response);
-                        }
-                    })
-                }
-            });
+            const file = this.q(this.selectorOfUploadFile).files[0];
+
+            if (file)
+            {
+                return this.ajax({
+                    url:'/files/photo',
+                    data: file,
+                    file: true,
+                    success: this.postAWord
+                });
+            }
+
+            return this.postAWord(null);
         });
+    }
+
+    postAWord (photo)
+    {
+        this.ajax({
+            method: 'post',
+            url: `${this.urlOfWordMethods}/`,
+            data: {
+                native: this.q(this.selectorOfNative).value,
+                learnable: this.q(this.selectorOfLearnable).value,
+                photo: photo,
+                label: this.q(this.selectorOfLabel).value
+            },
+            success: (response) =>
+            {
+                if (response)
+                {
+                    this.pushBackWithRefresh();
+                }
+            }
+        })
     }
 
     setOptionsOfLabelInput ()

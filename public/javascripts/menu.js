@@ -28361,6 +28361,16 @@
 	        value: function qAll(selector) {
 	            return this.page.querySelectorAll(selector);
 	        }
+	
+	        /**
+	         * if want to refresh elements from backend
+	         */
+	
+	    }, {
+	        key: 'pushBackWithRefresh',
+	        value: function pushBackWithRefresh() {
+	            document.querySelector(this.selectorOfNavigator).popPage({ refresh: true });
+	        }
 	    }]);
 	
 	    return Global;
@@ -28402,9 +28412,12 @@
 	
 	        _this.plusWordButton = '#plus-word';
 	        _this.changeWordsForm = 'change-words-form';
-	        _this.titleOfChangeWordsForm = 'New word';
+	
+	        _this.titleOfNewWordsForm = 'New word';
+	        _this.titleOfEditWordForm = 'Edit word';
 	
 	        _this.selectorOfWordList = '#change-words-items';
+	        _this.selectorOfChangeItem = _this.selectorOfWordList + ' ons-list-item';
 	
 	        _this.init();
 	        return _this;
@@ -28422,7 +28435,7 @@
 	            var _this2 = this;
 	
 	            this.q(this.plusWordButton).addEventListener('click', function () {
-	                _this2.pushPage(_this2.changeWordsForm, { title: _this2.titleOfChangeWordsForm });
+	                _this2.pushPage(_this2.changeWordsForm, { title: _this2.titleOfNewWordsForm });
 	            });
 	        }
 	    }, {
@@ -28438,7 +28451,46 @@
 	                    var native = word.native;
 	                    var learnable = word.learnable;
 	
-	                    return _this3.createOnsElement('<ons-list-item data-id=' + id + ' tappable>\n                        <div class="left">' + native + '</div>\n                        <div class="center"><ons-icon icon="arrows-h"></ons-icon></div>\n                        <div class="right">' + learnable + '</div>\n                    </ons-list-item>');
+	                    return _this3.createOnsElement('<ons-list-item data-id=' + id + ' tappable modifier="longdivider">\n                        <div class="left">' + native + '</div>\n                        <div class="center"><ons-icon icon="arrows-h"></ons-icon></div>\n                        <div class="right">' + learnable + '</div>\n                    </ons-list-item>');
+	                },
+	                store: 'words',
+	                after: function after() {
+	                    var clickableItems = _this3.qAll(_this3.selectorOfChangeItem);
+	                    var _iteratorNormalCompletion = true;
+	                    var _didIteratorError = false;
+	                    var _iteratorError = undefined;
+	
+	                    try {
+	                        var _loop = function _loop() {
+	                            var clickableItem = _step.value;
+	
+	                            clickableItem.addEventListener('click', function () {
+	                                _this3.pushPage(_this3.changeWordsForm, {
+	                                    title: _this3.titleOfEditWordForm,
+	                                    item: window.words.find(function (word) {
+	                                        return word._id == clickableItem.dataset.id;
+	                                    })
+	                                }, 'lift');
+	                            });
+	                        };
+	
+	                        for (var _iterator = clickableItems[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	                            _loop();
+	                        }
+	                    } catch (err) {
+	                        _didIteratorError = true;
+	                        _iteratorError = err;
+	                    } finally {
+	                        try {
+	                            if (!_iteratorNormalCompletion && _iterator.return) {
+	                                _iterator.return();
+	                            }
+	                        } finally {
+	                            if (_didIteratorError) {
+	                                throw _iteratorError;
+	                            }
+	                        }
+	                    }
 	                }
 	            });
 	        }
@@ -28498,6 +28550,8 @@
 	            }
 	        };
 	
+	        console.log(_this.page.data);
+	
 	        _this.selectorOfNative = '#native';
 	        _this.selectorOfLearnable = '#learnable';
 	        _this.selectorOfUploadFile = '#upload-file';
@@ -28549,32 +28603,45 @@
 	            var _this3 = this;
 	
 	            this.q(this.selectorOfSaveButton).addEventListener('click', function () {
-	                _this3.ajax({
-	                    url: '/files/photo',
-	                    data: _this3.q(_this3.selectorOfUploadFile).files[0],
-	                    file: true,
-	                    success: function success(response) {
-	                        _this3.ajax({
-	                            method: 'post',
-	                            url: _this3.urlOfWordMethods + '/',
-	                            data: {
-	                                native: _this3.q(_this3.selectorOfNative).value,
-	                                learnable: _this3.q(_this3.selectorOfLearnable).value,
-	                                photo: response,
-	                                label: _this3.q(_this3.selectorOfLabel).value
-	                            },
-	                            success: function success(response) {
-	                                console.log(response);
-	                            }
-	                        });
+	                var file = _this3.q(_this3.selectorOfUploadFile).files[0];
+	
+	                if (file) {
+	                    return _this3.ajax({
+	                        url: '/files/photo',
+	                        data: file,
+	                        file: true,
+	                        success: _this3.postAWord
+	                    });
+	                }
+	
+	                return _this3.postAWord(null);
+	            });
+	        }
+	    }, {
+	        key: 'postAWord',
+	        value: function postAWord(photo) {
+	            var _this4 = this;
+	
+	            this.ajax({
+	                method: 'post',
+	                url: this.urlOfWordMethods + '/',
+	                data: {
+	                    native: this.q(this.selectorOfNative).value,
+	                    learnable: this.q(this.selectorOfLearnable).value,
+	                    photo: photo,
+	                    label: this.q(this.selectorOfLabel).value
+	                },
+	                success: function success(response) {
+	                    if (response) {
+	                        _this4.pushBackWithRefresh();
 	                    }
-	                });
+	                }
 	            });
 	        }
 	    }, {
 	        key: 'setOptionsOfLabelInput',
 	        value: function setOptionsOfLabelInput() {
-	            var _this4 = this;
+	            var _this5 = this;
 	
 	            if (window.labels.length === 0) {
 	                this.ajax({
@@ -28583,7 +28650,7 @@
 	                    success: function success(result) {
 	                        window.labels = result;
 	
-	                        _this4.showLabelsInInput();
+	                        _this5.showLabelsInInput();
 	                    }
 	                });
 	            }
@@ -28636,10 +28703,10 @@
 	    }, {
 	        key: 'addPlusEvent',
 	        value: function addPlusEvent(selectorOfPlus, selectorOfList, whichLanguage) {
-	            var _this5 = this;
+	            var _this6 = this;
 	
 	            this.q(selectorOfPlus).parentNode.addEventListener('click', function () {
-	                return _this5.plus(selectorOfList, whichLanguage);
+	                return _this6.plus(selectorOfList, whichLanguage);
 	            }, false);
 	        }
 	    }, {
@@ -28976,11 +29043,6 @@
 	        key: 'getLabelFromInput',
 	        value: function getLabelFromInput() {
 	            return this.q(this.selectorOfLabelInput).value;
-	        }
-	    }, {
-	        key: 'pushBackWithRefresh',
-	        value: function pushBackWithRefresh() {
-	            document.querySelector(this.selectorOfNavigator).popPage({ refresh: true });
 	        }
 	    }]);
 	

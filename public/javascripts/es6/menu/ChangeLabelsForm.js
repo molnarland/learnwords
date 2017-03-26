@@ -115,9 +115,4 @@ export default class ChangeLabelsForm extends Global
     {
         return this.q(this.selectorOfLabelInput).value;
     }
-
-    pushBackWithRefresh ()
-    {
-        document.querySelector(this.selectorOfNavigator).popPage({refresh: true});
-    }
 }

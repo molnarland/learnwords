@@ -308,4 +308,12 @@ export default class Global
     {
         return this.page.querySelectorAll(selector);
     }
+
+    /**
+     * if want to refresh elements from backend
+     */
+    pushBackWithRefresh ()
+    {
+        document.querySelector(this.selectorOfNavigator).popPage({refresh: true});
+    }
 }
