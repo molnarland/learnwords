@@ -9,9 +9,9 @@ class Word extends Broad
         this.table = 'words';
     }
 
-    getAllWords (callback)
+    getAllWords (userId, callback)
     {
-        this.getAll(this.table, callback);
+        this.getAll(this.table, callback, {userId: userId});
     }
 
     insertWord (userId, native, learnable, photo, labelId, callback)

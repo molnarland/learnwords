@@ -8,11 +8,11 @@ ons-template#change-words
                 ons-if(platform="ios other")
                     ons-toolbar-button#plus-word New
 
-            #change-words-items
+        ons-list#change-words-items
 
-            ons-if(platform="android")
-                ons-fab(position="bottom right")#plus-word
-                    ons-icon(icon="md-plus")
+        ons-if(platform="android")
+            ons-fab(position="bottom right")#plus-word
+                ons-icon(icon="md-plus")
 
 
 include change-words-form

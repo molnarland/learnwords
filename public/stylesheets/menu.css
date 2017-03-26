@@ -39,5 +39,21 @@ ons-input.error:after, ons-input[data-error]:after, ons-select.error:after, ons-
 #upload, #label {
   text-align: center; }
 
+#change-words-items .left, #change-words-items .right {
+  display: inline-block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 45%; }
+
+#change-words-items .left {
+  text-align: left; }
+
+#change-words-items .center {
+  justify-content: center; }
+
+#change-words-items .right {
+  text-align: right; }
+
 #label {
   width: 100%; }

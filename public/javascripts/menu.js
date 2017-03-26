@@ -28184,6 +28184,8 @@
 	
 	            var aimDom = this.q(where);
 	
+	            console.log(aimDom);
+	
 	            aimDom.innerHTML = '';
 	            var _iteratorNormalCompletion2 = true;
 	            var _didIteratorError2 = false;
@@ -28263,7 +28265,7 @@
 	         * @param {string} url
 	         * @param {string} showWhere
 	         * @param {function} showableHtml
-	         * @param {string} store - name of variable on window object, data save here
+	         * @param {string} [store] - name of variable on window object, data save here
 	         * @param {function} [after]
 	         */
 	
@@ -28275,11 +28277,14 @@
 	            var url = _ref4.url,
 	                showWhere = _ref4.showWhere,
 	                showableHtml = _ref4.showableHtml,
-	                store = _ref4.store,
+	                _ref4$store = _ref4.store,
+	                store = _ref4$store === undefined ? null : _ref4$store,
 	                after = _ref4.after;
 	
 	            this.getAjax(url, function (response) {
-	                window[store] = response;
+	                if (store) {
+	                    window[store] = response;
+	                }
 	
 	                return _this5.showEveryDatas({
 	                    where: showWhere,
@@ -28373,6 +28378,8 @@
 	    value: true
 	});
 	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
 	var _Global2 = __webpack_require__(7);
 	
 	var _Global3 = _interopRequireDefault(_Global2);
@@ -28397,11 +28404,45 @@
 	        _this.changeWordsForm = 'change-words-form';
 	        _this.titleOfChangeWordsForm = 'New word';
 	
-	        _this.q(_this.plusWordButton).addEventListener('click', function () {
-	            _this.pushPage(_this.changeWordsForm, { title: _this.titleOfChangeWordsForm });
-	        });
+	        _this.selectorOfWordList = '#change-words-items';
+	
+	        _this.init();
 	        return _this;
 	    }
+	
+	    _createClass(ChangeWords, [{
+	        key: 'init',
+	        value: function init() {
+	            this.initOfPushToForm();
+	            this.showWords();
+	        }
+	    }, {
+	        key: 'initOfPushToForm',
+	        value: function initOfPushToForm() {
+	            var _this2 = this;
+	
+	            this.q(this.plusWordButton).addEventListener('click', function () {
+	                _this2.pushPage(_this2.changeWordsForm, { title: _this2.titleOfChangeWordsForm });
+	            });
+	        }
+	    }, {
+	        key: 'showWords',
+	        value: function showWords() {
+	            var _this3 = this;
+	
+	            this.downAndShow({
+	                url: this.urlOfWordMethods,
+	                showWhere: this.selectorOfWordList,
+	                showableHtml: function showableHtml(word) {
+	                    var id = word._id;
+	                    var native = word.native;
+	                    var learnable = word.learnable;
+	
+	                    return _this3.createOnsElement('<ons-list-item data-id=' + id + ' tappable>\n                        <div class="left">' + native + '</div>\n                        <div class="center"><ons-icon icon="arrows-h"></ons-icon></div>\n                        <div class="right">' + learnable + '</div>\n                    </ons-list-item>');
+	                }
+	            });
+	        }
+	    }]);
 	
 	    return ChangeWords;
 	}(_Global3.default);
@@ -28709,7 +28750,7 @@
 	                    var id = label._id;
 	                    var name = label.name;
 	
-	                    return _this2.createOnsElement('<ons-list-item data-id="' + id + '" tabbable>\n                        <div class="center">' + name + '</div>\n                        <div class="right"><ons-icon icon="ion-edit"></ons-icon></div>\n                    </ons-list-item>');
+	                    return _this2.createOnsElement('<ons-list-item data-id="' + id + '" tappable>\n                        <div class="center">' + name + '</div>\n                        <div class="right"><ons-icon icon="ion-edit"></ons-icon></div>\n                    </ons-list-item>');
 	                },
 	                store: 'labels',
 	                after: function after() {

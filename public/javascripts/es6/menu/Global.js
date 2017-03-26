@@ -178,6 +178,8 @@ export default class Global
     {
         let aimDom = this.q(where);
 
+        console.log(aimDom);
+
         aimDom.innerHTML = '';
         for (let data of datas)
         {
@@ -234,14 +236,17 @@ export default class Global
      * @param {string} url
      * @param {string} showWhere
      * @param {function} showableHtml
-     * @param {string} store - name of variable on window object, data save here
+     * @param {string} [store] - name of variable on window object, data save here
      * @param {function} [after]
      */
-    downAndShow ({url, showWhere, showableHtml, store, after})
+    downAndShow ({url, showWhere, showableHtml, store = null, after})
     {
         this.getAjax(url, (response) =>
         {
-            window[store] = response;
+            if (store)
+            {
+                window[store] = response;
+            }
 
             return this.showEveryDatas({
                 where: showWhere,

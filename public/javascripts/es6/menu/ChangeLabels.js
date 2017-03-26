@@ -40,7 +40,7 @@ export default class ChangeLabels extends Global
                 const name = label.name;
 
                 return this.createOnsElement(
-                    `<ons-list-item data-id="${id}" tabbable>
+                    `<ons-list-item data-id="${id}" tappable>
                         <div class="center">${name}</div>
                         <div class="right"><ons-icon icon="ion-edit"></ons-icon></div>
                     </ons-list-item>`
