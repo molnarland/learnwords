@@ -1,21 +1,21 @@
-import Global from './Global';
+import Listing from './Listing';
 
-export default class ChangeLabels extends Global
+export default class ChangeLabels extends Listing
 {
     constructor(page)
     {
         super(page);
 
-        this.plusLabelButton = '#plus-label';
-        this.changeLabelForm = 'change-label-form';
+        this.plusButton = '#plus-label';
+        this.changeForm = 'change-label-form';
 
-        this.titleOfNewLabelsForm = 'New label';
-        this.titleOfEditLabelsForm = 'Edit label';
+        this.titleOfNewForm = 'New label';
+        this.titleOfEditForm = 'Edit label';
 
-        this.selectorOfLabelList = '#change-labels-items';
-        this.selectorOfChangeItem = `${this.selectorOfLabelList} ons-list-item`;
+        this.selectorOfList = '#change-labels-items';
+        this.selectorOfChangeItem = `${this.selectorOfList} ons-list-item`;
 
-        this.ajaxOfGetAllLabels = {
+        this.ajaxOfGetAll = {
             url: `${this.urlOfLabelMethods}/`,
             method: 'GET'
         };
@@ -25,11 +25,30 @@ export default class ChangeLabels extends Global
 
     init ()
     {
-        this.showLabels();
+        this.showItems();
         this.initOfPushToForm();
     }
 
-    showLabels ()
+    showItems ()
+    {
+        super.showItems({
+            showableHtml: (label) =>
+            {
+                const id = label._id;
+                const name = label.name;
+
+                return this.createOnsElement(
+                    `<ons-list-item data-id="${id}" tappable>
+                        <div class="center">${name}</div>
+                        <div class="right"><ons-icon icon="ion-edit"></ons-icon></div>
+                    </ons-list-item>`
+                );
+            },
+            store: 'labels'
+        });
+    }
+
+    /*showLabels ()
     {
         this.downAndShow({
             url: this.ajaxOfGetAllLabels.url,
@@ -62,15 +81,15 @@ export default class ChangeLabels extends Global
                 }
             }
         });
-    }
+    }*/
 
-    initOfPushToForm ()
+    /*initOfPushToForm ()
     {
         this.page.querySelector(this.plusLabelButton).addEventListener('click', () =>
         {
             this.pushPage(this.changeLabelForm, { title: this.titleOfNewLabelsForm });
         });
-    }
+    }*/
 
     /**
      * Send 'titleOfNewLabelsForm' and 'titleOfEditLabelsForm' arguments to next page automatically
@@ -80,11 +99,11 @@ export default class ChangeLabels extends Global
      * @param {object} data
      * @param {string} animation
      */
-    pushPage (where, data = {}, animation = '')
+    /*pushPage (where, data = {}, animation = '')
     {
         data.titleOfNew = this.titleOfNewLabelsForm;
         data.titleOfEdit = this.titleOfEditLabelsForm;
 
         super.pushPage(where, data, animation);
-    }
+    }*/
 }

@@ -58,15 +58,15 @@
 	
 	var _ChangeWords2 = _interopRequireDefault(_ChangeWords);
 	
-	var _ChangeWordsForm = __webpack_require__(9);
+	var _ChangeWordsForm = __webpack_require__(10);
 	
 	var _ChangeWordsForm2 = _interopRequireDefault(_ChangeWordsForm);
 	
-	var _ChangeLabels = __webpack_require__(10);
+	var _ChangeLabels = __webpack_require__(11);
 	
 	var _ChangeLabels2 = _interopRequireDefault(_ChangeLabels);
 	
-	var _ChangeLabelsForm = __webpack_require__(11);
+	var _ChangeLabelsForm = __webpack_require__(12);
 	
 	var _ChangeLabelsForm2 = _interopRequireDefault(_ChangeLabelsForm);
 	
@@ -28348,7 +28348,19 @@
 	    }, {
 	        key: 'q',
 	        value: function q(selector) {
-	            return this.page.querySelector(selector);
+	            var length = selector.split(' ').length;
+	            var firstCharOfSelector = selector.charAt(0);
+	
+	            console.log(length <= 1 && firstCharOfSelector === '#', length, firstCharOfSelector);
+	
+	            if (length <= 1 && firstCharOfSelector === '#') {
+	                console.log(selector.substring(1), document.getElementById(selector.substring(1)));
+	                return document.getElementById(selector.substring(1));
+	            } else {
+	                console.log('else');
+	
+	                return this.page.querySelector(selector);
+	            }
 	        }
 	
 	        /**
@@ -28390,6 +28402,151 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	var _Listing2 = __webpack_require__(9);
+	
+	var _Listing3 = _interopRequireDefault(_Listing2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ChangeWords = function (_Listing) {
+	    _inherits(ChangeWords, _Listing);
+	
+	    function ChangeWords(page) {
+	        _classCallCheck(this, ChangeWords);
+	
+	        var _this = _possibleConstructorReturn(this, (ChangeWords.__proto__ || Object.getPrototypeOf(ChangeWords)).call(this, page));
+	
+	        _this.plusButton = '#plus-word';
+	        _this.changeForm = 'change-words-form';
+	
+	        _this.titleOfNewForm = 'New word';
+	        _this.titleOfEditForm = 'Edit word';
+	
+	        _this.selectorOfList = '#change-words-items';
+	        _this.selectorOfChangeItem = _this.selectorOfList + ' ons-list-item';
+	
+	        _this.ajaxOfGetAll = {
+	            url: _this.urlOfWordMethods + '/',
+	            method: 'GET'
+	        };
+	
+	        _this.init();
+	        return _this;
+	    }
+	
+	    _createClass(ChangeWords, [{
+	        key: 'init',
+	        value: function init() {
+	            this.initOfPushToForm();
+	            this.showItems();
+	        }
+	    }, {
+	        key: 'showItems',
+	        value: function showItems() {
+	            var _this2 = this;
+	
+	            _get(ChangeWords.prototype.__proto__ || Object.getPrototypeOf(ChangeWords.prototype), 'showItems', this).call(this, {
+	                showableHtml: function showableHtml(word) {
+	                    var id = word._id;
+	                    var native = word.native;
+	                    var learnable = word.learnable;
+	
+	                    return _this2.createOnsElement('<ons-list-item data-id=' + id + ' tappable modifier="longdivider">\n                        <div class="left">' + native + '</div>\n                        <div class="center"><ons-icon icon="arrows-h"></ons-icon></div>\n                        <div class="right">' + learnable + '</div>\n                    </ons-list-item>');
+	                },
+	                store: 'words'
+	            });
+	        }
+	
+	        /*    initOfPushToForm ()
+	            {
+	                this.q(this.plusWordButton).addEventListener('click', () =>
+	                {
+	                    this.pushPage(this.changeWordsForm, {title: this.titleOfNewWordsForm});
+	                });
+	            }
+	        
+	            showWords ()
+	            {
+	                this.downAndShow({
+	                    url: this.urlOfWordMethods,
+	                    showWhere: this.selectorOfWordList,
+	                    showableHtml: (word) =>
+	                    {
+	                        const id = word._id;
+	                        const native = word.native;
+	                        const learnable = word.learnable;
+	        
+	                        return this.createOnsElement(
+	                            `<ons-list-item data-id=${id} tappable modifier="longdivider">
+	                                <div class="left">${native}</div>
+	                                <div class="center"><ons-icon icon="arrows-h"></ons-icon></div>
+	                                <div class="right">${learnable}</div>
+	                            </ons-list-item>`
+	                        );
+	                    },
+	                    store: 'words',
+	                    after: () =>
+	                    {
+	                        const clickableItems = this.qAll(this.selectorOfChangeItem);
+	                        for (let clickableItem of clickableItems)
+	                        {
+	                            clickableItem.addEventListener('click', () =>
+	                            {
+	                                this.pushPage(this.changeWordsForm, {
+	                                    title: this.titleOfEditWordForm,
+	                                    item: window.words.find((word) => word._id == clickableItem.dataset.id)
+	                                }, 'lift');
+	                            });
+	                        }
+	                    }
+	                })
+	            }
+	        
+	            /!**
+	             * Send 'titleOfNewWordsForm' and 'titleOfEditWordForm' arguments to next page automatically
+	             * as titleOfNew and titleOfEdit
+	             *
+	             * @param {string} where
+	             * @param {object} data
+	             * @param {string} animation
+	             *!/
+	            pushPage (where, data = {}, animation = '')
+	            {
+	                data.titleOfNew = this.titleOfNewWordsForm;
+	                data.titleOfEdit = this.titleOfEditWordForm;
+	        
+	                super.pushPage(where, data, animation);
+	            }*/
+	
+	    }]);
+	
+	    return ChangeWords;
+	}(_Listing3.default);
+	
+	exports.default = ChangeWords;
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
 	var _Global2 = __webpack_require__(7);
 	
 	var _Global3 = _interopRequireDefault(_Global2);
@@ -28402,60 +28559,45 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var ChangeWords = function (_Global) {
-	    _inherits(ChangeWords, _Global);
+	var Listing = function (_Global) {
+	    _inherits(Listing, _Global);
 	
-	    function ChangeWords(page) {
-	        _classCallCheck(this, ChangeWords);
+	    function Listing(page) {
+	        _classCallCheck(this, Listing);
 	
-	        var _this = _possibleConstructorReturn(this, (ChangeWords.__proto__ || Object.getPrototypeOf(ChangeWords)).call(this, page));
+	        var _this = _possibleConstructorReturn(this, (Listing.__proto__ || Object.getPrototypeOf(Listing)).call(this, page));
 	
-	        _this.plusWordButton = '#plus-word';
-	        _this.changeWordsForm = 'change-words-form';
+	        _this.plusButton = String;
+	        _this.changeForm = String;
 	
-	        _this.titleOfNewWordsForm = 'New word';
-	        _this.titleOfEditWordForm = 'Edit word';
+	        _this.titleOfNewForm = String;
+	        _this.titleOfEditForm = String;
 	
-	        _this.selectorOfWordList = '#change-words-items';
-	        _this.selectorOfChangeItem = _this.selectorOfWordList + ' ons-list-item';
+	        _this.selectorOfList = String;
+	        _this.selectorOfChangeItem = String;
 	
-	        _this.init();
+	        _this.ajaxOfGetAll = {
+	            url: String,
+	            method: 'GET'
+	        };
 	        return _this;
 	    }
 	
-	    _createClass(ChangeWords, [{
-	        key: 'init',
-	        value: function init() {
-	            this.initOfPushToForm();
-	            this.showWords();
-	        }
-	    }, {
-	        key: 'initOfPushToForm',
-	        value: function initOfPushToForm() {
+	    _createClass(Listing, [{
+	        key: 'showItems',
+	        value: function showItems(_ref) {
 	            var _this2 = this;
 	
-	            this.q(this.plusWordButton).addEventListener('click', function () {
-	                _this2.pushPage(_this2.changeWordsForm, { title: _this2.titleOfNewWordsForm });
-	            });
-	        }
-	    }, {
-	        key: 'showWords',
-	        value: function showWords() {
-	            var _this3 = this;
+	            var showableHtml = _ref.showableHtml,
+	                store = _ref.store;
 	
 	            this.downAndShow({
-	                url: this.urlOfWordMethods,
-	                showWhere: this.selectorOfWordList,
-	                showableHtml: function showableHtml(word) {
-	                    var id = word._id;
-	                    var native = word.native;
-	                    var learnable = word.learnable;
-	
-	                    return _this3.createOnsElement('<ons-list-item data-id=' + id + ' tappable modifier="longdivider">\n                        <div class="left">' + native + '</div>\n                        <div class="center"><ons-icon icon="arrows-h"></ons-icon></div>\n                        <div class="right">' + learnable + '</div>\n                    </ons-list-item>');
-	                },
-	                store: 'words',
+	                url: this.ajaxOfGetAll.url,
+	                showWhere: this.selectorOfList,
+	                showableHtml: showableHtml,
+	                store: store,
 	                after: function after() {
-	                    var clickableItems = _this3.qAll(_this3.selectorOfChangeItem);
+	                    var clickableItems = _this2.qAll(_this2.selectorOfChangeItem);
 	                    var _iteratorNormalCompletion = true;
 	                    var _didIteratorError = false;
 	                    var _iteratorError = undefined;
@@ -28465,10 +28607,10 @@
 	                            var clickableItem = _step.value;
 	
 	                            clickableItem.addEventListener('click', function () {
-	                                _this3.pushPage(_this3.changeWordsForm, {
-	                                    title: _this3.titleOfEditWordForm,
-	                                    item: window.words.find(function (word) {
-	                                        return word._id == clickableItem.dataset.id;
+	                                _this2.pushPage(_this2.changeForm, {
+	                                    title: _this2.titleOfEditForm,
+	                                    item: window[store].find(function (item) {
+	                                        return item._id == clickableItem.dataset.id;
 	                                    })
 	                                }, 'lift');
 	                            });
@@ -28494,15 +28636,45 @@
 	                }
 	            });
 	        }
+	    }, {
+	        key: 'initOfPushToForm',
+	        value: function initOfPushToForm() {
+	            var _this3 = this;
+	
+	            this.page.querySelector(this.plusButton).addEventListener('click', function () {
+	                _this3.pushPage(_this3.changeForm, { title: _this3.titleOfNewForm });
+	            });
+	        }
+	
+	        /**
+	         * Send 'titleOfNewForm' and 'titleOfEditForm' arguments to next page automatically
+	         * as titleOfNew and titleOfEdit
+	         *
+	         * @param {string} where
+	         * @param {object} data
+	         * @param {string} animation
+	         */
+	
+	    }, {
+	        key: 'pushPage',
+	        value: function pushPage(where) {
+	            var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+	            var animation = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+	
+	            data.titleOfNew = this.titleOfNewForm;
+	            data.titleOfEdit = this.titleOfEditForm;
+	
+	            _get(Listing.prototype.__proto__ || Object.getPrototypeOf(Listing.prototype), 'pushPage', this).call(this, where, data, animation);
+	        }
 	    }]);
 	
-	    return ChangeWords;
+	    return Listing;
 	}(_Global3.default);
 	
-	exports.default = ChangeWords;
+	exports.default = Listing;
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28510,6 +28682,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
@@ -28535,9 +28709,7 @@
 	    function ChangeWordsForm(page) {
 	        _classCallCheck(this, ChangeWordsForm);
 	
-	        var _this = _possibleConstructorReturn(this, (ChangeWordsForm.__proto__ || Object.getPrototypeOf(ChangeWordsForm)).call(this, page));
-	
-	        _this.datasForInputs = {
+	        /*this.datasForInputs = {
 	            native: {
 	                selectorOfPlus: '#native-plus',
 	                selectorOfList: '#native',
@@ -28548,9 +28720,9 @@
 	                selectorOfList: '#learnable',
 	                whichLanguage: 'learnable'
 	            }
-	        };
+	        };*/
 	
-	        console.log(_this.page.data);
+	        var _this = _possibleConstructorReturn(this, (ChangeWordsForm.__proto__ || Object.getPrototypeOf(ChangeWordsForm)).call(this, page));
 	
 	        _this.selectorOfNative = '#native';
 	        _this.selectorOfLearnable = '#learnable';
@@ -28564,16 +28736,30 @@
 	            method: 'GET'
 	        };
 	
-	        _this.q(_this.selectorOfTitle).innerHTML = _this.page.data.title;
-	
-	        _this.setOptionsOfLabelInput();
-	        _this.handlingOfUploadFile();
-	        _this.handlingOfSaveButton();
-	        //this.initInputs();
+	        _this.init();
 	        return _this;
 	    }
 	
 	    _createClass(ChangeWordsForm, [{
+	        key: 'init',
+	        value: function init() {
+	            this.q(this.selectorOfTitle).innerHTML = this.page.data.title;
+	
+	            this.setOptionsOfLabelInput();
+	            this.handlingOfUploadFile();
+	
+	            var listenerOfSaveButtonClick = this.setNewWord.bind(this);
+	            console.log(this.page.data.title, this.page.data.titleOfEdit, _typeof(this.page.data.item), this.page.data.title === this.page.data.titleOfEdit && _typeof(this.page.data.item) === 'object');
+	            if (this.page.data.title === this.page.data.titleOfEdit && _typeof(this.page.data.item) === 'object') {
+	                this.setValues();
+	                listenerOfSaveButtonClick = this.editWord.bind(this);
+	            }
+	
+	            this.q(this.selectorOfSaveButton).addEventListener('click', function () {
+	                return listenerOfSaveButtonClick();
+	            });
+	        }
+	    }, {
 	        key: 'handlingOfUploadFile',
 	        value: function handlingOfUploadFile() {
 	            var _this2 = this;
@@ -28598,29 +28784,25 @@
 	            });
 	        }
 	    }, {
-	        key: 'handlingOfSaveButton',
-	        value: function handlingOfSaveButton() {
-	            var _this3 = this;
+	        key: 'setNewWord',
+	        value: function setNewWord() {
+	            var file = this.q(this.selectorOfUploadFile).files[0];
 	
-	            this.q(this.selectorOfSaveButton).addEventListener('click', function () {
-	                var file = _this3.q(_this3.selectorOfUploadFile).files[0];
+	            if (file) {
+	                return this.ajax({
+	                    url: '/files/photo',
+	                    data: file,
+	                    file: true,
+	                    success: this.postAWord
+	                });
+	            }
 	
-	                if (file) {
-	                    return _this3.ajax({
-	                        url: '/files/photo',
-	                        data: file,
-	                        file: true,
-	                        success: _this3.postAWord
-	                    });
-	                }
-	
-	                return _this3.postAWord(null);
-	            });
+	            return this.postAWord(null);
 	        }
 	    }, {
 	        key: 'postAWord',
 	        value: function postAWord(photo) {
-	            var _this4 = this;
+	            var _this3 = this;
 	
 	            this.ajax({
 	                method: 'post',
@@ -28633,7 +28815,7 @@
 	                },
 	                success: function success(response) {
 	                    if (response) {
-	                        _this4.pushBackWithRefresh();
+	                        _this3.pushBackWithRefresh();
 	                    }
 	                }
 	            });
@@ -28641,7 +28823,7 @@
 	    }, {
 	        key: 'setOptionsOfLabelInput',
 	        value: function setOptionsOfLabelInput() {
-	            var _this5 = this;
+	            var _this4 = this;
 	
 	            if (window.labels.length === 0) {
 	                this.ajax({
@@ -28650,7 +28832,7 @@
 	                    success: function success(result) {
 	                        window.labels = result;
 	
-	                        _this5.showLabelsInInput();
+	                        _this4.showLabelsInInput();
 	                    }
 	                });
 	            }
@@ -28692,54 +28874,68 @@
 	            }
 	        }
 	    }, {
-	        key: 'initInputs',
-	        value: function initInputs() {
-	            var native = this.datasForInputs.native;
-	            var learnable = this.datasForInputs.learnable;
+	        key: 'setValues',
+	        value: function setValues() {
+	            var word = this.page.data.item;
 	
-	            this.addPlusEvent(native.selectorOfPlus, native.selectorOfList, native.whichLanguage);
+	            this.q(this.selectorOfNative).value = word.native;
+	            this.q(this.selectorOfLearnable).value = word.learnable;
+	            //TODO picture
+	            this.q(this.selectorOfLabel).value = word.labelId;
+	        }
+	    }, {
+	        key: 'editWord',
+	        value: function editWord() {}
+	
+	        /*initInputs ()
+	        {
+	            const native = this.datasForInputs.native;
+	            const learnable = this.datasForInputs.learnable;
+	             this.addPlusEvent(native.selectorOfPlus, native.selectorOfList, native.whichLanguage);
 	            this.addPlusEvent(learnable.selectorOfPlus, learnable.selectorOfList, learnable.whichLanguage);
 	        }
-	    }, {
-	        key: 'addPlusEvent',
-	        value: function addPlusEvent(selectorOfPlus, selectorOfList, whichLanguage) {
-	            var _this6 = this;
-	
-	            this.q(selectorOfPlus).parentNode.addEventListener('click', function () {
-	                return _this6.plus(selectorOfList, whichLanguage);
-	            }, false);
-	        }
-	    }, {
-	        key: 'plus',
-	        value: function plus(selectorOfList, whichLanguage) {
-	            var numberOfInput = this.qAll(selectorOfList + ' ons-input').length + 1;
-	
-	            var inputWrapper = document.createElement('div');
+	          addPlusEvent (selectorOfPlus, selectorOfList, whichLanguage)
+	        {
+	            this.q(selectorOfPlus).parentNode.addEventListener(
+	                'click',
+	                () => this.plus(selectorOfList, whichLanguage),
+	                false
+	            );
+	        };
+	         plus (selectorOfList, whichLanguage)
+	        {
+	            const numberOfInput = this.qAll(selectorOfList + ' ons-input').length + 1;
+	              let inputWrapper = document.createElement('div');
 	            inputWrapper.className = 'input-wrapper';
-	
-	            inputWrapper.appendChild(this.createOnsElement('<ons-input \n                modifier="underbar" \n                placeholder="#' + numberOfInput + '" \n                float \n                id="' + whichLanguage + '-' + numberOfInput + '">\n            </ons-input>'));
-	            inputWrapper.appendChild(this.createOnsElement('<ons-icon icon="ion-minus-round"></ons-icon>'));
-	
-	            this.q(selectorOfList).appendChild(inputWrapper);
-	
-	            this.addMinusEvent();
-	        }
-	    }, {
-	        key: 'addMinusEvent',
-	        value: function addMinusEvent() {
-	            var minusIcons = this.qAll('.input-wrapper ons-icon');
-	            var numberOfMinusIcons = minusIcons.length;
-	
-	            for (var index = 0; index < numberOfMinusIcons; index++) {
+	             inputWrapper.appendChild(this.createOnsElement(
+	                `<ons-input 
+	                    modifier="underbar" 
+	                    placeholder="#${numberOfInput}" 
+	                    float 
+	                    id="${whichLanguage}-${numberOfInput}">
+	                </ons-input>`
+	            ));
+	            inputWrapper.appendChild(this.createOnsElement(
+	                `<ons-icon icon="ion-minus-round"></ons-icon>`
+	            ));
+	             this.q(selectorOfList).appendChild(inputWrapper);
+	             this.addMinusEvent();
+	        };
+	         addMinusEvent ()
+	        {
+	            let minusIcons = this.qAll('.input-wrapper ons-icon');
+	            const numberOfMinusIcons = minusIcons.length;
+	             for (let index = 0; index < numberOfMinusIcons; index++)
+	            {
 	                minusIcons[index].addEventListener('click', this.minus);
 	            }
-	        }
-	    }, {
-	        key: 'minus',
-	        value: function minus(event) {
-	            var deletable = event.target.parentNode;
+	        };
+	         minus (event)
+	        {
+	            let deletable = event.target.parentNode;
 	            deletable.parentNode.removeChild(deletable);
-	        }
+	        };*/
+	
 	    }]);
 	
 	    return ChangeWordsForm;
@@ -28748,7 +28944,7 @@
 	exports.default = ChangeWordsForm;
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28761,9 +28957,9 @@
 	
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 	
-	var _Global2 = __webpack_require__(7);
+	var _Listing2 = __webpack_require__(9);
 	
-	var _Global3 = _interopRequireDefault(_Global2);
+	var _Listing3 = _interopRequireDefault(_Listing2);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -28773,24 +28969,24 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var ChangeLabels = function (_Global) {
-	    _inherits(ChangeLabels, _Global);
+	var ChangeLabels = function (_Listing) {
+	    _inherits(ChangeLabels, _Listing);
 	
 	    function ChangeLabels(page) {
 	        _classCallCheck(this, ChangeLabels);
 	
 	        var _this = _possibleConstructorReturn(this, (ChangeLabels.__proto__ || Object.getPrototypeOf(ChangeLabels)).call(this, page));
 	
-	        _this.plusLabelButton = '#plus-label';
-	        _this.changeLabelForm = 'change-label-form';
+	        _this.plusButton = '#plus-label';
+	        _this.changeForm = 'change-label-form';
 	
-	        _this.titleOfNewLabelsForm = 'New label';
-	        _this.titleOfEditLabelsForm = 'Edit label';
+	        _this.titleOfNewForm = 'New label';
+	        _this.titleOfEditForm = 'Edit label';
 	
-	        _this.selectorOfLabelList = '#change-labels-items';
-	        _this.selectorOfChangeItem = _this.selectorOfLabelList + ' ons-list-item';
+	        _this.selectorOfList = '#change-labels-items';
+	        _this.selectorOfChangeItem = _this.selectorOfList + ' ons-list-item';
 	
-	        _this.ajaxOfGetAllLabels = {
+	        _this.ajaxOfGetAll = {
 	            url: _this.urlOfLabelMethods + '/',
 	            method: 'GET'
 	        };
@@ -28802,73 +28998,66 @@
 	    _createClass(ChangeLabels, [{
 	        key: 'init',
 	        value: function init() {
-	            this.showLabels();
+	            this.showItems();
 	            this.initOfPushToForm();
 	        }
 	    }, {
-	        key: 'showLabels',
-	        value: function showLabels() {
+	        key: 'showItems',
+	        value: function showItems() {
 	            var _this2 = this;
 	
-	            this.downAndShow({
-	                url: this.ajaxOfGetAllLabels.url,
-	                showWhere: this.selectorOfLabelList,
+	            _get(ChangeLabels.prototype.__proto__ || Object.getPrototypeOf(ChangeLabels.prototype), 'showItems', this).call(this, {
 	                showableHtml: function showableHtml(label) {
 	                    var id = label._id;
 	                    var name = label.name;
 	
 	                    return _this2.createOnsElement('<ons-list-item data-id="' + id + '" tappable>\n                        <div class="center">' + name + '</div>\n                        <div class="right"><ons-icon icon="ion-edit"></ons-icon></div>\n                    </ons-list-item>');
 	                },
+	                store: 'labels'
+	            });
+	        }
+	
+	        /*showLabels ()
+	        {
+	            this.downAndShow({
+	                url: this.ajaxOfGetAllLabels.url,
+	                showWhere: this.selectorOfLabelList,
+	                showableHtml: (label) =>
+	                {
+	                    const id = label._id;
+	                    const name = label.name;
+	                     return this.createOnsElement(
+	                        `<ons-list-item data-id="${id}" tappable>
+	                            <div class="center">${name}</div>
+	                            <div class="right"><ons-icon icon="ion-edit"></ons-icon></div>
+	                        </ons-list-item>`
+	                    );
+	                },
 	                store: 'labels',
-	                after: function after() {
-	                    var clickableItems = _this2.qAll(_this2.selectorOfChangeItem);
-	                    var _iteratorNormalCompletion = true;
-	                    var _didIteratorError = false;
-	                    var _iteratorError = undefined;
-	
-	                    try {
-	                        var _loop = function _loop() {
-	                            var clickableItem = _step.value;
-	
-	                            clickableItem.addEventListener('click', function () {
-	                                _this2.pushPage(_this2.changeLabelForm, {
-	                                    title: _this2.titleOfEditLabelsForm,
-	                                    item: window.labels.find(function (label) {
-	                                        return label._id == clickableItem.dataset.id;
-	                                    })
-	                                }, 'lift');
-	                            });
-	                        };
-	
-	                        for (var _iterator = clickableItems[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	                            _loop();
-	                        }
-	                    } catch (err) {
-	                        _didIteratorError = true;
-	                        _iteratorError = err;
-	                    } finally {
-	                        try {
-	                            if (!_iteratorNormalCompletion && _iterator.return) {
-	                                _iterator.return();
-	                            }
-	                        } finally {
-	                            if (_didIteratorError) {
-	                                throw _iteratorError;
-	                            }
-	                        }
+	                after: () =>
+	                {
+	                    let clickableItems = this.qAll(this.selectorOfChangeItem);
+	                    for (let clickableItem of clickableItems)
+	                    {
+	                        clickableItem.addEventListener('click', () =>
+	                        {
+	                            this.pushPage(this.changeLabelForm, {
+	                                title: this.titleOfEditLabelsForm,
+	                                item: window.labels.find((label) => label._id == clickableItem.dataset.id),
+	                            }, 'lift');
+	                        });
 	                    }
 	                }
 	            });
-	        }
-	    }, {
-	        key: 'initOfPushToForm',
-	        value: function initOfPushToForm() {
-	            var _this3 = this;
+	        }*/
 	
-	            this.page.querySelector(this.plusLabelButton).addEventListener('click', function () {
-	                _this3.pushPage(_this3.changeLabelForm, { title: _this3.titleOfNewLabelsForm });
+	        /*initOfPushToForm ()
+	        {
+	            this.page.querySelector(this.plusLabelButton).addEventListener('click', () =>
+	            {
+	                this.pushPage(this.changeLabelForm, { title: this.titleOfNewLabelsForm });
 	            });
-	        }
+	        }*/
 	
 	        /**
 	         * Send 'titleOfNewLabelsForm' and 'titleOfEditLabelsForm' arguments to next page automatically
@@ -28878,27 +29067,196 @@
 	         * @param {object} data
 	         * @param {string} animation
 	         */
-	
-	    }, {
-	        key: 'pushPage',
-	        value: function pushPage(where) {
-	            var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-	            var animation = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
-	
+	        /*pushPage (where, data = {}, animation = '')
+	        {
 	            data.titleOfNew = this.titleOfNewLabelsForm;
 	            data.titleOfEdit = this.titleOfEditLabelsForm;
+	             super.pushPage(where, data, animation);
+	        }*/
 	
-	            _get(ChangeLabels.prototype.__proto__ || Object.getPrototypeOf(ChangeLabels.prototype), 'pushPage', this).call(this, where, data, animation);
-	        }
 	    }]);
 	
 	    return ChangeLabels;
-	}(_Global3.default);
+	}(_Listing3.default);
 	
 	exports.default = ChangeLabels;
 
 /***/ },
-/* 11 */
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	var _Form2 = __webpack_require__(13);
+	
+	var _Form3 = _interopRequireDefault(_Form2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ChangeLabelsForm = function (_Form) {
+	    _inherits(ChangeLabelsForm, _Form);
+	
+	    function ChangeLabelsForm(page) {
+	        _classCallCheck(this, ChangeLabelsForm);
+	
+	        var _this = _possibleConstructorReturn(this, (ChangeLabelsForm.__proto__ || Object.getPrototypeOf(ChangeLabelsForm)).call(this, page));
+	
+	        _this.selectorOfLabelInput = '#label';
+	
+	        _this.ajaxOfSaveOne = {
+	            url: _this.urlOfLabelMethods + '/',
+	            method: 'POST'
+	        };
+	        _this.ajaxOfEditOne = {
+	            url: _this.urlOfLabelMethods + '/',
+	            method: 'PUT'
+	        };
+	        _this.ajaxOfDeleteOne = {
+	            url: _this.urlOfLabelMethods + '/',
+	            method: 'DELETE'
+	        };
+	
+	        // this.init();
+	        return _this;
+	    }
+	
+	    _createClass(ChangeLabelsForm, [{
+	        key: 'init',
+	        value: function init() {
+	            var _this2 = this;
+	
+	            _get(ChangeLabelsForm.prototype.__proto__ || Object.getPrototypeOf(ChangeLabelsForm.prototype), 'init', this).call(this, function () {
+	
+	                _this2.q(_this2.selectorOfLabelInput).value = _this2.page.data.item.name;
+	            });
+	        }
+	    }, {
+	        key: 'setNewItem',
+	        value: function setNewItem() {
+	            _get(ChangeLabelsForm.prototype.__proto__ || Object.getPrototypeOf(ChangeLabelsForm.prototype), 'setNewItem', this).call(this, {
+	                label: this.getLabelFromInput()
+	            });
+	        }
+	    }, {
+	        key: 'setValues',
+	        value: function setValues() {
+	            this.q(this.selectorOfLabelInput).value = this.page.data.item.name;
+	        }
+	    }, {
+	        key: 'editItem',
+	        value: function editItem() {
+	            _get(ChangeLabelsForm.prototype.__proto__ || Object.getPrototypeOf(ChangeLabelsForm.prototype), 'editItem', this).call(this, {
+	                userId: this.page.data.item.userId,
+	                oldLabel: this.page.data.item.name,
+	                newLabel: this.getLabelFromInput()
+	            });
+	        }
+	
+	        /*init ()
+	        {
+	            this.q('ons-toolbar .center').innerHTML = this.page.data.title;
+	             let listenerOfSaveButtonClick = this.setNewLabel.bind(this); //this is default
+	            if (this.page.data.title === this.page.data.titleOfEdit && typeof this.page.data.item === 'object')
+	            {
+	                this.q(this.selectorOfLabelInput).value = this.page.data.item.name;
+	                listenerOfSaveButtonClick = this.editLabel.bind(this); //if wanna
+	                 this.setUpDeleteButton();
+	            }
+	             this.q(this.selectorOfSaveButton).addEventListener('click', () => listenerOfSaveButtonClick());
+	        }*/
+	
+	        /*setNewLabel ()
+	        {
+	            const label = this.getLabelFromInput();
+	             this.ajax({
+	                method: this.ajaxOfSaveOneLabel.method,
+	                url: this.ajaxOfSaveOneLabel.url,
+	                data: {label: label},
+	                success: (response) =>
+	                {
+	                    if (response)
+	                    {
+	                        this.pushBackWithRefresh();
+	                    }
+	                }
+	            });
+	        }*/
+	
+	        /*editLabel ()
+	        {
+	            const userId = this.page.data.item.userId;
+	            const oldLabel = this.page.data.item.name;
+	            const editedLabel = this.getLabelFromInput();
+	             this.ajax({
+	                method: this.ajaxOfEditOneLabel.method,
+	                url: this.ajaxOfEditOneLabel.url,
+	                data: {
+	                    userId: userId,
+	                    oldLabel: oldLabel,
+	                    newLabel: editedLabel
+	                },
+	                success: (response) =>
+	                {
+	                    if (response)
+	                    {
+	                        this.pushBackWithRefresh();
+	                    }
+	                }
+	            });
+	        }*/
+	
+	        /*setUpDeleteButton ()
+	        {
+	             this.setDomElement({
+	                where: '#delete-wrapper',
+	                html: '<ons-button modifier="large" id="delete" class="red">Delete</ons-button>',
+	                callback: () =>
+	                {
+	                    this.q(this.selectorOfDeleteButton).addEventListener('click', () =>
+	                    {
+	                        const id = this.page.data.item._id;
+	                         this.ajax({
+	                            method: this.ajaxOfDeleteOneLabel.method,
+	                            url: this.ajaxOfDeleteOneLabel.url,
+	                            data: {id: id},
+	                            success: () =>
+	                            {
+	                                this.pushBackWithRefresh();
+	                            }
+	                        });
+	                    });
+	                }
+	            });
+	        }*/
+	
+	    }, {
+	        key: 'getLabelFromInput',
+	        value: function getLabelFromInput() {
+	            return this.q(this.selectorOfLabelInput).value;
+	        }
+	    }]);
+	
+	    return ChangeLabelsForm;
+	}(_Form3.default);
+	
+	exports.default = ChangeLabelsForm;
+
+/***/ },
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28915,10 +29273,6 @@
 	
 	var _Global3 = _interopRequireDefault(_Global2);
 	
-	var _ChangeLabels = __webpack_require__(10);
-	
-	var _ChangeLabels2 = _interopRequireDefault(_ChangeLabels);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -28927,63 +29281,61 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var ChangeLabelsForm = function (_Global) {
-	    _inherits(ChangeLabelsForm, _Global);
+	var Form = function (_Global) {
+	    _inherits(Form, _Global);
 	
-	    function ChangeLabelsForm(page) {
-	        _classCallCheck(this, ChangeLabelsForm);
+	    function Form(page) {
+	        _classCallCheck(this, Form);
 	
-	        var _this = _possibleConstructorReturn(this, (ChangeLabelsForm.__proto__ || Object.getPrototypeOf(ChangeLabelsForm)).call(this, page));
+	        var _this = _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).call(this, page));
 	
-	        _this.selectorOfLabelInput = '#label';
-	        _this.selectorOfSaveButton = '#save';
-	        _this.selectorOfDeleteButton = '#delete';
+	        _this.selectors = {
+	            saveButton: '#save',
+	            deleteButton: '#delete',
+	            deleteWrapper: '#delete-wrapper'
+	        };
 	
-	        _this.ajaxOfSaveOneLabel = {
-	            url: _this.urlOfLabelMethods + '/',
+	        _this.ajaxOfSaveOne = {
+	            url: String,
 	            method: 'POST'
 	        };
-	        _this.ajaxOfEditOneLabel = {
-	            url: _this.urlOfLabelMethods + '/',
+	        _this.ajaxOfEditOne = {
+	            url: String,
 	            method: 'PUT'
 	        };
-	        _this.ajaxOfDeleteOneLabel = {
-	            url: _this.urlOfLabelMethods + '/',
+	        _this.ajaxOfDeleteOne = {
+	            url: String,
 	            method: 'DELETE'
 	        };
-	
-	        _this.init();
 	        return _this;
 	    }
 	
-	    _createClass(ChangeLabelsForm, [{
+	    _createClass(Form, [{
 	        key: 'init',
-	        value: function init() {
-	            this.q('ons-toolbar .center').innerHTML = this.page.data.title;
+	        value: function init(setValues) {
+	            this.q(this.selectorOfTitle).innerHTML = this.page.data.title;
 	
-	            var listenerOfSabeButtonClick = this.setNewLabel.bind(this); //this is default
+	            var listenerOfSaveButtonClick = this.setNewItem.bind(this); //this is default
 	            if (this.page.data.title === this.page.data.titleOfEdit && _typeof(this.page.data.item) === 'object') {
-	                this.q(this.selectorOfLabelInput).value = this.page.data.item.name;
-	                listenerOfSabeButtonClick = this.editLabel.bind(this); //if wanna
+	                setValues();
+	                listenerOfSaveButtonClick = this.editItem.bind(this); //if wanna
 	
 	                this.setUpDeleteButton();
 	            }
 	
-	            this.q(this.selectorOfSaveButton).addEventListener('click', function () {
-	                return listenerOfSabeButtonClick();
+	            this.q(this.selectors.saveButton).addEventListener('click', function () {
+	                return listenerOfSaveButtonClick();
 	            });
 	        }
 	    }, {
-	        key: 'setNewLabel',
-	        value: function setNewLabel() {
+	        key: 'setNewItem',
+	        value: function setNewItem(data) {
 	            var _this2 = this;
 	
-	            var label = this.getLabelFromInput();
-	
 	            this.ajax({
-	                method: this.ajaxOfSaveOneLabel.method,
-	                url: this.ajaxOfSaveOneLabel.url,
-	                data: { label: label },
+	                method: this.ajaxOfSaveOne.method,
+	                url: this.ajaxOfSaveOne.url,
+	                data: data,
 	                success: function success(response) {
 	                    if (response) {
 	                        _this2.pushBackWithRefresh();
@@ -28992,22 +29344,17 @@
 	            });
 	        }
 	    }, {
-	        key: 'editLabel',
-	        value: function editLabel() {
+	        key: 'setValues',
+	        value: function setValues() {}
+	    }, {
+	        key: 'editItem',
+	        value: function editItem(data) {
 	            var _this3 = this;
 	
-	            var userId = this.page.data.item.userId;
-	            var oldLabel = this.page.data.item.name;
-	            var editedLabel = this.getLabelFromInput();
-	
 	            this.ajax({
-	                method: this.ajaxOfEditOneLabel.method,
-	                url: this.ajaxOfEditOneLabel.url,
-	                data: {
-	                    userId: userId,
-	                    oldLabel: oldLabel,
-	                    newLabel: editedLabel
-	                },
+	                method: this.ajaxOfEditOne.method,
+	                url: this.ajaxOfEditOne.url,
+	                data: data,
 	                success: function success(response) {
 	                    if (response) {
 	                        _this3.pushBackWithRefresh();
@@ -29020,16 +29367,17 @@
 	        value: function setUpDeleteButton() {
 	            var _this4 = this;
 	
+	            console.log(this.selectors.deleteWrapper);
 	            this.setDomElement({
-	                where: '#delete-wrapper',
+	                where: this.selectors.deleteWrapper,
 	                html: '<ons-button modifier="large" id="delete" class="red">Delete</ons-button>',
 	                callback: function callback() {
-	                    _this4.q(_this4.selectorOfDeleteButton).addEventListener('click', function () {
+	                    _this4.q(_this4.selectors.deleteButton).addEventListener('click', function () {
 	                        var id = _this4.page.data.item._id;
 	
 	                        _this4.ajax({
-	                            method: _this4.ajaxOfDeleteOneLabel.method,
-	                            url: _this4.ajaxOfDeleteOneLabel.url,
+	                            method: _this4.ajaxOfDeleteOne.method,
+	                            url: _this4.ajaxOfDeleteOne.url,
 	                            data: { id: id },
 	                            success: function success() {
 	                                _this4.pushBackWithRefresh();
@@ -29039,17 +29387,12 @@
 	                }
 	            });
 	        }
-	    }, {
-	        key: 'getLabelFromInput',
-	        value: function getLabelFromInput() {
-	            return this.q(this.selectorOfLabelInput).value;
-	        }
 	    }]);
 	
-	    return ChangeLabelsForm;
+	    return Form;
 	}(_Global3.default);
 	
-	exports.default = ChangeLabelsForm;
+	exports.default = Form;
 
 /***/ }
 /******/ ]);

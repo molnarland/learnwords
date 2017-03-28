@@ -1,49 +1,77 @@
-import Global from './Global';
-import ChangeLabels from './ChangeLabels';
+import Form from './Form';
 
-export default class ChangeLabelsForm extends Global
+export default class ChangeLabelsForm extends Form
 {
     constructor(page)
     {
+
         super(page);
 
         this.selectorOfLabelInput = '#label';
-        this.selectorOfSaveButton = '#save';
-        this.selectorOfDeleteButton = '#delete';
 
-        this.ajaxOfSaveOneLabel = {
+        this.ajaxOfSaveOne = {
             url: `${this.urlOfLabelMethods}/`,
             method: 'POST'
         };
-        this.ajaxOfEditOneLabel = {
+        this.ajaxOfEditOne = {
             url: `${this.urlOfLabelMethods}/`,
             method: 'PUT'
         };
-        this.ajaxOfDeleteOneLabel = {
+        this.ajaxOfDeleteOne = {
             url: `${this.urlOfLabelMethods}/`,
             method: 'DELETE'
         };
 
-        this.init();
+
+        // this.init();
     }
 
     init ()
     {
+        super.init(() =>
+        {
+            this.q(this.selectorOfLabelInput).value = this.page.data.item.name;
+        });
+    }
+
+    setNewItem ()
+    {
+        super.setNewItem({
+            label: this.getLabelFromInput()
+        });
+    }
+
+    setValues ()
+    {
+        this.q(this.selectorOfLabelInput).value = this.page.data.item.name;
+    }
+
+    editItem ()
+    {
+        super.editItem({
+            userId: this.page.data.item.userId,
+            oldLabel: this.page.data.item.name,
+            newLabel: this.getLabelFromInput()
+        });
+    }
+
+    /*init ()
+    {
         this.q('ons-toolbar .center').innerHTML = this.page.data.title;
 
-        let listenerOfSabeButtonClick = this.setNewLabel.bind(this); //this is default
+        let listenerOfSaveButtonClick = this.setNewLabel.bind(this); //this is default
         if (this.page.data.title === this.page.data.titleOfEdit && typeof this.page.data.item === 'object')
         {
             this.q(this.selectorOfLabelInput).value = this.page.data.item.name;
-            listenerOfSabeButtonClick = this.editLabel.bind(this); //if wanna
+            listenerOfSaveButtonClick = this.editLabel.bind(this); //if wanna
 
             this.setUpDeleteButton();
         }
 
-        this.q(this.selectorOfSaveButton).addEventListener('click', () => listenerOfSabeButtonClick());
-    }
+        this.q(this.selectorOfSaveButton).addEventListener('click', () => listenerOfSaveButtonClick());
+    }*/
 
-    setNewLabel ()
+    /*setNewLabel ()
     {
         const label = this.getLabelFromInput();
 
@@ -59,9 +87,9 @@ export default class ChangeLabelsForm extends Global
                 }
             }
         });
-    }
+    }*/
 
-    editLabel ()
+    /*editLabel ()
     {
         const userId = this.page.data.item.userId;
         const oldLabel = this.page.data.item.name;
@@ -83,9 +111,9 @@ export default class ChangeLabelsForm extends Global
                 }
             }
         });
-    }
+    }*/
 
-    setUpDeleteButton ()
+    /*setUpDeleteButton ()
     {
 
         this.setDomElement({
@@ -109,7 +137,7 @@ export default class ChangeLabelsForm extends Global
                 });
             }
         });
-    }
+    }*/
 
     getLabelFromInput ()
     {

@@ -1,19 +1,24 @@
-import Global from './Global';
+import Listing from './Listing';
 
-export default class ChangeWords extends Global
+export default class ChangeWords extends Listing
 {
     constructor (page)
     {
         super(page);
 
-        this.plusWordButton = '#plus-word';
-        this.changeWordsForm = 'change-words-form';
+        this.plusButton = '#plus-word';
+        this.changeForm = 'change-words-form';
 
-        this.titleOfNewWordsForm = 'New word';
-        this.titleOfEditWordForm = 'Edit word';
+        this.titleOfNewForm = 'New word';
+        this.titleOfEditForm = 'Edit word';
 
-        this.selectorOfWordList = '#change-words-items';
-        this.selectorOfChangeItem = `${this.selectorOfWordList} ons-list-item`;
+        this.selectorOfList = '#change-words-items';
+        this.selectorOfChangeItem = `${this.selectorOfList} ons-list-item`;
+
+        this.ajaxOfGetAll = {
+            url: `${this.urlOfWordMethods}/`,
+            method: 'GET'
+        };
 
         this.init();
     }
@@ -21,10 +26,31 @@ export default class ChangeWords extends Global
     init ()
     {
         this.initOfPushToForm();
-        this.showWords();
+        this.showItems();
     }
 
-    initOfPushToForm ()
+    showItems ()
+    {
+        super.showItems({
+            showableHtml: (word) =>
+            {
+                const id = word._id;
+                const native = word.native;
+                const learnable = word.learnable;
+
+                return this.createOnsElement(
+                    `<ons-list-item data-id=${id} tappable modifier="longdivider">
+                        <div class="left">${native}</div>
+                        <div class="center"><ons-icon icon="arrows-h"></ons-icon></div>
+                        <div class="right">${learnable}</div>
+                    </ons-list-item>`
+                );
+            },
+            store: 'words'
+        });
+    }
+
+/*    initOfPushToForm ()
     {
         this.q(this.plusWordButton).addEventListener('click', () =>
         {
@@ -68,4 +94,20 @@ export default class ChangeWords extends Global
             }
         })
     }
+
+    /!**
+     * Send 'titleOfNewWordsForm' and 'titleOfEditWordForm' arguments to next page automatically
+     * as titleOfNew and titleOfEdit
+     *
+     * @param {string} where
+     * @param {object} data
+     * @param {string} animation
+     *!/
+    pushPage (where, data = {}, animation = '')
+    {
+        data.titleOfNew = this.titleOfNewWordsForm;
+        data.titleOfEdit = this.titleOfEditWordForm;
+
+        super.pushPage(where, data, animation);
+    }*/
 }

@@ -19,7 +19,6 @@ document.addEventListener('init', (event) =>
 
     const page = event.target;
 
-
     switch (page.id)
     {
         case 'menu':

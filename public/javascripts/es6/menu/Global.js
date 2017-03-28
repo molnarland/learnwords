@@ -215,6 +215,7 @@ export default class Global
             where = this.q(where);
         }
 
+
         const typeOfHtml = typeof html;
         if (typeOfHtml === 'object')
         {
@@ -297,7 +298,23 @@ export default class Global
      */
     q (selector)
     {
-        return this.page.querySelector(selector);
+        //TODO why not working in firefox?? why??? :(
+        const length = selector.split(' ').length;
+        const firstCharOfSelector = selector.charAt(0);
+
+        console.log(length <= 1 && firstCharOfSelector === '#', length, firstCharOfSelector);
+
+        if (length <= 1 && firstCharOfSelector === '#')
+        {
+            console.log(selector.substring(1), document.getElementById(selector.substring(1)));
+            return document.getElementById(selector.substring(1));
+        }
+        else
+        {
+            console.log('else');
+
+            return this.page.querySelector(selector);
+        }
     }
 
     /**

@@ -9,7 +9,6 @@ router.route('/')
     {
         Words.getAllWords(global.getUserId(req), (result) =>
         {
-            console.log(result);
             res.send(result);
         });
     })

@@ -7,7 +7,7 @@ export default class ChangeWordsForm extends Global
     {
         super(page);
 
-        this.datasForInputs = {
+        /*this.datasForInputs = {
             native: {
                 selectorOfPlus: '#native-plus',
                 selectorOfList: '#native',
@@ -18,9 +18,7 @@ export default class ChangeWordsForm extends Global
                 selectorOfList: '#learnable',
                 whichLanguage: 'learnable'
             }
-        };
-
-        console.log(this.page.data);
+        };*/
 
         this.selectorOfNative = '#native';
         this.selectorOfLearnable = '#learnable';
@@ -34,12 +32,26 @@ export default class ChangeWordsForm extends Global
             method: 'GET'
         };
 
+        this.init();
+    }
+
+    init ()
+    {
         this.q(this.selectorOfTitle).innerHTML = this.page.data.title;
 
         this.setOptionsOfLabelInput();
         this.handlingOfUploadFile();
-        this.handlingOfSaveButton();
-        //this.initInputs();
+
+        let listenerOfSaveButtonClick = this.setNewWord.bind(this);
+        console.log(this.page.data.title, this.page.data.titleOfEdit, typeof this.page.data.item, this.page.data.title === this.page.data.titleOfEdit && typeof this.page.data.item === 'object');
+        if (this.page.data.title === this.page.data.titleOfEdit && typeof this.page.data.item === 'object')
+        {
+            this.setValues();
+            listenerOfSaveButtonClick = this.editWord.bind(this);
+        }
+
+
+        this.q(this.selectorOfSaveButton).addEventListener('click', () => listenerOfSaveButtonClick());
     }
 
 
@@ -70,24 +82,21 @@ export default class ChangeWordsForm extends Global
         });
     }
 
-    handlingOfSaveButton ()
+    setNewWord ()
     {
-        this.q(this.selectorOfSaveButton).addEventListener('click', () =>
+        const file = this.q(this.selectorOfUploadFile).files[0];
+
+        if (file)
         {
-            const file = this.q(this.selectorOfUploadFile).files[0];
+            return this.ajax({
+                url:'/files/photo',
+                data: file,
+                file: true,
+                success: this.postAWord
+            });
+        }
 
-            if (file)
-            {
-                return this.ajax({
-                    url:'/files/photo',
-                    data: file,
-                    file: true,
-                    success: this.postAWord
-                });
-            }
-
-            return this.postAWord(null);
-        });
+        return this.postAWord(null);
     }
 
     postAWord (photo)
@@ -144,8 +153,23 @@ export default class ChangeWordsForm extends Global
         }
     }
 
+    setValues ()
+    {
+        const word = this.page.data.item;
 
-    initInputs ()
+        this.q(this.selectorOfNative).value = word.native;
+        this.q(this.selectorOfLearnable).value = word.learnable;
+        //TODO picture
+        this.q(this.selectorOfLabel).value = word.labelId;
+    }
+
+    editWord ()
+    {
+
+    }
+
+
+    /*initInputs ()
     {
         const native = this.datasForInputs.native;
         const learnable = this.datasForInputs.learnable;
@@ -204,5 +228,5 @@ export default class ChangeWordsForm extends Global
     {
         let deletable = event.target.parentNode;
         deletable.parentNode.removeChild(deletable);
-    };
+    };*/
 }
