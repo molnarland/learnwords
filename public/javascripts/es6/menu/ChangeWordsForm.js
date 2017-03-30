@@ -1,7 +1,7 @@
-import Global from './Global';
+import Form from './Form';
 import ons from 'onsenui';
 
-export default class ChangeWordsForm extends Global
+export default class ChangeWordsForm extends Form
 {
     constructor(page)
     {
@@ -163,9 +163,9 @@ export default class ChangeWordsForm extends Global
         this.q(this.selectorOfLabel).value = word.labelId;
     }
 
-    editWord ()
+    editItem ()
     {
-
+        super.editItem({/*data*/});
     }
 
 

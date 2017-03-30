@@ -5,6 +5,8 @@ import ChangeWords from './ChangeWords';
 import ChangeWordsForm from './ChangeWordsForm';
 import ChangeLabels from './ChangeLabels';
 import ChangeLabelsForm from './ChangeLabelsForm';
+import Learn from './Learn';
+import Quiz from './Quiz';
 
 window.labels = [];
 window.posts = [];
@@ -35,6 +37,12 @@ document.addEventListener('init', (event) =>
             break;
         case 'change-label-form':
             new ChangeLabelsForm(page);
+            break;
+        case 'learn':
+            new Learn(page);
+            break;
+        case 'quiz':
+            new Quiz(page);
             break;
         default:
             break;

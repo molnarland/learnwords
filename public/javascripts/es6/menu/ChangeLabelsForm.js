@@ -23,7 +23,7 @@ export default class ChangeLabelsForm extends Form
         };
 
 
-        // this.init();
+        this.init();
     }
 
     init ()

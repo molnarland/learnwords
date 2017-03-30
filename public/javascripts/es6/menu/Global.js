@@ -178,7 +178,6 @@ export default class Global
     {
         let aimDom = this.q(where);
 
-        console.log(aimDom);
 
         aimDom.innerHTML = '';
         for (let data of datas)
@@ -298,23 +297,16 @@ export default class Global
      */
     q (selector)
     {
-        //TODO why not working in firefox?? why??? :(
         const length = selector.split(' ').length;
         const firstCharOfSelector = selector.charAt(0);
 
-        console.log(length <= 1 && firstCharOfSelector === '#', length, firstCharOfSelector);
 
         if (length <= 1 && firstCharOfSelector === '#')
         {
-            console.log(selector.substring(1), document.getElementById(selector.substring(1)));
             return document.getElementById(selector.substring(1));
         }
-        else
-        {
-            console.log('else');
 
-            return this.page.querySelector(selector);
-        }
+        return this.page.querySelector(selector);
     }
 
     /**

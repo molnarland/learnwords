@@ -30,7 +30,6 @@ export default class Form extends Global
     {
         this.q(this.selectorOfTitle).innerHTML = this.page.data.title;
 
-
         let listenerOfSaveButtonClick = this.setNewItem.bind(this); //this is default
         if (this.page.data.title === this.page.data.titleOfEdit && typeof this.page.data.item === 'object')
         {
@@ -39,6 +38,7 @@ export default class Form extends Global
 
             this.setUpDeleteButton();
         }
+
 
         this.q(this.selectors.saveButton).addEventListener('click', () => listenerOfSaveButtonClick());
     }
@@ -79,7 +79,6 @@ export default class Form extends Global
 
     setUpDeleteButton ()
     {
-        console.log(this.selectors.deleteWrapper);
         this.setDomElement({
             where: this.selectors.deleteWrapper,
             html: '<ons-button modifier="large" id="delete" class="red">Delete</ons-button>',
