@@ -20,7 +20,7 @@ router.route('/')
         const labelId = req.body.label;
         const photo = req.body.photo;
 
-        Words.insertWord(userId, native, learnable, photo, labelId, () =>
+        Words.insertWord(userId, native, learnable, photo, labelId, (/*result*/) =>
         {
             res.send(true);
         });

@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const upload = require('multer')({storage: global.multerDiskStorage('photos/')});
+const upload = require('multer')({storage: global.multerDiskStorage('public/photos/')});
 const fs = require('fs');
 
 router.post('/photo', upload.single('file'), (req, res, next) =>
