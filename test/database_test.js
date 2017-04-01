@@ -70,5 +70,25 @@ describe('Database', () =>
         });
     });
 
+    describe('Word', () =>
+    {
+        let Word = require('../database/Word');
+        Word = new Word();
 
+        it('#insertWord()', (done) =>
+        {
+            Word.insertWord('20', 'olasz', 'japán', 'kurva.jpg', '4', (result) =>
+            {
+                test.object(result.ops[0]).match({
+                    userId: '20',
+                    native: 'olasz',
+                    learnable: 'japán',
+                    photo: 'kurva.jpg',
+                    labelId: '4'
+                });
+
+                done();
+            })
+        });
+    });
 });

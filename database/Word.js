@@ -1,4 +1,5 @@
 const DB = require('./DB');
+const Model = require('../model/Word');
 
 class Word extends DB
 {
@@ -11,18 +12,16 @@ class Word extends DB
 
     getAllWords (userId, callback)
     {
-        this.getAll(this.table, callback, {userId: userId});
+        const word = new Model(userId);
+
+        this.getAll(this.table, callback, word.getUserId());
     }
 
     insertWord (userId, native, learnable, photo, labelId, callback)
     {
-        this.insertOne(this.table, {
-            userId: userId,
-            native: native,
-            learnable: learnable,
-            photo: photo,
-            labelId: labelId
-        }, callback);
+        const word = new Model(userId, native, learnable, labelId, photo);
+
+        this.insertOne(this.table, word, callback);
     }
 }
 
