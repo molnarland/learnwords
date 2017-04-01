@@ -1,12 +1,13 @@
 import ons from 'onsenui';
 
 import Menu from './Menu';
-import ChangeWords from './ChangeWords';
+import ListWords from './ListWords';
 import ChangeWordsForm from './ChangeWordsForm';
-import ChangeLabels from './ChangeLabels';
+import ListLabels from './ListLabels';
 import ChangeLabelsForm from './ChangeLabelsForm';
 import Learn from './Learn';
 import Quiz from './Quiz';
+
 
 window.labels = [];
 window.posts = [];
@@ -21,30 +22,33 @@ document.addEventListener('init', (event) =>
 
     const page = event.target;
 
-    switch (page.id)
-    {
-        case 'menu':
-            new Menu(page);
-            break;
-        case 'change-words':
-            new ChangeWords(page);
-            break;
-        case 'change-words-form':
-            new ChangeWordsForm(page);
-            break;
-        case 'change-labels':
-            new ChangeLabels(page);
-            break;
-        case 'change-label-form':
-            new ChangeLabelsForm(page);
-            break;
-        case 'learn':
-            new Learn(page);
-            break;
-        case 'quiz':
-            new Quiz(page);
-            break;
-        default:
-            break;
-    }
+    router(page, {
+        'menu': Menu,
+        'change-words': ListWords,
+        'change-words-form': ChangeWordsForm,
+        'change-labels': ListLabels,
+        'change-label-form': ChangeLabelsForm,
+        'learn': Learn,
+        'quiz': Quiz
+    });
 });
+
+/**
+ * Call classes
+ * If require here these objects, will be slow!
+ *
+ * @param {object} page
+ * @param {object} routes
+ */
+function router(page, routes)
+{
+    const id = page.id;
+    const currentRoute = routes[id];
+
+    if (!currentRoute)
+    {
+        return console.error(`This route id (${id}) does not exist!`);
+    }
+
+    new currentRoute(page);
+}
