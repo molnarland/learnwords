@@ -1,4 +1,5 @@
 const DB = require('./DB');
+const Model = require('../model/Label');
 
 class Label extends DB
 {
@@ -9,9 +10,11 @@ class Label extends DB
         this.table = 'labels';
     }
 
-    insertLabel (userId, label, callback)
+    insertLabel (userId, name, callback)
     {
-        this.insertOne(this.table, {name: label, userId: userId}, callback);
+        const label = new Model(userId, name);
+
+        this.insertOne(this.table, label, callback);
     }
 
     getAllLabels (userId, callback)
@@ -19,9 +22,12 @@ class Label extends DB
         this.getAll(this.table, callback, {userId: userId});
     }
 
-    updateLabel (userId, oldLabel, newLabel, callback)
+    updateLabel (userId, oldName, newName, callback)
     {
-        this.updateOne(this.table, {userId: userId, name: oldLabel}, { $set: {name: newLabel} }, callback);
+        const oldLabel = new Model(userId, oldName);
+        const newLabel = new Model(userId, newName);
+
+        this.updateOne(this.table, oldLabel, { $set: newLabel }, callback);
     }
 
     deleteLabel (id, callback)
