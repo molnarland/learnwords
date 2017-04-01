@@ -1,6 +1,6 @@
-const Broad = require('./Broad');
+const DB = require('./DB');
 
-class User extends Broad
+class User extends DB
 {
     constructor ()
     {
@@ -44,7 +44,7 @@ class User extends Broad
 
     findName (name, callback)
     {
-        this.findOne(this.table, {name: name}, callback)
+        this.getOne(this.table, {name: name}, callback)
     };
 
     insertNameWithDatas (name, native, learnable, callback)

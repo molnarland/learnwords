@@ -1,6 +1,6 @@
-const Broad = require('./Broad');
+const DB = require('./DB');
 
-class Word extends Broad
+class Word extends DB
 {
     constructor ()
     {

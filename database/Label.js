@@ -1,6 +1,6 @@
-const Broad = require('./Broad');
+const DB = require('./DB');
 
-class Label extends Broad
+class Label extends DB
 {
     constructor ()
     {

@@ -1,6 +1,6 @@
 const MongoConnect = require('./MongoConnect');
 
-class Broad extends MongoConnect
+class DB extends MongoConnect
 {
     constructor ()
     {
@@ -51,7 +51,7 @@ class Broad extends MongoConnect
      * @param {object} object
      * @param {function} callback
      */
-    findOne (table, object, callback)
+    getOne (table, object, callback)
     {
         this.connect((db, programCallback) =>
         {
@@ -105,4 +105,4 @@ class Broad extends MongoConnect
     }
 }
 
-module.exports = Broad;
+module.exports = DB;
