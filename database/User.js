@@ -1,4 +1,5 @@
 const DB = require('./DB');
+const Model = require('../model/User');
 
 class User extends DB
 {
@@ -44,17 +45,23 @@ class User extends DB
 
     findName (name, callback)
     {
-        this.getOne(this.table, {name: name}, callback)
+        const user = new Model(name);
+
+        this.getOne(this.table, user, callback)
     };
 
     insertNameWithDatas (name, native, learnable, callback)
     {
-        this.insertOne(this.table, {name: name, native: native, learnable: learnable}, callback);
+        const user = new Model(name, native, learnable);
+
+        this.insertOne(this.table, user, callback);
     };
 
     insertOnlyName (name, callback)
     {
-        this.insertOne(this.table, {name: name}, callback);
+        const user = new Model(name);
+
+        this.insertOne(this.table, user, callback);
     }
 }
 

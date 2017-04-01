@@ -1,15 +1,19 @@
 const test = require('unit.js');
 
-let Label = require('../database/Label');
-Label = new Label();
-let DB = require('../database/DB');
-DB = new DB();
+
+
 
 
 describe('Database', () =>
 {
+    let DB = require('../database/DB');
+    DB = new DB();
+
     describe('Label', () =>
     {
+        let Label = require('../database/Label');
+        Label = new Label();
+
         it('#insertLabel()', (done) =>
         {
             Label.insertLabel('10', 'bla', (result) =>
@@ -40,19 +44,31 @@ describe('Database', () =>
         });
     });
 
-    describe('Models', () =>
+    describe('User', () =>
     {
-        it('Label', () =>
+        let User = require('../database/User');
+        User = new User();
+
+        it('#insertNameWithDatas()', (done) =>
         {
-            const LabelModel = require('../model/Label');
-            const expect = {
-                userId: 1,
-                name: 'bla',
-                _id: 'ewrewrew'
-            };
+            User.insertNameWithDatas('gazsi', 'olasz', 'japán', (result) =>
+            {
+                test.object(result.ops[0]).match({name: 'gazsi', native: 'olasz', learnable: 'japán'});
 
+                done();
+            });
+        });
 
-            test.object(new LabelModel(1, 'bla', 'ewrewrew')).match(expect);
+        it('#findName()', (done) =>
+        {
+            User.findName('gazsi', (result) =>
+            {
+                test.object(result).match({name: 'gazsi', native: 'olasz', learnable: 'japán'});
+
+                done();
+            });
         });
     });
+
+
 });
