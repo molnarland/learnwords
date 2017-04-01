@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "clear && node app.js",
+    "test": "clear && mocha",
+    "menu": "clear && cd public/ && gulp jsMenu",
+    "sass": "clear && cd public/ && gulp sass"
   },
   "dependencies": {
     "body-parser": "^1.16.1",

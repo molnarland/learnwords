@@ -22,6 +22,7 @@ ons-template#change-words-form
                     label.center Photo:
                     label(for="upload-file").wide.right
                         ons-input(placeholder="tap..." disabled)#file-upload-input
+                        img.photo-preview
                 +ios-form-list-item('Label', 'label-input')(tag="select" type="")
 
             ons-if(platform="android")
@@ -30,6 +31,7 @@ ons-template#change-words-form
                 ons-list-item
                     label(for="upload-file").wide.center
                         ons-input(placeholder="Upload file" float disabled)#file-upload-input
+                        img.photo-preview
                 +android-form-list-item('Label', 'label-input')(tag="select" type="")
 
             input(type="file")#upload-file.none
@@ -48,3 +50,4 @@ ons-template#change-words-form
 
         p
             ons-button(modifier="large")#save Save
+        p#delete-wrapper

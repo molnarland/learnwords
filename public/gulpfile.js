@@ -33,7 +33,8 @@ var paths = new Paths();
 var webpackObjectMaker = function (task)
 {
     return {
-        entry: paths.changePathForWebpackEntry(task),
+        // entry: paths.changePathForWebpackEntry(task),
+        entry: './javascripts/es6/menu/index.js',
         output: {
             path: __dirname + '/javascripts',
             filename: paths.getOutputFileName(task),
@@ -59,26 +60,15 @@ var webpackObjectMaker = function (task)
     };
 };
 
-var notifyObjectMaker = function (task, error)
+var notifyObjectMaker = function (task)
 {
-    if (error)
-    {
-        return {
-            title: task,
-            message: error,
-            onLast: true,
-            emitError: true
-        }
+    return {
+        title: task,
+        message: 'Compiled!',
+        onLast: true,
+        emitError: true
     }
-    else
-    {
-        return {
-            title: task,
-            message: 'Compiled',
-            onLast: true,
-            emitError: true
-        }
-    }
+
 };
 
 var taskNames = {
@@ -91,13 +81,7 @@ var taskNames = {
 gulp.task(taskNames.index, function ()
 {
     gulp.src(paths.jsIndex)
-        .pipe(webpack(webpackObjectMaker(taskNames.index), null, function (error, stats)
-        {
-            if (stats.compilation.errors.length > 0)
-            {
-                notify(notifyObjectMaker(taskNames.menu, stats.compilation.errors[0].error.error));
-            }
-        }))
+        .pipe(webpack(webpackObjectMaker(taskNames.index)))
         .pipe(gulp.dest(paths.output))
         .pipe(notify(notifyObjectMaker(taskNames.index)));
 });
@@ -105,13 +89,10 @@ gulp.task(taskNames.index, function ()
 gulp.task(taskNames.menu, function ()
 {
     gulp.src(paths.jsMenu)
-        .pipe(webpack(webpackObjectMaker(taskNames.menu), null, function (error, stats)
-        {
-            if (stats.compilation.errors.length > 0)
-            {
-                notify(notifyObjectMaker(taskNames.menu, stats.compilation.errors[0].error.error));
-            }
-        }))
+        .pipe(webpack(webpackObjectMaker(taskNames.menu)/*, null, function(err, stats) {
+            console.log(stats.compilation.errors.toString());
+            console.log(stats.compilation.warnings.toString());
+        }*/))
         .pipe(gulp.dest(paths.output))
         .pipe(notify(notifyObjectMaker(taskNames.menu)));
 });

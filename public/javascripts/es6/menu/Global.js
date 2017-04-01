@@ -14,6 +14,8 @@ export default class Global
         this.urlOfWordMethods = '/words';
         this.urlOfLabelMethods = '/labels';
 
+        this.directoryOfPhotos = '/photos';
+
         this.initInputCleaners();
     }
 

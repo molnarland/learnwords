@@ -1,6 +1,6 @@
 import Listing from './Listing';
 
-export default class ChangeWords extends Listing
+export default class ListWords extends Listing
 {
     constructor (page)
     {

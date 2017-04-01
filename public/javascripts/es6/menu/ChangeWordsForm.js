@@ -24,8 +24,24 @@ export default class ChangeWordsForm extends Form
         this.selectorOfLearnable = '#learnable';
         this.selectorOfUploadFile = '#upload-file';
         this.selectorOfShowedUploadInput = '#file-upload-input';
+        this.selectorOfPhotoPreview = '.photo-preview';
         this.selectorOfSaveButton = '#save';
         this.selectorOfLabel = '#label-input';
+
+
+        this.ajaxOfSaveOne = {
+            url: `${this.urlOfWordMethods}/`,
+            method: 'POST'
+        };
+        this.ajaxOfEditOne = {
+            url: `${this.urlOfWordMethods}/`,
+            method: 'PUT'
+        };
+        this.ajaxOfDeleteOne = {
+            url: `${this.urlOfWordMethods}/`,
+            method: 'DELETE'
+        };
+
 
         this.ajaxOfGetAllLabels = {
             url: `${this.urlOfLabelMethods}/`,
@@ -37,54 +53,21 @@ export default class ChangeWordsForm extends Form
 
     init ()
     {
-        this.q(this.selectorOfTitle).innerHTML = this.page.data.title;
+        super.init();
 
         this.setOptionsOfLabelInput();
         this.handlingOfUploadFile();
-
-        let listenerOfSaveButtonClick = this.setNewWord.bind(this);
-        console.log(this.page.data.title, this.page.data.titleOfEdit, typeof this.page.data.item, this.page.data.title === this.page.data.titleOfEdit && typeof this.page.data.item === 'object');
-        if (this.page.data.title === this.page.data.titleOfEdit && typeof this.page.data.item === 'object')
-        {
-            this.setValues();
-            listenerOfSaveButtonClick = this.editWord.bind(this);
-        }
-
-
-        this.q(this.selectorOfSaveButton).addEventListener('click', () => listenerOfSaveButtonClick());
     }
 
 
-    handlingOfUploadFile ()
-    {
-        this.q(this.selectorOfUploadFile).addEventListener('change', (event) =>
-        {
-            let elem = event.target,
-                files = elem.files;
-            if (files && files.length > 0)
-            {
-                const file = files[0];
-                const showedUploadInput = document.querySelector(this.selectorOfShowedUploadInput);
-
-                showedUploadInput.value = file.name;
-
-                if (file.type.split('/')[0] !== 'image')
-                {
-                    showedUploadInput.dataset.error = 'Just images uploadable';
-                    this.q(this.selectorOfSaveButton).disabled = true;
-                }
-                else
-                {
-                    delete showedUploadInput.dataset.error;
-                    this.q(this.selectorOfSaveButton).disabled = false;
-                }
-            }
-        });
-    }
-
-    setNewWord ()
+    setNewItem ()
     {
         const file = this.q(this.selectorOfUploadFile).files[0];
+        let data = {
+            native: this.q(this.selectorOfNative).value,
+            learnable: this.q(this.selectorOfLearnable).value,
+            label: this.q(this.selectorOfLabel).value
+        };
 
         if (file)
         {
@@ -92,11 +75,17 @@ export default class ChangeWordsForm extends Form
                 url:'/files/photo',
                 data: file,
                 file: true,
-                success: this.postAWord
+                success: (photo) =>
+                {
+                    data.photo = photo;
+                    super.setNewItem({
+                        data: data
+                    })
+                }
             });
         }
 
-        return this.postAWord(null);
+        return super.setNewItem(data);
     }
 
     postAWord (photo)
@@ -159,15 +148,63 @@ export default class ChangeWordsForm extends Form
 
         this.q(this.selectorOfNative).value = word.native;
         this.q(this.selectorOfLearnable).value = word.learnable;
-        //TODO picture
+        this.showPhoto(`${this.directoryOfPhotos}/${word.photo}`);
         this.q(this.selectorOfLabel).value = word.labelId;
     }
 
     editItem ()
     {
-        super.editItem({/*data*/});
+        super.editItem({
+            data: {/*data*/}
+        });
     }
 
+
+    handlingOfUploadFile ()
+    {
+        this.q(this.selectorOfUploadFile).addEventListener('change', (event) =>
+        {
+            let files = event.target.files;
+
+            if (files && files.length > 0)
+            {
+                const file = files[0];
+                const showedUploadInput = document.querySelector(this.selectorOfShowedUploadInput);
+
+
+                showedUploadInput.value = file.name;
+
+                if (file.type.split('/')[0] !== 'image')
+                {
+                    this.q(this.selectorOfPhotoPreview).removeAttribute('src');
+                    showedUploadInput.dataset.error = 'Images upload only';
+                    this.q(this.selectorOfSaveButton).disabled = true;
+
+                }
+                else
+                {
+                    this.preShowPhoto(file);
+                    delete showedUploadInput.dataset.error;
+                    this.q(this.selectorOfSaveButton).disabled = false;
+                }
+            }
+        });
+    }
+
+    preShowPhoto (file)
+    {
+        const reader = new FileReader();
+        reader.onload = (e) =>
+        {
+            this.showPhoto(e.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    showPhoto (photo)
+    {
+        this.q(this.selectorOfPhotoPreview).setAttribute('src', photo);
+    }
 
     /*initInputs ()
     {

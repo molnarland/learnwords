@@ -26,18 +26,12 @@ export default class ChangeLabelsForm extends Form
         this.init();
     }
 
-    init ()
-    {
-        super.init(() =>
-        {
-            this.q(this.selectorOfLabelInput).value = this.page.data.item.name;
-        });
-    }
-
     setNewItem ()
     {
         super.setNewItem({
-            label: this.getLabelFromInput()
+            data:{
+                label: this.getLabelFromInput()
+            }
         });
     }
 
@@ -49,9 +43,11 @@ export default class ChangeLabelsForm extends Form
     editItem ()
     {
         super.editItem({
-            userId: this.page.data.item.userId,
-            oldLabel: this.page.data.item.name,
-            newLabel: this.getLabelFromInput()
+            data: {
+                userId: this.page.data.item.userId,
+                oldLabel: this.page.data.item.name,
+                newLabel: this.getLabelFromInput()
+            }
         });
     }
 

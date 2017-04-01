@@ -26,14 +26,15 @@ export default class Form extends Global
         };
     }
 
-    init (setValues)
+
+    init ()
     {
         this.q(this.selectorOfTitle).innerHTML = this.page.data.title;
 
         let listenerOfSaveButtonClick = this.setNewItem.bind(this); //this is default
         if (this.page.data.title === this.page.data.titleOfEdit && typeof this.page.data.item === 'object')
         {
-            setValues();
+            this.setValues();
             listenerOfSaveButtonClick = this.editItem.bind(this); //if wanna
 
             this.setUpDeleteButton();
@@ -43,8 +44,14 @@ export default class Form extends Global
         this.q(this.selectors.saveButton).addEventListener('click', () => listenerOfSaveButtonClick());
     }
 
-    setNewItem (data)
+    /**
+     * @param {function} [before]
+     * @param {object} data
+     */
+    setNewItem ({before = new Function(), data})
     {
+        before();
+
         this.ajax({
             method: this.ajaxOfSaveOne.method,
             url: this.ajaxOfSaveOne.url,
@@ -61,8 +68,14 @@ export default class Form extends Global
 
     setValues () {}
 
-    editItem (data)
+    /**
+     * @param {function} [before]
+     * @param {object} data
+     */
+    editItem ({before = new Function(), data})
     {
+        before();
+
         this.ajax({
             method: this.ajaxOfEditOne.method,
             url: this.ajaxOfEditOne.url,

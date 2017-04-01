@@ -1,6 +1,6 @@
 import Listing from './Listing';
 
-export default class ChangeLabels extends Listing
+export default class ListLabels extends Listing
 {
     constructor(page)
     {

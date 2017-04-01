@@ -42,8 +42,8 @@ document.addEventListener('init', (event) =>
  */
 function router(page, routes)
 {
-    const id = page.id;
-    const currentRoute = routes[id];
+    let id = page.id;
+    let currentRoute = routes[id];
 
     if (!currentRoute)
     {
