@@ -1,4 +1,6 @@
-class Label
+const Model = require('./Model');
+
+class Label extends Model
 {
     /**
      * @param {string} userId
@@ -7,13 +9,10 @@ class Label
      */
     constructor (userId, name, _id = null)
     {
+        super(_id);
+
         this.userId = userId;
         this.name = name;
-
-        if (_id)
-        {
-            this._id = _id;
-        }
     }
 }
 

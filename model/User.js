@@ -1,4 +1,6 @@
-class User
+const Model = require('./Model');
+
+class User extends Model
 {
     /**
      * @param {string} name
@@ -8,11 +10,11 @@ class User
      */
     constructor (name, native = null, learnable = null, _id = null)
     {
-        this.name = name;
+        super(_id);
 
+        this.name = name;
         if (native) this.native = native;
         if (learnable) this.learnable = learnable;
-        if (_id) this._id = _id;
     }
 }
 

@@ -1,4 +1,6 @@
-class Word
+const Model = require('./Model');
+
+class Word extends Model
 {
     /**
      * @param {string} userId
@@ -6,19 +8,17 @@ class Word
      * @param {string} learnable
      * @param {string} labelId
      * @param {string} [photo]
+     * @param {string} [_id]
      */
-    constructor (userId, native, learnable, labelId, photo = null)
+    constructor (userId, native, learnable, labelId, photo = null, _id = null)
     {
+        super(_id);
+
         this.userId = userId;
         this.native = native;
         this.learnable = learnable;
         this.labelId = labelId;
         if (photo) this.photo = photo;
-    }
-
-    getUserId ()
-    {
-        return {userId: this.userId};
     }
 }
 
