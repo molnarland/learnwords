@@ -29166,7 +29166,7 @@
 	
 	            this.q(this.selectorOfNative).value = word.native;
 	            this.q(this.selectorOfLearnable).value = word.learnable;
-	            this.showPhoto(this.directoryOfPhotos + '/' + word.photo);
+	            this.showPhoto(word.photo);
 	            this.q(this.selectorOfLabel).value = word.labelId;
 	        }
 	    }, {
@@ -29177,10 +29177,9 @@
 	            var file = this.getFile();
 	            var oldPhoto = this.page.data.item.photo;
 	            var data = {
-	                newNative: this.getNative(),
-	                oldNative: this.page.data.item.native,
-	                newLearnable: this.getLearnable(),
-	                oldLearnable: this.page.data.item.learnable,
+	                id: this.page.data.item._id,
+	                native: this.getNative(),
+	                learnable: this.getLearnable(),
 	                label: this.getLabel()
 	            };
 	
@@ -29191,8 +29190,7 @@
 	                    file: true,
 	                    data: file,
 	                    success: function success(photo) {
-	                        data.newPhoto = photo;
-	                        data.oldPhoto = oldPhoto;
+	                        data.photo = photo;
 	                        _get(ChangeWordsForm.prototype.__proto__ || Object.getPrototypeOf(ChangeWordsForm.prototype), 'editItem', _this5).call(_this5, { data: data });
 	                    }
 	                });
@@ -29240,7 +29238,10 @@
 	    }, {
 	        key: 'showPhoto',
 	        value: function showPhoto(photo) {
-	            this.q(this.selectorOfPhotoPreview).setAttribute('src', photo);
+	            if (photo) {
+	                photo = this.directoryOfPhotos + '/' + photo;
+	                this.q(this.selectorOfPhotoPreview).setAttribute('src', photo);
+	            }
 	        }
 	    }, {
 	        key: 'getNative',

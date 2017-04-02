@@ -67,6 +67,16 @@ class DB extends MongoConnect
 
     /**
      * @param {string} table
+     * @param {string} id
+     * @param {function} callback
+     */
+    getById (table, id, callback)
+    {
+        this.getOne(table, {_id: this.objectId(id)}, callback);
+    }
+
+    /**
+     * @param {string} table
      * @param {object} filter
      * @param {object} update
      * @param {function} callback

@@ -1,13 +1,13 @@
 const router = require('express').Router();
 
-let Labels = require('../../database/Label');
-Labels = new Labels();
+const Labels = require('../../database/Label');
+const labels = new Labels();
 
 
 router.route('/')
     .get((req, res, next) =>
     {
-        Labels.getAllLabels(req.session.user._id, (result) =>
+        labels.getAll(req.session.user._id, (result) =>
         {
             res.send(result);
         });
@@ -16,7 +16,7 @@ router.route('/')
     {
         const label = req.body.label;
 
-        Labels.insertLabel(req.session.user._id, label, () =>
+        labels.insertOne(req.session.user._id, label, () =>
         {
             res.send(true);
         });
@@ -27,7 +27,7 @@ router.route('/')
         const newLabel = req.body.newLabel;
         const oldLabel = req.body.oldLabel;
 
-        Labels.updateLabel(userId, oldLabel, newLabel, () =>
+        labels.updateOne(userId, oldLabel, newLabel, () =>
         {
             res.send(true);
         })
@@ -36,7 +36,7 @@ router.route('/')
     {
         const id = req.body.id;
 
-        Labels.deleteLabel(id, () =>
+        labels.deleteById(id, () =>
         {
             res.send(true);
         })

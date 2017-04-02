@@ -28,7 +28,7 @@ describe('Database', () =>
         {
             Label.updateOne('10', 'bla', 'ehhehh', (result) =>
             {
-                test.number(result.result.n).is(1);
+                test.number(result.modifiedCount).is(1);
 
 
                 let labelModel = require('../model/Label');
@@ -89,6 +89,36 @@ describe('Database', () =>
 
                 done();
             })
+        });
+
+        it('#updateOne()', (done) =>
+        {
+            DB.getOne('words', {userId: '20', native: 'olasz'}, (result) =>
+            {
+                const _id = result._id;
+
+                Word.updateOne(_id, 'kurva', 'bitch', 'qqq.jpg', '45', (result) =>
+                {
+                    test.number(result.modifiedCount).is(1);
+
+
+                    let wordModel = require('../model/Word');
+                    wordModel = new wordModel(null, 'kurva', 'bitch', '45', 'qqq.jpg');
+
+                    DB.getOne('words', wordModel, (result) =>
+                    {
+                        test.object(result).match({
+                            native: 'kurva',
+                            learnable: 'bitch',
+                            photo: 'qqq.jpg',
+                            labelId: '45'
+                        });
+
+                        done();
+                    });
+                });
+
+            });
         });
     });
 });

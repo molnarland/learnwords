@@ -3,7 +3,7 @@ const Model = require('./Model');
 class Word extends Model
 {
     /**
-     * @param {string} userId
+     * @param {string} [userId]
      * @param {string} native
      * @param {string} learnable
      * @param {string} labelId
@@ -14,7 +14,7 @@ class Word extends Model
     {
         super(_id);
 
-        this.userId = userId;
+        if (userId) this.userId = userId;
         this.native = native;
         this.learnable = learnable;
         this.labelId = labelId;

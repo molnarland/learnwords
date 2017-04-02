@@ -1,13 +1,14 @@
-let express = require('express');
-let router = express.Router();
+const express = require('express');
+const router = express.Router();
+const fs = require('fs');
 
-let Words = require('../../database/Word');
-Words = new Words();
+const Words = require('../../database/Word');
+const words = new Words();
 
 router.route('/')
     .get((req, res, next) =>
     {
-        Words.getAll(global.getUserId(req), (result) =>
+        words.getAll(global.getUserId(req), (result) =>
         {
             res.send(result);
         });
@@ -20,7 +21,7 @@ router.route('/')
         const labelId = req.body.label;
         const photo = req.body.photo;
 
-        Words.insertWord(userId, native, learnable, photo, labelId, (/*result*/) =>
+        words.insertOne(userId, native, learnable, photo, labelId, (/*result*/) =>
         {
             res.send(true);
         });
@@ -29,19 +30,42 @@ router.route('/')
     {
         const body = req.body;
 
-        const userId = global.getUserId(req);
-        const newNative = body.newNative;
-        const oldNative = body.oldNative;
-        const newLearnable = body.newLearnable;
-        const oldLearnable = body.oldLearnable;
+        const id = body.id;
+        const native = body.native;
+        const learnable = body.learnable;
         const labelId = body.label;
-        const newPhoto = body.newPhoto || null;
-        const oldPhoto = body.oldPhoto || null;
+        const photo = body.photo || null;
 
-        console.log(userId, newNative, oldNative, newLearnable, oldLearnable, labelId, newPhoto, oldPhoto);
+        if (photo)
+        {
+            deleteOldPhoto(id);
+        }
 
-
+        words.updateOne(id, native, learnable, photo, labelId, (/*result*/) =>
+        {
+            res.send(true);
+        });
     });
 
+
+function deleteOldPhoto (id, callback = new Function())
+{
+    words.getById(id, (result) =>
+    {
+        const oldPhoto = global.photoDirectory + result.photo;
+        fs.exists(oldPhoto, (exists) =>
+        {
+            if (exists)
+            {
+                fs.unlink(oldPhoto, () =>
+                {
+                    return callback(true);
+                });
+            }
+
+            return callback(false);
+        });
+    });
+}
 
 module.exports = router;

@@ -146,7 +146,7 @@ export default class ChangeWordsForm extends Form
 
         this.q(this.selectorOfNative).value = word.native;
         this.q(this.selectorOfLearnable).value = word.learnable;
-        this.showPhoto(`${this.directoryOfPhotos}/${word.photo}`);
+        this.showPhoto(word.photo);
         this.q(this.selectorOfLabel).value = word.labelId;
     }
 
@@ -155,10 +155,9 @@ export default class ChangeWordsForm extends Form
         const file = this.getFile();
         const oldPhoto = this.page.data.item.photo;
         let data = {
-            newNative: this.getNative(),
-            oldNative: this.page.data.item.native,
-            newLearnable: this.getLearnable(),
-            oldLearnable: this.page.data.item.learnable,
+            id: this.page.data.item._id,
+            native: this.getNative(),
+            learnable: this.getLearnable(),
             label: this.getLabel(),
         };
 
@@ -171,8 +170,7 @@ export default class ChangeWordsForm extends Form
                 data: file,
                 success: (photo) =>
                 {
-                    data.newPhoto = photo;
-                    data.oldPhoto = oldPhoto;
+                    data.photo = photo;
                     super.editItem({data: data});
                 }
             });
@@ -225,7 +223,11 @@ export default class ChangeWordsForm extends Form
 
     showPhoto (photo)
     {
-        this.q(this.selectorOfPhotoPreview).setAttribute('src', photo);
+        if (photo)
+        {
+            photo = `${this.directoryOfPhotos}/${photo}`;
+            this.q(this.selectorOfPhotoPreview).setAttribute('src', photo);
+        }
     }
 
     getNative ()
