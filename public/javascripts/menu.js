@@ -70,11 +70,15 @@
 	
 	var _LabelsForm2 = _interopRequireDefault(_LabelsForm);
 	
-	var _Learn = __webpack_require__(14);
+	var _SettingsLearn = __webpack_require__(14);
+	
+	var _SettingsLearn2 = _interopRequireDefault(_SettingsLearn);
+	
+	var _Learn = __webpack_require__(15);
 	
 	var _Learn2 = _interopRequireDefault(_Learn);
 	
-	var _Quiz = __webpack_require__(15);
+	var _Quiz = __webpack_require__(16);
 	
 	var _Quiz2 = _interopRequireDefault(_Quiz);
 	
@@ -100,6 +104,7 @@
 	        'change-words-form': _WordsForm2.default,
 	        'change-labels': _ListLabels2.default,
 	        'change-label-form': _LabelsForm2.default,
+	        'settings-learn': _SettingsLearn2.default,
 	        'learn': _Learn2.default,
 	        'quiz': _Quiz2.default
 	    });
@@ -28175,8 +28180,21 @@
 	        var _this = _possibleConstructorReturn(this, (Menu.__proto__ || Object.getPrototypeOf(Menu)).call(this, page));
 	
 	        _this.infoOfMainPages = {
-	            addWords: { button: '#change-words', urlHash: 'change_words', onsPage: 'change-words' },
-	            addLabels: { button: '#change-labels', urlHash: 'change_labels', onsPage: 'change-labels' }
+	            addWords: {
+	                button: '#change-words',
+	                urlHash: 'change_words',
+	                onsPage: 'change-words'
+	            },
+	            addLabels: {
+	                button: '#change-labels',
+	                urlHash: 'change_labels',
+	                onsPage: 'change-labels'
+	            },
+	            learn: {
+	                button: '#settings-learn',
+	                urlHash: 'learn',
+	                onsPage: 'settings-learn'
+	            }
 	        };
 	
 	        _this.goToPageByButtonClick();
@@ -29803,6 +29821,28 @@
 	    value: true
 	});
 	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var SettingsLearn = function SettingsLearn() {
+	    _classCallCheck(this, SettingsLearn);
+	
+	    console.log(_typeof(this));
+	};
+	
+	exports.default = SettingsLearn;
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var Learn = function Learn(page) {
@@ -29812,7 +29852,7 @@
 	exports.default = Learn;
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports) {
 
 	"use strict";

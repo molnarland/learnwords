@@ -7,8 +7,21 @@ export default class Menu extends Global
         super(page);
 
         this.infoOfMainPages = {
-            addWords: {button: '#change-words', urlHash: 'change_words', onsPage: 'change-words'},
-            addLabels: {button: '#change-labels', urlHash: 'change_labels', onsPage: 'change-labels'}
+            addWords: {
+                button: '#change-words',
+                urlHash: 'change_words',
+                onsPage: 'change-words'
+            },
+            addLabels: {
+                button: '#change-labels',
+                urlHash: 'change_labels',
+                onsPage: 'change-labels'
+            },
+            learn: {
+                button: '#settings-learn',
+                urlHash: 'learn',
+                onsPage: 'settings-learn'
+            }
         };
 
         this.goToPageByButtonClick();
@@ -51,4 +64,5 @@ export default class Menu extends Global
             this.q(infoOfCurrentPage.button).click();
         }
     }
+
 }

@@ -5,6 +5,7 @@ import ListWords from './ListWords';
 import WordsForm from './WordsForm';
 import ListLabels from './ListLabels';
 import LabelsForm from './LabelsForm';
+import SettingsLearn from './SettingsLearn';
 import Learn from './Learn';
 import Quiz from './Quiz';
 
@@ -28,6 +29,7 @@ document.addEventListener('init', (event) =>
         'change-words-form': WordsForm,
         'change-labels': ListLabels,
         'change-label-form': LabelsForm,
+        'settings-learn': SettingsLearn,
         'learn': Learn,
         'quiz': Quiz
     });

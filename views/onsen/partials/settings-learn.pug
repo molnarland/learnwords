@@ -1,0 +1,15 @@
+ons-template#settings-learn
+    ons-page#settings-learn
+        ons-toolbar
+            .left
+                ons-back-button Main
+            .center Learn
+            .right
+                //go to learn after settings something like this
+                ons-if(platform="ios other")
+                    ons-toolbar-button#plus-label New
+
+        //go to learn after settings something like this
+        ons-if(platform="android")
+            ons-fab(position="bottom right")#plus-label
+                ons-icon(icon="md-plus")
