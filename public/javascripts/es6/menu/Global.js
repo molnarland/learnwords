@@ -63,17 +63,17 @@ export default class Global
     }
 
     /**
-     * @param {string} method
+     * @param {string} [method]
      * @param {string} url
      * @param {object} [data]
      * @param {function} success
      * @param {boolean} [file]
      */
-    ajax ({method, url, data = {}, success, file = false})
+    ajax ({method = 'POST', url, data = {}, success, file = false})
     {
         if (!file)
         {
-            if (method == 'GET' || method == 'get')
+            if (method === 'GET' || method === 'get')
             {
                 this.getAjax(url, success);
             }
@@ -84,7 +84,13 @@ export default class Global
         }
         else
         {
-            this.ajaxFileUpload(url, data, success);
+            if (method === 'GET' || method === 'get')
+            {
+                throw new Error('Cannot run ajax with GET method');
+            }
+
+
+            this.ajaxFileUpload(method, url, data, success);
         }
     }
 
@@ -109,17 +115,18 @@ export default class Global
     }
 
     /**
+     * @param {string} method
      * @param {string} url
      * @param {file}  file
      * @param {function} success
      */
-    ajaxFileUpload (url, file, success)
+    ajaxFileUpload (method, url, file, success)
     {
         const formData = new FormData();
         formData.append('file', file);
 
         let xobj = new XMLHttpRequest();
-        xobj.open('POST', `/ajax${url}`, true);
+        xobj.open(method, `/ajax${url}`, true);
         xobj.onreadystatechange = () =>
         {
             if (xobj.readyState == 4 && xobj.status == "200")

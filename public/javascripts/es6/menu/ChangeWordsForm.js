@@ -62,11 +62,11 @@ export default class ChangeWordsForm extends Form
 
     setNewItem ()
     {
-        const file = this.q(this.selectorOfUploadFile).files[0];
+        const file = this.getFile();
         let data = {
-            native: this.q(this.selectorOfNative).value,
-            learnable: this.q(this.selectorOfLearnable).value,
-            label: this.q(this.selectorOfLabel).value
+            native: this.getNative(),
+            learnable: this.getLearnable(),
+            label: this.getLabel()
         };
 
         if (file)
@@ -78,14 +78,12 @@ export default class ChangeWordsForm extends Form
                 success: (photo) =>
                 {
                     data.photo = photo;
-                    super.setNewItem({
-                        data: data
-                    })
+                    super.setNewItem({data: data})
                 }
             });
         }
 
-        return super.setNewItem(data);
+        return super.setNewItem({data});
     }
 
     postAWord (photo)
@@ -154,9 +152,33 @@ export default class ChangeWordsForm extends Form
 
     editItem ()
     {
-        super.editItem({
-            data: {/*data*/}
-        });
+        const file = this.getFile();
+        const oldPhoto = this.page.data.item.photo;
+        let data = {
+            newNative: this.getNative(),
+            oldNative: this.page.data.item.native,
+            newLearnable: this.getLearnable(),
+            oldLearnable: this.page.data.item.learnable,
+            label: this.getLabel(),
+        };
+
+        if (file)
+        {
+            return this.ajax({
+                method: 'PUT',
+                url: '/files/photo/',
+                file: true,
+                data: file,
+                success: (photo) =>
+                {
+                    data.newPhoto = photo;
+                    data.oldPhoto = oldPhoto;
+                    super.editItem({data: data});
+                }
+            });
+        }
+
+        super.editItem({data: data});
     }
 
 
@@ -204,6 +226,26 @@ export default class ChangeWordsForm extends Form
     showPhoto (photo)
     {
         this.q(this.selectorOfPhotoPreview).setAttribute('src', photo);
+    }
+
+    getNative ()
+    {
+        return this.q(this.selectorOfNative).value;
+    }
+
+    getLearnable ()
+    {
+        return this.q(this.selectorOfLearnable).value
+    }
+
+    getLabel ()
+    {
+        return this.q(this.selectorOfLabel).value
+    }
+
+    getFile ()
+    {
+        return this.q(this.selectorOfUploadFile).files[0];
     }
 
     /*initInputs ()

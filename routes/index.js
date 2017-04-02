@@ -13,7 +13,7 @@ router.route('/')
     {
         const name = req.body.name;
 
-        User.findName(name, (result) =>
+        User.getOne(name, (result) =>
         {
             if (result)
             {
@@ -47,9 +47,9 @@ router.route('/start')
             native = req.body.native,
             learnable = req.body.learnable;
 
-        User.insertNameWithDatas(name, native, learnable, () =>
+        User.insertOne(name, native, learnable, () =>
         {
-            User.findName(name, (result) =>
+            User.getOne(name, (result) =>
             {
                 req.session.user = result;
 

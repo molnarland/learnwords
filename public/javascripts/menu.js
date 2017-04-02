@@ -28349,7 +28349,7 @@
 	        }
 	
 	        /**
-	         * @param {string} method
+	         * @param {string} [method]
 	         * @param {string} url
 	         * @param {object} [data]
 	         * @param {function} success
@@ -28359,7 +28359,8 @@
 	    }, {
 	        key: 'ajax',
 	        value: function ajax(_ref) {
-	            var method = _ref.method,
+	            var _ref$method = _ref.method,
+	                method = _ref$method === undefined ? 'POST' : _ref$method,
 	                url = _ref.url,
 	                _ref$data = _ref.data,
 	                data = _ref$data === undefined ? {} : _ref$data,
@@ -28368,13 +28369,17 @@
 	                file = _ref$file === undefined ? false : _ref$file;
 	
 	            if (!file) {
-	                if (method == 'GET' || method == 'get') {
+	                if (method === 'GET' || method === 'get') {
 	                    this.getAjax(url, success);
 	                } else {
 	                    this.postBasedAjax(method, url, data, success);
 	                }
 	            } else {
-	                this.ajaxFileUpload(url, data, success);
+	                if (method === 'GET' || method === 'get') {
+	                    throw new Error('Cannot run ajax with GET method');
+	                }
+	
+	                this.ajaxFileUpload(method, url, data, success);
 	            }
 	        }
 	
@@ -28397,6 +28402,7 @@
 	        }
 	
 	        /**
+	         * @param {string} method
 	         * @param {string} url
 	         * @param {file}  file
 	         * @param {function} success
@@ -28404,14 +28410,14 @@
 	
 	    }, {
 	        key: 'ajaxFileUpload',
-	        value: function ajaxFileUpload(url, file, success) {
+	        value: function ajaxFileUpload(method, url, file, success) {
 	            var _this2 = this;
 	
 	            var formData = new FormData();
 	            formData.append('file', file);
 	
 	            var xobj = new XMLHttpRequest();
-	            xobj.open('POST', '/ajax' + url, true);
+	            xobj.open(method, '/ajax' + url, true);
 	            xobj.onreadystatechange = function () {
 	                if (xobj.readyState == 4 && xobj.status == "200") {
 	                    return _this2.checkJson(xobj.responseText, success);
@@ -29058,11 +29064,11 @@
 	        value: function setNewItem() {
 	            var _this2 = this;
 	
-	            var file = this.q(this.selectorOfUploadFile).files[0];
+	            var file = this.getFile();
 	            var data = {
-	                native: this.q(this.selectorOfNative).value,
-	                learnable: this.q(this.selectorOfLearnable).value,
-	                label: this.q(this.selectorOfLabel).value
+	                native: this.getNative(),
+	                learnable: this.getLearnable(),
+	                label: this.getLabel()
 	            };
 	
 	            if (file) {
@@ -29072,14 +29078,12 @@
 	                    file: true,
 	                    success: function success(photo) {
 	                        data.photo = photo;
-	                        _get(ChangeWordsForm.prototype.__proto__ || Object.getPrototypeOf(ChangeWordsForm.prototype), 'setNewItem', _this2).call(_this2, {
-	                            data: data
-	                        });
+	                        _get(ChangeWordsForm.prototype.__proto__ || Object.getPrototypeOf(ChangeWordsForm.prototype), 'setNewItem', _this2).call(_this2, { data: data });
 	                    }
 	                });
 	            }
 	
-	            return _get(ChangeWordsForm.prototype.__proto__ || Object.getPrototypeOf(ChangeWordsForm.prototype), 'setNewItem', this).call(this, data);
+	            return _get(ChangeWordsForm.prototype.__proto__ || Object.getPrototypeOf(ChangeWordsForm.prototype), 'setNewItem', this).call(this, { data: data });
 	        }
 	    }, {
 	        key: 'postAWord',
@@ -29168,37 +29172,56 @@
 	    }, {
 	        key: 'editItem',
 	        value: function editItem() {
-	            _get(ChangeWordsForm.prototype.__proto__ || Object.getPrototypeOf(ChangeWordsForm.prototype), 'editItem', this).call(this, {
-	                data: {/*data*/}
-	            });
+	            var _this5 = this;
+	
+	            var file = this.getFile();
+	            var oldPhoto = this.page.data.item.photo;
+	            var data = {
+	                newNative: this.getNative(),
+	                oldNative: this.page.data.item.native,
+	                newLearnable: this.getLearnable(),
+	                oldLearnable: this.page.data.item.learnable,
+	                label: this.getLabel()
+	            };
+	
+	            if (file) {
+	                return this.ajax({
+	                    method: 'PUT',
+	                    url: '/files/photo/',
+	                    file: true,
+	                    data: file,
+	                    success: function success(photo) {
+	                        data.newPhoto = photo;
+	                        data.oldPhoto = oldPhoto;
+	                        _get(ChangeWordsForm.prototype.__proto__ || Object.getPrototypeOf(ChangeWordsForm.prototype), 'editItem', _this5).call(_this5, { data: data });
+	                    }
+	                });
+	            }
+	
+	            _get(ChangeWordsForm.prototype.__proto__ || Object.getPrototypeOf(ChangeWordsForm.prototype), 'editItem', this).call(this, { data: data });
 	        }
-	
-	        /*setUpDeleteButton ()
-	        {
-	         }*/
-	
 	    }, {
 	        key: 'handlingOfUploadFile',
 	        value: function handlingOfUploadFile() {
-	            var _this5 = this;
+	            var _this6 = this;
 	
 	            this.q(this.selectorOfUploadFile).addEventListener('change', function (event) {
 	                var files = event.target.files;
 	
 	                if (files && files.length > 0) {
 	                    var file = files[0];
-	                    var showedUploadInput = document.querySelector(_this5.selectorOfShowedUploadInput);
+	                    var showedUploadInput = document.querySelector(_this6.selectorOfShowedUploadInput);
 	
 	                    showedUploadInput.value = file.name;
 	
 	                    if (file.type.split('/')[0] !== 'image') {
-	                        _this5.q(_this5.selectorOfPhotoPreview).removeAttribute('src');
+	                        _this6.q(_this6.selectorOfPhotoPreview).removeAttribute('src');
 	                        showedUploadInput.dataset.error = 'Images upload only';
-	                        _this5.q(_this5.selectorOfSaveButton).disabled = true;
+	                        _this6.q(_this6.selectorOfSaveButton).disabled = true;
 	                    } else {
-	                        _this5.preShowPhoto(file);
+	                        _this6.preShowPhoto(file);
 	                        delete showedUploadInput.dataset.error;
-	                        _this5.q(_this5.selectorOfSaveButton).disabled = false;
+	                        _this6.q(_this6.selectorOfSaveButton).disabled = false;
 	                    }
 	                }
 	            });
@@ -29206,11 +29229,11 @@
 	    }, {
 	        key: 'preShowPhoto',
 	        value: function preShowPhoto(file) {
-	            var _this6 = this;
+	            var _this7 = this;
 	
 	            var reader = new FileReader();
 	            reader.onload = function (e) {
-	                _this6.showPhoto(e.target.result);
+	                _this7.showPhoto(e.target.result);
 	            };
 	            reader.readAsDataURL(file);
 	        }
@@ -29218,6 +29241,26 @@
 	        key: 'showPhoto',
 	        value: function showPhoto(photo) {
 	            this.q(this.selectorOfPhotoPreview).setAttribute('src', photo);
+	        }
+	    }, {
+	        key: 'getNative',
+	        value: function getNative() {
+	            return this.q(this.selectorOfNative).value;
+	        }
+	    }, {
+	        key: 'getLearnable',
+	        value: function getLearnable() {
+	            return this.q(this.selectorOfLearnable).value;
+	        }
+	    }, {
+	        key: 'getLabel',
+	        value: function getLabel() {
+	            return this.q(this.selectorOfLabel).value;
+	        }
+	    }, {
+	        key: 'getFile',
+	        value: function getFile() {
+	            return this.q(this.selectorOfUploadFile).files[0];
 	        }
 	
 	        /*initInputs ()

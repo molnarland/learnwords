@@ -7,7 +7,7 @@ Words = new Words();
 router.route('/')
     .get((req, res, next) =>
     {
-        Words.getAllWords(global.getUserId(req), (result) =>
+        Words.getAll(global.getUserId(req), (result) =>
         {
             res.send(result);
         });
@@ -24,6 +24,23 @@ router.route('/')
         {
             res.send(true);
         });
+    })
+    .put((req, res, next) =>
+    {
+        const body = req.body;
+
+        const userId = global.getUserId(req);
+        const newNative = body.newNative;
+        const oldNative = body.oldNative;
+        const newLearnable = body.newLearnable;
+        const oldLearnable = body.oldLearnable;
+        const labelId = body.label;
+        const newPhoto = body.newPhoto || null;
+        const oldPhoto = body.oldPhoto || null;
+
+        console.log(userId, newNative, oldNative, newLearnable, oldLearnable, labelId, newPhoto, oldPhoto);
+
+
     });
 
 
