@@ -58,17 +58,17 @@
 	
 	var _ListWords2 = _interopRequireDefault(_ListWords);
 	
-	var _ChangeWordsForm = __webpack_require__(10);
+	var _WordsForm = __webpack_require__(10);
 	
-	var _ChangeWordsForm2 = _interopRequireDefault(_ChangeWordsForm);
+	var _WordsForm2 = _interopRequireDefault(_WordsForm);
 	
 	var _ListLabels = __webpack_require__(12);
 	
 	var _ListLabels2 = _interopRequireDefault(_ListLabels);
 	
-	var _ChangeLabelsForm = __webpack_require__(13);
+	var _LabelsForm = __webpack_require__(13);
 	
-	var _ChangeLabelsForm2 = _interopRequireDefault(_ChangeLabelsForm);
+	var _LabelsForm2 = _interopRequireDefault(_LabelsForm);
 	
 	var _Learn = __webpack_require__(14);
 	
@@ -97,9 +97,9 @@
 	    router(page, {
 	        'menu': _Menu2.default,
 	        'change-words': _ListWords2.default,
-	        'change-words-form': _ChangeWordsForm2.default,
+	        'change-words-form': _WordsForm2.default,
 	        'change-labels': _ListLabels2.default,
-	        'change-label-form': _ChangeLabelsForm2.default,
+	        'change-label-form': _LabelsForm2.default,
 	        'learn': _Learn2.default,
 	        'quiz': _Quiz2.default
 	    });
@@ -29000,11 +29000,11 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var ChangeWordsForm = function (_Form) {
-	    _inherits(ChangeWordsForm, _Form);
+	var WordsForm = function (_Form) {
+	    _inherits(WordsForm, _Form);
 	
-	    function ChangeWordsForm(page) {
-	        _classCallCheck(this, ChangeWordsForm);
+	    function WordsForm(page) {
+	        _classCallCheck(this, WordsForm);
 	
 	        /*this.datasForInputs = {
 	            native: {
@@ -29019,7 +29019,7 @@
 	            }
 	        };*/
 	
-	        var _this = _possibleConstructorReturn(this, (ChangeWordsForm.__proto__ || Object.getPrototypeOf(ChangeWordsForm)).call(this, page));
+	        var _this = _possibleConstructorReturn(this, (WordsForm.__proto__ || Object.getPrototypeOf(WordsForm)).call(this, page));
 	
 	        _this.selectorOfNative = '#native';
 	        _this.selectorOfLearnable = '#learnable';
@@ -29051,10 +29051,10 @@
 	        return _this;
 	    }
 	
-	    _createClass(ChangeWordsForm, [{
+	    _createClass(WordsForm, [{
 	        key: 'init',
 	        value: function init() {
-	            _get(ChangeWordsForm.prototype.__proto__ || Object.getPrototypeOf(ChangeWordsForm.prototype), 'init', this).call(this);
+	            _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'init', this).call(this);
 	
 	            this.setOptionsOfLabelInput();
 	            this.handlingOfUploadFile();
@@ -29078,12 +29078,12 @@
 	                    file: true,
 	                    success: function success(photo) {
 	                        data.photo = photo;
-	                        _get(ChangeWordsForm.prototype.__proto__ || Object.getPrototypeOf(ChangeWordsForm.prototype), 'setNewItem', _this2).call(_this2, { data: data });
+	                        _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'setNewItem', _this2).call(_this2, { data: data });
 	                    }
 	                });
 	            }
 	
-	            return _get(ChangeWordsForm.prototype.__proto__ || Object.getPrototypeOf(ChangeWordsForm.prototype), 'setNewItem', this).call(this, { data: data });
+	            return _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'setNewItem', this).call(this, { data: data });
 	        }
 	    }, {
 	        key: 'postAWord',
@@ -29191,12 +29191,12 @@
 	                    data: file,
 	                    success: function success(photo) {
 	                        data.photo = photo;
-	                        _get(ChangeWordsForm.prototype.__proto__ || Object.getPrototypeOf(ChangeWordsForm.prototype), 'editItem', _this5).call(_this5, { data: data });
+	                        _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'editItem', _this5).call(_this5, { data: data });
 	                    }
 	                });
 	            }
 	
-	            _get(ChangeWordsForm.prototype.__proto__ || Object.getPrototypeOf(ChangeWordsForm.prototype), 'editItem', this).call(this, { data: data });
+	            _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'editItem', this).call(this, { data: data });
 	        }
 	    }, {
 	        key: 'handlingOfUploadFile',
@@ -29239,7 +29239,7 @@
 	        key: 'showPhoto',
 	        value: function showPhoto(photo) {
 	            if (photo) {
-	                photo = this.directoryOfPhotos + '/' + photo;
+	                photo = photo.search('base64') > -1 ? photo : this.directoryOfPhotos + '/' + photo;
 	                this.q(this.selectorOfPhotoPreview).setAttribute('src', photo);
 	            }
 	        }
@@ -29315,10 +29315,10 @@
 	
 	    }]);
 	
-	    return ChangeWordsForm;
+	    return WordsForm;
 	}(_Form3.default);
 	
-	exports.default = ChangeWordsForm;
+	exports.default = WordsForm;
 
 /***/ },
 /* 11 */
@@ -29460,18 +29460,23 @@
 	                where: this.selectors.deleteWrapper,
 	                html: '<ons-button modifier="large" id="delete" class="red">Delete</ons-button>',
 	                callback: function callback() {
-	                    _this4.q(_this4.selectors.deleteButton).addEventListener('click', function () {
-	                        var id = _this4.page.data.item._id;
+	                    _this4.q(_this4.selectors.deleteButton).addEventListener('click', _this4.deleteItem.bind(_this4));
+	                }
+	            });
+	        }
+	    }, {
+	        key: 'deleteItem',
+	        value: function deleteItem() {
+	            var _this5 = this;
 	
-	                        _this4.ajax({
-	                            method: _this4.ajaxOfDeleteOne.method,
-	                            url: _this4.ajaxOfDeleteOne.url,
-	                            data: { id: id },
-	                            success: function success() {
-	                                _this4.pushBackWithRefresh();
-	                            }
-	                        });
-	                    });
+	            var id = this.page.data.item._id;
+	
+	            this.ajax({
+	                method: this.ajaxOfDeleteOne.method,
+	                url: this.ajaxOfDeleteOne.url,
+	                data: { id: id },
+	                success: function success() {
+	                    _this5.pushBackWithRefresh();
 	                }
 	            });
 	        }
@@ -29646,13 +29651,13 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var ChangeLabelsForm = function (_Form) {
-	    _inherits(ChangeLabelsForm, _Form);
+	var LabelsForm = function (_Form) {
+	    _inherits(LabelsForm, _Form);
 	
-	    function ChangeLabelsForm(page) {
-	        _classCallCheck(this, ChangeLabelsForm);
+	    function LabelsForm(page) {
+	        _classCallCheck(this, LabelsForm);
 	
-	        var _this = _possibleConstructorReturn(this, (ChangeLabelsForm.__proto__ || Object.getPrototypeOf(ChangeLabelsForm)).call(this, page));
+	        var _this = _possibleConstructorReturn(this, (LabelsForm.__proto__ || Object.getPrototypeOf(LabelsForm)).call(this, page));
 	
 	        _this.selectorOfLabelInput = '#label';
 	
@@ -29673,10 +29678,10 @@
 	        return _this;
 	    }
 	
-	    _createClass(ChangeLabelsForm, [{
+	    _createClass(LabelsForm, [{
 	        key: 'setNewItem',
 	        value: function setNewItem() {
-	            _get(ChangeLabelsForm.prototype.__proto__ || Object.getPrototypeOf(ChangeLabelsForm.prototype), 'setNewItem', this).call(this, {
+	            _get(LabelsForm.prototype.__proto__ || Object.getPrototypeOf(LabelsForm.prototype), 'setNewItem', this).call(this, {
 	                data: {
 	                    label: this.getLabelFromInput()
 	                }
@@ -29690,7 +29695,7 @@
 	    }, {
 	        key: 'editItem',
 	        value: function editItem() {
-	            _get(ChangeLabelsForm.prototype.__proto__ || Object.getPrototypeOf(ChangeLabelsForm.prototype), 'editItem', this).call(this, {
+	            _get(LabelsForm.prototype.__proto__ || Object.getPrototypeOf(LabelsForm.prototype), 'editItem', this).call(this, {
 	                data: {
 	                    userId: this.page.data.item.userId,
 	                    oldLabel: this.page.data.item.name,
@@ -29783,10 +29788,10 @@
 	        }
 	    }]);
 	
-	    return ChangeLabelsForm;
+	    return LabelsForm;
 	}(_Form3.default);
 	
-	exports.default = ChangeLabelsForm;
+	exports.default = LabelsForm;
 
 /***/ },
 /* 14 */

@@ -97,20 +97,22 @@ export default class Form extends Global
             html: '<ons-button modifier="large" id="delete" class="red">Delete</ons-button>',
             callback: () =>
             {
-                this.q(this.selectors.deleteButton).addEventListener('click', () =>
-                {
-                    const id = this.page.data.item._id;
+                this.q(this.selectors.deleteButton).addEventListener('click', this.deleteItem.bind(this));
+            }
+        });
+    }
 
-                    this.ajax({
-                        method: this.ajaxOfDeleteOne.method,
-                        url: this.ajaxOfDeleteOne.url,
-                        data: {id: id},
-                        success: () =>
-                        {
-                            this.pushBackWithRefresh();
-                        }
-                    });
-                });
+    deleteItem ()
+    {
+        const id = this.page.data.item._id;
+
+        this.ajax({
+            method: this.ajaxOfDeleteOne.method,
+            url: this.ajaxOfDeleteOne.url,
+            data: {id: id},
+            success: () =>
+            {
+                this.pushBackWithRefresh();
             }
         });
     }

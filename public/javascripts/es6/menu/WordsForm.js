@@ -1,7 +1,7 @@
 import Form from './Form';
 import ons from 'onsenui';
 
-export default class ChangeWordsForm extends Form
+export default class WordsForm extends Form
 {
     constructor(page)
     {
@@ -225,10 +225,12 @@ export default class ChangeWordsForm extends Form
     {
         if (photo)
         {
-            photo = `${this.directoryOfPhotos}/${photo}`;
+            photo = (photo.search('base64') > -1) ? photo : `${this.directoryOfPhotos}/${photo}`;
             this.q(this.selectorOfPhotoPreview).setAttribute('src', photo);
         }
     }
+
+
 
     getNative ()
     {

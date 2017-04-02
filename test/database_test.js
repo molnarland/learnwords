@@ -120,5 +120,23 @@ describe('Database', () =>
 
             });
         });
+
+        it('#deleteOne()', (done) =>
+        {
+            DB.getOne('words', {userId: '20', native: 'kurva'}, (result) =>
+            {
+                const _id = result._id;
+                test.object(_id);
+                test.string(String(_id));
+
+                Word.deleteById(_id, (result) =>
+                {
+                    test.object(result);
+                    test.number(result.deletedCount).is(1);
+
+                    done();
+                });
+            });
+        });
     });
 });

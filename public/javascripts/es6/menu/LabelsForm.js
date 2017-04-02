@@ -1,6 +1,6 @@
 import Form from './Form';
 
-export default class ChangeLabelsForm extends Form
+export default class LabelsForm extends Form
 {
     constructor(page)
     {

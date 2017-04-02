@@ -2,9 +2,9 @@ import ons from 'onsenui';
 
 import Menu from './Menu';
 import ListWords from './ListWords';
-import ChangeWordsForm from './ChangeWordsForm';
+import WordsForm from './WordsForm';
 import ListLabels from './ListLabels';
-import ChangeLabelsForm from './ChangeLabelsForm';
+import LabelsForm from './LabelsForm';
 import Learn from './Learn';
 import Quiz from './Quiz';
 
@@ -25,9 +25,9 @@ document.addEventListener('init', (event) =>
     router(page, {
         'menu': Menu,
         'change-words': ListWords,
-        'change-words-form': ChangeWordsForm,
+        'change-words-form': WordsForm,
         'change-labels': ListLabels,
-        'change-label-form': ChangeLabelsForm,
+        'change-label-form': LabelsForm,
         'learn': Learn,
         'quiz': Quiz
     });

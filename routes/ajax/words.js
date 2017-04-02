@@ -38,34 +38,50 @@ router.route('/')
 
         if (photo)
         {
-            deleteOldPhoto(id);
+            deletePhoto(id);
         }
 
         words.updateOne(id, native, learnable, photo, labelId, (/*result*/) =>
         {
             res.send(true);
         });
+    })
+    .delete((req, res, next) =>
+    {
+        const id = req.body.id;
+
+        deletePhoto(id);
+
+        words.deleteById(id, (/*result*/) =>
+        {
+            res.send(true);
+        });
     });
 
 
-function deleteOldPhoto (id, callback = new Function())
+module.exports = router;
+
+
+
+function deletePhoto (id, callback = new Function())
 {
     words.getById(id, (result) =>
     {
-        const oldPhoto = global.photoDirectory + result.photo;
-        fs.exists(oldPhoto, (exists) =>
+        if (result)
         {
-            if (exists)
+            const photo = global.photoDirectory + result.photo;
+            fs.exists(photo, (exists) =>
             {
-                fs.unlink(oldPhoto, () =>
+                if (exists)
                 {
-                    return callback(true);
-                });
-            }
+                    fs.unlink(photo, () =>
+                    {
+                        return callback(true);
+                    });
+                }
 
-            return callback(false);
-        });
+                return callback(false);
+            });
+        }
     });
 }
-
-module.exports = router;

@@ -35,6 +35,11 @@ class Word extends DB
 
         super.updateOne(this.table, { _id: this.objectId(_id) }, { $set: word }, callback);
     }
+
+    deleteById (_id, callback)
+    {
+        super.deleteById(this.table, _id, callback);
+    }
 }
 
 module.exports = Word;
