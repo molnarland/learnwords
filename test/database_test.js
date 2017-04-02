@@ -14,9 +14,9 @@ describe('Database', () =>
         let Label = require('../database/Label');
         Label = new Label();
 
-        it('#insertLabel()', (done) =>
+        it('#insertOne()', (done) =>
         {
-            Label.insertLabel('10', 'bla', (result) =>
+            Label.insertOne('10', 'bla', (result) =>
             {
                 test.object(result.ops[0]).match({name: 'bla', userId: '10'});
 
@@ -24,9 +24,9 @@ describe('Database', () =>
             });
         });
 
-        it('#updateLabel()', (done) =>
+        it('#updateOne()', (done) =>
         {
-            Label.updateLabel('10', 'bla', 'ehhehh', (result) =>
+            Label.updateOne('10', 'bla', 'ehhehh', (result) =>
             {
                 test.number(result.result.n).is(1);
 
@@ -49,9 +49,9 @@ describe('Database', () =>
         let User = require('../database/User');
         User = new User();
 
-        it('#insertNameWithDatas()', (done) =>
+        it('#insertOne()', (done) =>
         {
-            User.insertNameWithDatas('gazsi', 'olasz', 'japán', (result) =>
+            User.insertOne('gazsi', 'olasz', 'japán', (result) =>
             {
                 test.object(result.ops[0]).match({name: 'gazsi', native: 'olasz', learnable: 'japán'});
 
@@ -59,9 +59,9 @@ describe('Database', () =>
             });
         });
 
-        it('#findName()', (done) =>
+        it('#getOne()', (done) =>
         {
-            User.findName('gazsi', (result) =>
+            User.getOne('gazsi', (result) =>
             {
                 test.object(result).match({name: 'gazsi', native: 'olasz', learnable: 'japán'});
 
@@ -75,9 +75,9 @@ describe('Database', () =>
         let Word = require('../database/Word');
         Word = new Word();
 
-        it('#insertWord()', (done) =>
+        it('#insertOne()', (done) =>
         {
-            Word.insertWord('20', 'olasz', 'japán', 'kurva.jpg', '4', (result) =>
+            Word.insertOne('20', 'olasz', 'japán', 'kurva.jpg', '4', (result) =>
             {
                 test.object(result.ops[0]).match({
                     userId: '20',

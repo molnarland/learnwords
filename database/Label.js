@@ -10,29 +10,29 @@ class Label extends DB
         this.table = 'labels';
     }
 
-    insertLabel (userId, name, callback)
+    insertOne (userId, name, callback)
     {
         const label = new Model(userId, name);
 
-        this.insertOne(this.table, label, callback);
+        super.insertOne(this.table, label, callback);
     }
 
-    getAllLabels (userId, callback)
+    getAll (userId, callback)
     {
-        this.getAll(this.table, callback, {userId: userId});
+        super.getAll(this.table, callback, {userId: userId});
     }
 
-    updateLabel (userId, oldName, newName, callback)
+    updateOne (userId, oldName, newName, callback)
     {
         const oldLabel = new Model(userId, oldName);
         const newLabel = new Model(userId, newName);
 
-        this.updateOne(this.table, oldLabel, { $set: newLabel }, callback);
+        super.updateOne(this.table, oldLabel, { $set: newLabel }, callback);
     }
 
-    deleteLabel (id, callback)
+    deleteById (id, callback)
     {
-        this.deleteById(this.table, id, callback);
+        super.deleteById(this.table, id, callback);
     }
 }
 

@@ -12,7 +12,7 @@ class User extends DB
 
     findNameMaybeInsert (name, callback)
     {
-        this.findName(name, (result) =>
+        this.getOne(name, (result) =>
         {
             if (result)
             {
@@ -21,7 +21,7 @@ class User extends DB
 
             this.insertOnlyName(name, () =>
             {
-                this.findName(name, (result) =>
+                this.getOne(name, (result) =>
                 {
                     return callback(result);
                 });
@@ -43,25 +43,25 @@ class User extends DB
         });
     };*/
 
-    findName (name, callback)
+    getOne (name, callback)
     {
         const user = new Model(name);
 
-        this.getOne(this.table, user, callback)
+        super.getOne(this.table, user, callback)
     };
 
-    insertNameWithDatas (name, native, learnable, callback)
+    insertOne (name, native, learnable, callback)
     {
         const user = new Model(name, native, learnable);
 
-        this.insertOne(this.table, user, callback);
+        super.insertOne(this.table, user, callback);
     };
 
     insertOnlyName (name, callback)
     {
         const user = new Model(name);
 
-        this.insertOne(this.table, user, callback);
+        super.insertOne(this.table, user, callback);
     }
 }
 

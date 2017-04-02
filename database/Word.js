@@ -10,19 +10,21 @@ class Word extends DB
         this.table = 'words';
     }
 
-    getAllWords (userId, callback)
+    getAll (userId, callback)
     {
         const word = new Model(userId);
 
-        this.getAll(this.table, callback, word.getUserId());
+        super.getAll(this.table, callback, word.getUserId());
     }
 
-    insertWord (userId, native, learnable, photo, labelId, callback)
+    insertOne (userId, native, learnable, photo, labelId, callback)
     {
         const word = new Model(userId, native, learnable, labelId, photo);
 
-        this.insertOne(this.table, word, callback);
+        super.insertOne(this.table, word, callback);
     }
+
+
 }
 
 module.exports = Word;
