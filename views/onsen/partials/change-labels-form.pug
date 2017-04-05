@@ -1,14 +1,8 @@
-ons-template#change-label-form
-    ons-page#change-label-form
-        ons-toolbar
-            .left
-                ons-back-button All words
-            .center
-
-        section
-            p
-                ons-input(modifier="underbar" placeholder="Label" float)#label
-
++template("change-label-form", "", "All words")
+    section
         p
-            ons-button(modifier="large")#save Save
-        p#delete-wrapper
+            ons-input(modifier="underbar" placeholder="Label" float)#label.wide
+
+    p
+        ons-button(modifier="large")#save Save
+    p#delete-wrapper

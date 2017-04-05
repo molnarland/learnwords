@@ -1,18 +1,5 @@
-ons-template#change-labels
-    ons-page#change-labels
-        ons-toolbar
-            .left
-                ons-back-button Main
-            .center Change labels
-            .right
-                ons-if(platform="ios other")
-                    ons-toolbar-button#plus-label New
-
-        ons-list#change-labels-items
-
-        ons-if(platform="android")
-            ons-fab(position="bottom right")#plus-label
-                ons-icon(icon="md-plus")
++template("change-labels", "Labels", "Main", "New", "plus-label")
+    ons-list#change-labels-items
 
 
 include change-labels-form

@@ -1,53 +1,47 @@
-ons-template#change-words-form
-    ons-page#change-words-form
-        ons-toolbar
-            .left
-                ons-back-button All words
-            .center
++template("change-words-form", "", "Words")
+    //each val in ['native', 'learnable']
+        section
+            ons-list(id=val)
+                ons-list-header
+                    = user[val]
+                    //ons-icon(icon="ion-plus-round" id=val+"-plus")
+                .input-wrapper
+                    ons-input(modifier="underbar" placeholder="#1" float id=val+"-1")
 
-        //each val in ['native', 'learnable']
-            section
-                ons-list(id=val)
-                    ons-list-header
-                        = user[val]
-                        //ons-icon(icon="ion-plus-round" id=val+"-plus")
-                    .input-wrapper
-                        ons-input(modifier="underbar" placeholder="#1" float id=val+"-1")
+    ons-list
+        ons-if(platform="ios other")
+            +ios-form-list-item(user.native, 'native')
+            +ios-form-list-item(user.learnable, 'learnable')
+            ons-list-item
+                label.center Photo:
+                label(for="upload-file").wide.right
+                    ons-input(placeholder="tap..." disabled)#file-upload-input
+                    img.photo-preview
+            +ios-form-list-item('Label', 'label-input')(tag="select" type="")
 
-        ons-list
-            ons-if(platform="ios other")
-                +ios-form-list-item(user.native, 'native')
-                +ios-form-list-item(user.learnable, 'learnable')
-                ons-list-item
-                    label.center Photo:
-                    label(for="upload-file").wide.right
-                        ons-input(placeholder="tap..." disabled)#file-upload-input
-                        img.photo-preview
-                +ios-form-list-item('Label', 'label-input')(tag="select" type="")
+        ons-if(platform="android")
+            +android-form-list-item(user.native, 'native')
+            +android-form-list-item(user.learnable, 'learnable')
+            ons-list-item
+                label(for="upload-file").wide.center
+                    ons-input(placeholder="Upload file" float disabled)#file-upload-input
+                    img.photo-preview
+            +android-form-list-item('Label', 'label-input')(tag="select" type="")
 
-            ons-if(platform="android")
-                +android-form-list-item(user.native, 'native')
-                +android-form-list-item(user.learnable, 'learnable')
-                ons-list-item
-                    label(for="upload-file").wide.center
-                        ons-input(placeholder="Upload file" float disabled)#file-upload-input
-                        img.photo-preview
-                +android-form-list-item('Label', 'label-input')(tag="select" type="")
-
-            input(type="file")#upload-file.none
+        input(type="file")#upload-file.none
 
 
-        //section#upload
-            //input(type="file")#upload-file.none
-            p
-                ons-input(modifier="underbar" placeholder="URL of file" float)#file-upload-input
-            p
-                label(for="upload-file")
-                    ons-button#file-upload-button Upload file
-
-
-
-
+    //section#upload
+        //input(type="file")#upload-file.none
         p
-            ons-button(modifier="large")#save Save
+            ons-input(modifier="underbar" placeholder="URL of file" float)#file-upload-input
+        p
+            label(for="upload-file")
+                ons-button#file-upload-button Upload file
+
+
+
+
+    p
+        ons-button(modifier="large")#save Save
         p#delete-wrapper

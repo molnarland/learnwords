@@ -1,18 +1,5 @@
-ons-template#change-words
-    ons-page#change-words
-        ons-toolbar
-            .left
-                ons-back-button Main
-            .center Add words
-            .right
-                ons-if(platform="ios other")
-                    ons-toolbar-button#plus-word New
-
-        ons-list#change-words-items
-
-        ons-if(platform="android")
-            ons-fab(position="bottom right")#plus-word
-                ons-icon(icon="md-plus")
++template("change-words", "Words", "Main", "New", "plus-word")
+    ons-list#change-words-items
 
 
 include change-words-form
