@@ -23,6 +23,7 @@ ons-input.error:after, ons-input[data-error]:after, ons-select.error:after, ons-
 
 .photo-preview {
   width: 50px;
+  max-height: 45px;
   position: absolute;
   right: 2%; }
 
@@ -36,12 +37,6 @@ ons-input.error:after, ons-input[data-error]:after, ons-select.error:after, ons-
   height: 35px; }
 
 #change-words-form #save {
-  text-align: center; }
-
-#native, #learnable {
-  width: 100%; }
-
-#upload, #label {
   text-align: center; }
 
 #change-words-items .left, #change-words-items .right {
@@ -59,6 +54,3 @@ ons-input.error:after, ons-input[data-error]:after, ons-select.error:after, ons-
 
 #change-words-items .right {
   text-align: right; }
-
-#label {
-  width: 100%; }

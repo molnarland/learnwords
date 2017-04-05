@@ -74,11 +74,11 @@
 	
 	var _SettingsLearn2 = _interopRequireDefault(_SettingsLearn);
 	
-	var _Learn = __webpack_require__(15);
+	var _Learn = __webpack_require__(16);
 	
 	var _Learn2 = _interopRequireDefault(_Learn);
 	
-	var _Quiz = __webpack_require__(16);
+	var _Quiz = __webpack_require__(17);
 	
 	var _Quiz2 = _interopRequireDefault(_Quiz);
 	
@@ -28285,6 +28285,11 @@
 	
 	        this.directoryOfPhotos = '/photos';
 	
+	        this.ajaxOfGetAllLabels = {
+	            url: this.urlOfLabelMethods + '/',
+	            method: 'GET'
+	        };
+	
 	        this.initInputCleaners();
 	    }
 	
@@ -28658,6 +28663,64 @@
 	        key: 'changeHash',
 	        value: function changeHash(hash) {
 	            window.location.hash = hash;
+	        }
+	
+	        /**
+	         * Cannot use if want to get labels from backend
+	         */
+	
+	    }, {
+	        key: 'getLabelsForSelect',
+	        value: function getLabelsForSelect(selectorOfLabel) {
+	            var _this7 = this;
+	
+	            if (window.labels.length === 0) {
+	                this.ajax({
+	                    method: this.ajaxOfGetAllLabels.method,
+	                    url: this.ajaxOfGetAllLabels.url,
+	                    success: function success(result) {
+	                        window.labels = result;
+	
+	                        return _this7.showLabelsInInput(selectorOfLabel);
+	                    }
+	                });
+	            }
+	
+	            return this.showLabelsInInput(selectorOfLabel);
+	        }
+	    }, {
+	        key: 'showLabelsInInput',
+	        value: function showLabelsInInput(selectorOfLabel) {
+	            var labelInput = this.q(selectorOfLabel);
+	
+	            var _iteratorNormalCompletion3 = true;
+	            var _didIteratorError3 = false;
+	            var _iteratorError3 = undefined;
+	
+	            try {
+	                for (var _iterator3 = window.labels[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	                    var label = _step3.value;
+	
+	                    var option = document.createElement('option');
+	                    option.value = label._id;
+	                    option.text = label.name;
+	
+	                    labelInput.add(option); //0630/683 1920
+	                }
+	            } catch (err) {
+	                _didIteratorError3 = true;
+	                _iteratorError3 = err;
+	            } finally {
+	                try {
+	                    if (!_iteratorNormalCompletion3 && _iterator3.return) {
+	                        _iterator3.return();
+	                    }
+	                } finally {
+	                    if (_didIteratorError3) {
+	                        throw _iteratorError3;
+	                    }
+	                }
+	            }
 	        }
 	
 	        /**
@@ -29060,11 +29123,6 @@
 	            method: 'DELETE'
 	        };
 	
-	        _this.ajaxOfGetAllLabels = {
-	            url: _this.urlOfLabelMethods + '/',
-	            method: 'GET'
-	        };
-	
 	        _this.init();
 	        return _this;
 	    }
@@ -29074,7 +29132,7 @@
 	        value: function init() {
 	            _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'init', this).call(this);
 	
-	            this.setOptionsOfLabelInput();
+	            this.getLabelsForSelect();
 	            this.handlingOfUploadFile();
 	        }
 	    }, {
@@ -29125,57 +29183,9 @@
 	            });
 	        }
 	    }, {
-	        key: 'setOptionsOfLabelInput',
-	        value: function setOptionsOfLabelInput() {
-	            var _this4 = this;
-	
-	            if (window.labels.length === 0) {
-	                this.ajax({
-	                    method: this.ajaxOfGetAllLabels.method,
-	                    url: this.ajaxOfGetAllLabels.url,
-	                    success: function success(result) {
-	                        window.labels = result;
-	
-	                        _this4.showLabelsInInput();
-	                    }
-	                });
-	            }
-	
-	            return this.showLabelsInInput();
-	        }
-	    }, {
 	        key: 'showLabelsInInput',
 	        value: function showLabelsInInput() {
-	            var labelInput = this.q(this.selectorOfLabel);
-	
-	            var _iteratorNormalCompletion = true;
-	            var _didIteratorError = false;
-	            var _iteratorError = undefined;
-	
-	            try {
-	                for (var _iterator = window.labels[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	                    var label = _step.value;
-	
-	                    var option = document.createElement('option');
-	                    option.value = label._id;
-	                    option.text = label.name;
-	
-	                    labelInput.add(option);
-	                }
-	            } catch (err) {
-	                _didIteratorError = true;
-	                _iteratorError = err;
-	            } finally {
-	                try {
-	                    if (!_iteratorNormalCompletion && _iterator.return) {
-	                        _iterator.return();
-	                    }
-	                } finally {
-	                    if (_didIteratorError) {
-	                        throw _iteratorError;
-	                    }
-	                }
-	            }
+	            _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'showLabelsInInput', this).call(this, this.selectorOfLabel);
 	        }
 	    }, {
 	        key: 'setValues',
@@ -29190,7 +29200,7 @@
 	    }, {
 	        key: 'editItem',
 	        value: function editItem() {
-	            var _this5 = this;
+	            var _this4 = this;
 	
 	            var file = this.getFile();
 	            var oldPhoto = this.page.data.item.photo;
@@ -29209,7 +29219,7 @@
 	                    data: file,
 	                    success: function success(photo) {
 	                        data.photo = photo;
-	                        _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'editItem', _this5).call(_this5, { data: data });
+	                        _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'editItem', _this4).call(_this4, { data: data });
 	                    }
 	                });
 	            }
@@ -29219,25 +29229,25 @@
 	    }, {
 	        key: 'handlingOfUploadFile',
 	        value: function handlingOfUploadFile() {
-	            var _this6 = this;
+	            var _this5 = this;
 	
 	            this.q(this.selectorOfUploadFile).addEventListener('change', function (event) {
 	                var files = event.target.files;
 	
 	                if (files && files.length > 0) {
 	                    var file = files[0];
-	                    var showedUploadInput = document.querySelector(_this6.selectorOfShowedUploadInput);
+	                    var showedUploadInput = document.querySelector(_this5.selectorOfShowedUploadInput);
 	
 	                    showedUploadInput.value = file.name;
 	
 	                    if (file.type.split('/')[0] !== 'image') {
-	                        _this6.q(_this6.selectorOfPhotoPreview).removeAttribute('src');
+	                        _this5.q(_this5.selectorOfPhotoPreview).removeAttribute('src');
 	                        showedUploadInput.dataset.error = 'Images upload only';
-	                        _this6.q(_this6.selectorOfSaveButton).disabled = true;
+	                        _this5.q(_this5.selectorOfSaveButton).disabled = true;
 	                    } else {
-	                        _this6.preShowPhoto(file);
+	                        _this5.preShowPhoto(file);
 	                        delete showedUploadInput.dataset.error;
-	                        _this6.q(_this6.selectorOfSaveButton).disabled = false;
+	                        _this5.q(_this5.selectorOfSaveButton).disabled = false;
 	                    }
 	                }
 	            });
@@ -29245,11 +29255,11 @@
 	    }, {
 	        key: 'preShowPhoto',
 	        value: function preShowPhoto(file) {
-	            var _this7 = this;
+	            var _this6 = this;
 	
 	            var reader = new FileReader();
 	            reader.onload = function (e) {
-	                _this7.showPhoto(e.target.result);
+	                _this6.showPhoto(e.target.result);
 	            };
 	            reader.readAsDataURL(file);
 	        }
@@ -29813,28 +29823,142 @@
 
 /***/ },
 /* 14 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	var _Settings2 = __webpack_require__(15);
+	
+	var _Settings3 = _interopRequireDefault(_Settings2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var SettingsLearn = function SettingsLearn() {
-	    _classCallCheck(this, SettingsLearn);
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
-	    console.log(_typeof(this));
-	};
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var SettingsLearn = function (_Settings) {
+	    _inherits(SettingsLearn, _Settings);
+	
+	    function SettingsLearn(page) {
+	        _classCallCheck(this, SettingsLearn);
+	
+	        var _this = _possibleConstructorReturn(this, (SettingsLearn.__proto__ || Object.getPrototypeOf(SettingsLearn)).call(this, page));
+	
+	        _this.nextButton = '#go-learn';
+	        _this.changeForm = 'learn';
+	
+	        _this.selectorOfSort = '#sort';
+	        _this.selectorOfLabel = '#label';
+	        _this.selectorOfShowBoth = '#show-both';
+	        _this.selectorOfWhichShowFirst = '#show-first';
+	
+	        _this.init();
+	        return _this;
+	    }
+	
+	    _createClass(SettingsLearn, [{
+	        key: 'init',
+	        value: function init() {
+	            var data = {
+	                sort: this.q(this.selectorOfSort).value,
+	                label: this.q(this.selectorOfLabel).value,
+	                showBoth: this.q(this.selectorOfShowBoth).value,
+	                showFirst: this.q(this.selectorOfWhichShowFirst).value
+	            };
+	
+	            _get(SettingsLearn.prototype.__proto__ || Object.getPrototypeOf(SettingsLearn.prototype), 'init', this).call(this, data);
+	        }
+	    }]);
+	
+	    return SettingsLearn;
+	}(_Settings3.default);
 	
 	exports.default = SettingsLearn;
 
 /***/ },
 /* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _Global2 = __webpack_require__(7);
+	
+	var _Global3 = _interopRequireDefault(_Global2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Settings = function (_Global) {
+	    _inherits(Settings, _Global);
+	
+	    function Settings(page) {
+	        _classCallCheck(this, Settings);
+	
+	        var _this = _possibleConstructorReturn(this, (Settings.__proto__ || Object.getPrototypeOf(Settings)).call(this, page));
+	
+	        _this.nextButton = String;
+	        _this.changeForm = String;
+	
+	        _this.selectorOfLabelInput = '#label';
+	        return _this;
+	    }
+	
+	    /**
+	     * @param {object} dataForPush
+	     */
+	
+	
+	    _createClass(Settings, [{
+	        key: 'init',
+	        value: function init(dataForPush) {
+	            this.getLabelsForSelect(this.selectorOfLabelInput);
+	            this.initOfPushToGame(dataForPush);
+	        }
+	
+	        /**
+	         * @param {object} data
+	         */
+	
+	    }, {
+	        key: 'initOfPushToGame',
+	        value: function initOfPushToGame(data) {
+	            var _this2 = this;
+	
+	            this.q(this.nextButton).addEventListener('click', function () {
+	                _this2.pushPage(_this2.changeForm, { data: datas });
+	            });
+	        }
+	    }]);
+	
+	    return Settings;
+	}(_Global3.default);
+	
+	exports.default = Settings;
+
+/***/ },
+/* 16 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -29852,7 +29976,7 @@
 	exports.default = Learn;
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports) {
 
 	"use strict";

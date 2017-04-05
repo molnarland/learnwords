@@ -42,12 +42,6 @@ export default class WordsForm extends Form
             method: 'DELETE'
         };
 
-
-        this.ajaxOfGetAllLabels = {
-            url: `${this.urlOfLabelMethods}/`,
-            method: 'GET'
-        };
-
         this.init();
     }
 
@@ -55,7 +49,7 @@ export default class WordsForm extends Form
     {
         super.init();
 
-        this.setOptionsOfLabelInput();
+        this.getLabelsForSelect();
         this.handlingOfUploadFile();
     }
 
@@ -107,37 +101,10 @@ export default class WordsForm extends Form
         })
     }
 
-    setOptionsOfLabelInput ()
-    {
-        if (window.labels.length === 0)
-        {
-            this.ajax({
-                method: this.ajaxOfGetAllLabels.method,
-                url: this.ajaxOfGetAllLabels.url,
-                success: (result) =>
-                {
-                    window.labels = result;
-
-                    this.showLabelsInInput();
-                }
-            });
-        }
-
-        return this.showLabelsInInput();
-    }
 
     showLabelsInInput ()
     {
-        const labelInput = this.q(this.selectorOfLabel);
-
-        for (const label of window.labels)
-        {
-            const option = document.createElement('option');
-            option.value = label._id;
-            option.text = label.name;
-
-            labelInput.add(option);
-        }
+        super.showLabelsInInput(this.selectorOfLabel);
     }
 
     setValues ()

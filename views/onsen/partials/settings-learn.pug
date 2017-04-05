@@ -21,6 +21,13 @@
                 label(for="show-both") Show both words:
             .right
                 ons-switch(input-id="show-both")
+        ons-list-item(modofier="longdivider")
+            .left
+                label(for="show-first") Show first:
+            .center
+                ons-select(select-id="show-first").wide
+                    option(value="native")= user.native + " word"
+                    option(value="learnable")= user.learnable + " word"
 
 
 include learn

@@ -16,6 +16,11 @@ export default class Global
 
         this.directoryOfPhotos = '/photos';
 
+        this.ajaxOfGetAllLabels = {
+            url: `${this.urlOfLabelMethods}/`,
+            method: 'GET'
+        };
+
         this.initInputCleaners();
     }
 
@@ -298,6 +303,43 @@ export default class Global
     changeHash (hash)
     {
         window.location.hash = hash;
+    }
+
+
+    /**
+     * Cannot use if want to get labels from backend
+     */
+    getLabelsForSelect (selectorOfLabel)
+    {
+        if (window.labels.length === 0)
+        {
+            this.ajax({
+                method: this.ajaxOfGetAllLabels.method,
+                url: this.ajaxOfGetAllLabels.url,
+                success: (result) =>
+                {
+                    window.labels = result;
+
+                    return this.showLabelsInInput(selectorOfLabel);
+                }
+            });
+        }
+
+        return this.showLabelsInInput(selectorOfLabel);
+    }
+
+    showLabelsInInput (selectorOfLabel)
+    {
+        const labelInput = this.q(selectorOfLabel);
+
+        for (const label of window.labels)
+        {
+            const option = document.createElement('option');
+            option.value = label._id;
+            option.text = label.name;
+
+            labelInput.add(option); //0630/683 1920
+        }
     }
 
     /**
