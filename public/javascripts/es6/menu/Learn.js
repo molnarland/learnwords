@@ -7,7 +7,7 @@ export default class Learn extends Game
         super(page);
 
         this.ajaxOfGetWordsForLearn = {
-            url: `${this.urlOfGameMethods}`,
+            url: `${this.urlOfGameMethods}/{label}/{sort}/{first}`,
             method: 'GET'
         };
 
@@ -26,14 +26,22 @@ export default class Learn extends Game
     {
         this.ajax({
             method: this.ajaxOfGetWordsForLearn.method,
-            url: `${this.ajaxOfGetWordsForLearn.url}/{label}/{sort}/`,
+            url: `${this.ajaxOfGetWordsForLearn.url}/`,
             data: {
                 label: this.label,
-                sort: this.sort
+                sort: this.sort,
+                first: this.showFirst
             },
-            success: () =>
+            success: (response) =>
             {
-
+                if (response && response.length > 0)
+                {
+                    //learn is start
+                }
+                else
+                {
+                    //not found -> back btn
+                }
             }
         })
     }

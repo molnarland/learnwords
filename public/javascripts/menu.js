@@ -28525,14 +28525,15 @@
 	            var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 	
 	            var urlParams = '';
-	            if (data) {
+	            /*if (data)
+	            {
 	                urlParams = '?';
-	                for (var index in data) {
-	                    urlParams += index + '=' + data[index] + '&';
+	                for (let index in data)
+	                {
+	                    urlParams += `${index}=${data[index]}&`
 	                }
-	
-	                urlParams = urlParams.slice(0, urlParams.length - 1);
-	            }
+	                 urlParams = urlParams.slice(0, urlParams.length - 1);
+	            }*/
 	
 	            var xobj = new XMLHttpRequest();
 	            xobj.open('GET', '/ajax' + url + urlParams, true);
@@ -30099,7 +30100,7 @@
 	        var _this = _possibleConstructorReturn(this, (Learn.__proto__ || Object.getPrototypeOf(Learn)).call(this, page));
 	
 	        _this.ajaxOfGetWordsForLearn = {
-	            url: '' + _this.urlOfGameMethods,
+	            url: _this.urlOfGameMethods + '/{label}/{sort}/{first}',
 	            method: 'GET'
 	        };
 	
@@ -30119,10 +30120,11 @@
 	        value: function getWords() {
 	            this.ajax({
 	                method: this.ajaxOfGetWordsForLearn.method,
-	                url: this.ajaxOfGetWordsForLearn.url + '/{label}/{sort}/',
+	                url: this.ajaxOfGetWordsForLearn.url + '/',
 	                data: {
 	                    label: this.label,
-	                    sort: this.sort
+	                    sort: this.sort,
+	                    first: this.showFirst
 	                },
 	                success: function success() {}
 	            });

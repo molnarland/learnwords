@@ -59,14 +59,17 @@ router.route('/')
     });
 
 
-router.get('/game/:labelId/:sort', (req, res, next) =>
+router.get('/game/:labelId/:sort/:first', (req, res, next) =>
 {
+    const userId = global.getUserId(req);
     const labelId = req.params.labelId;
-    const sort = req.params.sort;
+    const sort = Number(req.params.sort);
+    const showFirst = Boolean(req.params.first);
 
-    console.log(sort, labelId);
-
-    res.send(true);
+    words.getWithSort(userId, labelId, sort, showFirst, (results) =>
+    {
+        res.send(results);
+    });
 });
 
 

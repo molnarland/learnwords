@@ -113,6 +113,26 @@ class DB extends MongoConnect
             })
         })
     }
+
+    /**
+     * @param {string} table
+     * @param {object} criteria
+     * @param {object} sort
+     * @param {function} callback
+     */
+    getWithShort (table, criteria, sort, callback)
+    {
+        this.connect((db, programCallback) =>
+        {
+            db.collection(table).find(criteria).sort(sort).toArray((err, docs) =>
+            {
+                if (err) {throw err;}
+
+                programCallback();
+                return callback(docs);
+            });
+        })
+    }
 }
 
 module.exports = DB;
