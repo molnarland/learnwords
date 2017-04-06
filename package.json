@@ -6,6 +6,7 @@
     "start": "clear && node app.js",
     "test": "clear && mocha",
     "menu": "clear && cd public/ && gulp jsMenu",
+    "wmenu": "clear && cd public/ && gulp watch-menu",
     "sass": "clear && cd public/ && gulp sass"
   },
   "dependencies": {

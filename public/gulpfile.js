@@ -38,7 +38,7 @@ var webpackObjectMaker = function (task)
         output: {
             path: __dirname + '/javascripts',
             filename: paths.getOutputFileName(task),
-            pathinfo: false
+            pathinfo: true
         },
         module: {
             loaders: [
@@ -64,7 +64,11 @@ var notifyObjectMaker = function (task)
 {
     return {
         title: task,
-        message: 'Compiled!',
+        message: [
+            'Compiled at',
+            new Date(),
+            '!'
+        ].join(' '),
         onLast: true,
         emitError: true
     }
