@@ -17,7 +17,10 @@ export default class SettingsLearn extends Settings
         this.init();
     }
 
-    init ()
+    /**
+     * @param {function} callback
+     */
+    getValue (callback)
     {
         const data = {
             sort: this.q(this.selectorOfSort).value,
@@ -26,6 +29,6 @@ export default class SettingsLearn extends Settings
             showFirst: this.q(this.selectorOfWhichShowFirst).value
         };
 
-        super.init(data);
+        return callback(data);
     }
 }

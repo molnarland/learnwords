@@ -12,23 +12,30 @@ export default class Settings extends Global
         this.selectorOfLabelInput = '#label';
     }
 
-    /**
-     * @param {object} dataForPush
-     */
-    init (dataForPush)
+
+    init ()
     {
         this.getLabelsForSelect(this.selectorOfLabelInput);
-        this.initOfPushToGame(dataForPush);
+        this.initOfPushToGame();
     }
 
-    /**
-     * @param {object} data
-     */
-    initOfPushToGame (data)
+
+    initOfPushToGame ()
     {
         this.q(this.nextButton).addEventListener('click', () =>
         {
-            this.pushPage(this.changeForm, { data: datas });
+            this.getValue((data) =>
+            {
+                this.pushPage(this.changeForm, { data: data });
+            });
         });
+    }
+
+    /**
+     * @param {function} callback
+     */
+    getValue (callback = new Function())
+    {
+        return callback();
     }
 }

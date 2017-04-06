@@ -59,6 +59,17 @@ router.route('/')
     });
 
 
+router.get('/game/:labelId/:sort', (req, res, next) =>
+{
+    const labelId = req.params.labelId;
+    const sort = req.params.sort;
+
+    console.log(sort, labelId);
+
+    res.send(true);
+});
+
+
 module.exports = router;
 
 
