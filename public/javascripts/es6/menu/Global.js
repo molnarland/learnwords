@@ -68,6 +68,38 @@ export default class Global
     }
 
     /**
+     * @param {string} url
+     * @param {object} data
+     * @param {function} callback
+     */
+    replacePartsOfUrlWithData (url, data, callback)
+    {
+        if (data && !this.isEmptyObject(data) && url)
+        {
+            for (let index in data)
+            {
+                const argumentInUrl = `{${index}}`;
+                if (url.search(argumentInUrl) > -1)
+                {
+                    url = url.replace(argumentInUrl, data[index]);
+                    delete data[index];
+                }
+            }
+        }
+
+        callback(url, data);
+    }
+
+    /**
+     * @param {object} object
+     * @return boolean
+     */
+    isEmptyObject (object)
+    {
+        return JSON.stringify(object) === JSON.stringify({});
+    }
+
+    /**
      * @param {string} [method]
      * @param {string} url
      * @param {object} [data]
@@ -76,27 +108,30 @@ export default class Global
      */
     ajax ({method = 'POST', url, data = {}, success, file = false})
     {
-        if (!file)
+        this.replacePartsOfUrlWithData(url, data, (url, data) =>
         {
-            if (method === 'GET' || method === 'get')
+            if (!file)
             {
-                this.getAjax(url, success);
+                if (method === 'GET' || method === 'get')
+                {
+                    data = (this.isEmptyObject(data)) ? null : data;
+                    this.getAjax(url, success, data);
+                }
+                else
+                {
+                    this.postBasedAjax(method, url, data, success);
+                }
             }
             else
             {
-                this.postBasedAjax(method, url, data, success);
-            }
-        }
-        else
-        {
-            if (method === 'GET' || method === 'get')
-            {
-                throw new Error('Cannot run ajax with GET method');
-            }
+                if (method === 'GET' || method === 'get')
+                {
+                    throw new Error('Cannot run ajax with GET method');
+                }
 
-
-            this.ajaxFileUpload(method, url, data, success);
-        }
+                this.ajaxFileUpload(method, url, data, success);
+            }
+        });
     }
 
 
@@ -145,11 +180,24 @@ export default class Global
     /**
      * @param {string} url
      * @param {function(object)} callback
+     * @param {object|null} [data]
      */
-    getAjax (url, callback)
+    getAjax (url, callback, data = null)
     {
+        let urlParams = '';
+        /*if (data)
+        {
+            urlParams = '?';
+            for (let index in data)
+            {
+                urlParams += `${index}=${data[index]}&`
+            }
+
+            urlParams = urlParams.slice(0, urlParams.length - 1);
+        }*/
+
         let xobj = new XMLHttpRequest();
-        xobj.open('GET', `/ajax${url}`, true);
+        xobj.open('GET', `/ajax${url}${urlParams}`, true);
         xobj.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xobj.onreadystatechange = () =>
         {
