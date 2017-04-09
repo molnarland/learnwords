@@ -17,17 +17,22 @@
                 ons-select(select-id="label").wide
                     option(value="0") All
         ons-list-item(modifier="longdivider")
-            .center
-                label(for="show-both") Show both words:
-            .right
-                ons-switch(input-id="show-both")
-        ons-list-item(modofier="longdivider")
             .left
                 label(for="show-first") Show first:
             .center
                 ons-select(select-id="show-first").wide
                     option(value="0")= user.native + " word"
                     option(value="1")= user.learnable + " word"
+        ons-list-item(modifier="longdivider")
+            .center
+                label(for="show-both") Show both words:
+            .right
+                ons-switch(input-id="show-both")
+        ons-list-item(modifier="longdivider")
+            .center
+                label(for="loop") Loop:
+            .right
+                ons-switch(input-id="loop" checked)
 
 
 include learn

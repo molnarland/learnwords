@@ -13,6 +13,7 @@ export default class SettingsLearn extends Settings
         this.selectorOfLabel = '#label';
         this.selectorOfShowBoth = '#show-both';
         this.selectorOfWhichShowFirst = '#show-first';
+        this.selectorOfLoop = '#loop';
 
         this.init();
     }
@@ -26,7 +27,8 @@ export default class SettingsLearn extends Settings
             sort: this.q(this.selectorOfSort).value,
             label: this.q(this.selectorOfLabel).value,
             showBoth: this.q(this.selectorOfShowBoth).value,
-            showFirst: this.q(this.selectorOfWhichShowFirst).value
+            showFirst: this.q(this.selectorOfWhichShowFirst).value,
+            loop: this.q(this.selectorOfLoop).value
         };
 
         return callback(data);
