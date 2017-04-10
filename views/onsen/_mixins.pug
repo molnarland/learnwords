@@ -57,3 +57,11 @@ mixin template (id, toolbarCenter, backButtonText, iosNextButtonText, nextButton
                 ons-if(platform="android")
                     ons-fab(position="bottom right" id!=nextButtonId)
                         ons-icon(icon=androidNextButtonIcon)
+
+
+mixin game-tab-template(id)
+    ons-template(id=id)
+        ons-page(id=id)
+            .card
+                p
+            img

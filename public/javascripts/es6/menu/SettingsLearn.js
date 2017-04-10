@@ -26,9 +26,9 @@ export default class SettingsLearn extends Settings
         const data = {
             sort: this.q(this.selectorOfSort).value,
             label: this.q(this.selectorOfLabel).value,
-            showBoth: this.q(this.selectorOfShowBoth).value,
+            showBoth: this.convertSwitchToBoolean(this.q(this.selectorOfShowBoth).value),
             showFirst: this.q(this.selectorOfWhichShowFirst).value,
-            loop: this.q(this.selectorOfLoop).value
+            loop: this.convertSwitchToBoolean(this.q(this.selectorOfLoop).value)
         };
 
         return callback(data);
