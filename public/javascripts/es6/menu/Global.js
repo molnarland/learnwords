@@ -422,6 +422,33 @@ export default class Global
      */
     pushBackWithRefresh ()
     {
-        document.querySelector(this.selectorOfNavigator).popPage({refresh: true});
+        this.pushBack({refresh: true});
+    }
+
+    /**
+     * @param {object} [options]
+     */
+    pushBack (options = {})
+    {
+        document.querySelector(this.selectorOfNavigator).popPage(options);
+    }
+
+    /**
+     * @param {string} switchValue - "on" or "off"
+     */
+    convertSwitchToBoolean (switchValue)
+    {
+        switch (switchValue)
+        {
+            case 'on':
+                return true;
+                break;
+            case 'off':
+                return false;
+                break;
+            default:
+                console.warn('Undefined switch value!');
+                break;
+        }
     }
 }

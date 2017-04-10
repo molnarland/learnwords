@@ -1,0 +1,25 @@
+.page__content.learn
+  padding: 0
+
+#learn-area
+  height: calc(100% - 4px)
+  p
+    text-align: center
+
+  ons-tabbar
+    margin-top: 4px
+    &.go-away
+      right: 100% !important
+      padding: 6px 0 10px
+      transition: .4s ease-in
+    &.come-here
+      left: 0
+      right: 0
+      padding: 6px 10px 10px
+      transition: .4s ease-out
+    &.hidden
+      display: initial
+      left: 100%
+      padding: 6px 0 10px
+    .page__content
+      padding: 6px 10px 10px

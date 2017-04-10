@@ -32,7 +32,7 @@ document.addEventListener('init', (event) =>
         'settings-learn': SettingsLearn,
         'learn': Learn,
         'quiz': Quiz
-    });
+    }, ['learnable', 'native']);
 });
 
 /**
@@ -41,16 +41,23 @@ document.addEventListener('init', (event) =>
  *
  * @param {object} page
  * @param {object} routes
+ * @param {array} ignore
  */
-function router(page, routes)
+function router(page, routes, ignore)
 {
-    let id = page.id;
-    let currentRoute = routes[id];
-
-    if (!currentRoute)
+    if (ignore.indexOf(page.id) < 0)
     {
-        return console.error(`This route id (${id}) does not exist!`);
-    }
+        let id = page.id;
+        let currentRoute = routes[id];
 
-    new currentRoute(page);
+        if (!currentRoute)
+        {
+            return console.error(`This route id (${id}) does not exist!`);
+        }
+
+        if (typeof currentRoute === 'function')
+        {
+            new currentRoute(page);
+        }
+    }
 }

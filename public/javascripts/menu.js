@@ -110,7 +110,7 @@
 	        'settings-learn': _SettingsLearn2.default,
 	        'learn': _Learn2.default,
 	        'quiz': _Quiz2.default
-	    });
+	    }, ['learnable', 'native']);
 	});
 	
 	/**
@@ -119,16 +119,21 @@
 	 *
 	 * @param {object} page
 	 * @param {object} routes
+	 * @param {array} ignore
 	 */
-	function router(page, routes) {
-	    var id = page.id;
-	    var currentRoute = routes[id];
+	function router(page, routes, ignore) {
+	    if (ignore.indexOf(page.id) < 0) {
+	        var id = page.id;
+	        var currentRoute = routes[id];
 	
-	    if (!currentRoute) {
-	        return console.error('This route id (' + id + ') does not exist!');
+	        if (!currentRoute) {
+	            return console.error('This route id (' + id + ') does not exist!');
+	        }
+	
+	        if (typeof currentRoute === 'function') {
+	            new currentRoute(page);
+	        }
 	    }
-	
-	    new currentRoute(page);
 	}
 
 /***/ },
@@ -28835,7 +28840,39 @@
 	    }, {
 	        key: 'pushBackWithRefresh',
 	        value: function pushBackWithRefresh() {
-	            document.querySelector(this.selectorOfNavigator).popPage({ refresh: true });
+	            this.pushBack({ refresh: true });
+	        }
+	
+	        /**
+	         * @param {object} [options]
+	         */
+	
+	    }, {
+	        key: 'pushBack',
+	        value: function pushBack() {
+	            var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	
+	            document.querySelector(this.selectorOfNavigator).popPage(options);
+	        }
+	
+	        /**
+	         * @param {string} switchValue - "on" or "off"
+	         */
+	
+	    }, {
+	        key: 'convertSwitchToBoolean',
+	        value: function convertSwitchToBoolean(switchValue) {
+	            switch (switchValue) {
+	                case 'on':
+	                    return true;
+	                    break;
+	                case 'off':
+	                    return false;
+	                    break;
+	                default:
+	                    console.warn('Undefined switch value!');
+	                    break;
+	            }
 	        }
 	    }]);
 	
@@ -29957,6 +29994,7 @@
 	        _this.selectorOfLabel = '#label';
 	        _this.selectorOfShowBoth = '#show-both';
 	        _this.selectorOfWhichShowFirst = '#show-first';
+	        _this.selectorOfLoop = '#loop';
 	
 	        _this.init();
 	        return _this;
@@ -29973,8 +30011,9 @@
 	            var data = {
 	                sort: this.q(this.selectorOfSort).value,
 	                label: this.q(this.selectorOfLabel).value,
-	                showBoth: this.q(this.selectorOfShowBoth).value,
-	                showFirst: this.q(this.selectorOfWhichShowFirst).value
+	                showBoth: this.convertSwitchToBoolean(this.q(this.selectorOfShowBoth).value),
+	                showFirst: this.q(this.selectorOfWhichShowFirst).value,
+	                loop: this.convertSwitchToBoolean(this.q(this.selectorOfLoop).value)
 	            };
 	
 	            return callback(data);
@@ -30083,6 +30122,10 @@
 	
 	var _Game3 = _interopRequireDefault(_Game2);
 	
+	var _onsenui = __webpack_require__(/*! onsenui */ 1);
+	
+	var _onsenui2 = _interopRequireDefault(_onsenui);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -30104,20 +30147,47 @@
 	            method: 'GET'
 	        };
 	
+	        _this.currentPageName = 'learn';
+	        _this.selectorOfProgressBar = '#progress';
+	        _this.selectorOfProgramArea = '#learn-area';
+	        _this.selectorOfBackButtonWhenNoResult = '#back-to-settings';
+	        _this.selectorOfNextButton = '#next';
+	        _this.learnable = {
+	            selector: '#learnable',
+	            spaceOfWord: '#learnable .card p',
+	            image: '#learnable img'
+	        };
+	        _this.native = {
+	            selector: '#native',
+	            spaceOfWord: '#native .card p',
+	            image: '#native img'
+	        };
+	
+	        _this.animationDelay = 400; //millisecond
+	
 	        //from previous page
 	        var data = _this.page.data.data;
 	        _this.label = data.label;
 	        _this.sort = data.sort;
 	        _this.showBoth = data.showBoth;
-	        _this.showFirst = data.showFirst;
+	        _this.showFirst = Number(data.showFirst);
+	        _this.loop = data.loop;
+	
+	        //for learn
+	        _this.words = [];
+	        _this.index = 0;
+	        _this.progressRate = null;
 	
 	        _this.getWords();
+	        _this.addLearnClassToContentWrapper();
 	        return _this;
 	    }
 	
 	    _createClass(Learn, [{
 	        key: 'getWords',
 	        value: function getWords() {
+	            var _this2 = this;
+	
 	            this.ajax({
 	                method: this.ajaxOfGetWordsForLearn.method,
 	                url: this.ajaxOfGetWordsForLearn.url + '/',
@@ -30126,8 +30196,250 @@
 	                    sort: this.sort,
 	                    first: this.showFirst
 	                },
-	                success: function success() {}
+	                success: function success(response) {
+	                    if (response && response.length > 0) {
+	                        _this2.words = response;
+	                        _this2.progressRate = _this2._getProgressRate();
+	                        _this2._startTheLearn();
+	                    } else {
+	                        _this2._setNoResult();
+	                    }
+	                }
 	            });
+	        }
+	
+	        /**
+	         * @return {*}
+	         * @private
+	         */
+	
+	    }, {
+	        key: '_startTheLearn',
+	        value: function _startTheLearn() {
+	            if (this.words.length <= 0) {
+	                return this._setNoResult();
+	            }
+	
+	            this.first();
+	        }
+	    }, {
+	        key: 'first',
+	        value: function first() {
+	            var _this3 = this;
+	
+	            this._setProgressValue();
+	
+	            this._setLearnContentTemplate(this.getLearnContentSelector(), function () {
+	                setTimeout(_this3._nextWord.bind(_this3), 300);
+	                _this3._setNextContent();
+	            });
+	        }
+	    }, {
+	        key: 'next',
+	        value: function next() {
+	            this.index++;
+	
+	            this._setProgressValue();
+	
+	            this._deletePreviousContent();
+	            this._setCurrentContent();
+	
+	            if (this.words[this.index + 1]) {
+	                this._setNextContent();
+	            } else {
+	                // if (this.loop)
+	                // {
+	                //     this.index = -1;
+	                //     this._setNextContent();
+	                // }
+	                // else
+	                // {
+	                this.hideNextButton();
+	                // }
+	            }
+	        }
+	    }, {
+	        key: '_deletePreviousContent',
+	        value: function _deletePreviousContent() {
+	            var previous = this.q(this.getLearnContentSelector(false));
+	
+	            previous.classList.add('go-away');
+	
+	            setTimeout(function () {
+	                previous.parentNode.removeChild(previous);
+	            }, this.animationDelay);
+	        }
+	    }, {
+	        key: '_setCurrentContent',
+	        value: function _setCurrentContent() {
+	            this._nextWord();
+	
+	            var currentContent = this.q(this.getLearnContentSelector());
+	            currentContent.classList.remove('hidden');
+	            currentContent.classList.add('come-here');
+	
+	            setTimeout(function () {
+	                currentContent.classList.remove('come-here');
+	            }, this.animationDelay);
+	        }
+	    }, {
+	        key: '_setNextContent',
+	        value: function _setNextContent() {
+	            this._setLearnContentTemplate(this.getLearnContentSelector(true) + ' hidden');
+	        }
+	
+	        /**
+	         * @private
+	         */
+	
+	    }, {
+	        key: '_nextWord',
+	        value: function _nextWord() {
+	            var word = this.words[this.index];
+	            var native = word.native;
+	            var learnable = word.learnable;
+	            var photo = word.photo;
+	
+	            var currentContentSelector = this.getLearnContentSelector() + ' ';
+	
+	            this.q(currentContentSelector + this.native.spaceOfWord).innerText = native;
+	            this.q(currentContentSelector + this.learnable.spaceOfWord).innerText = learnable;
+	            if (photo) {
+	                this.q(currentContentSelector + this.native.image).src = photo;
+	                this.q(currentContentSelector + this.learnable.image).src = photo;
+	            }
+	
+	            this.q(this.selectorOfNextButton).addEventListener('click', this.next.bind(this));
+	        }
+	
+	        /**
+	         * @private
+	         */
+	
+	    }, {
+	        key: '_setNoResult',
+	        value: function _setNoResult() {
+	            this.setDomElement({
+	                where: this.selectorOfProgramArea,
+	                html: '<p>So sorry, but I didn\'t find any words with those settings...</p>' + '<p>' + '<ons-button id="back-to-settings">' + '<ons-icon icon="ion-arrow-left-c, material:md-arrow-left"></ons-icon>' + 'Back' + '</ons-button>' + '</p>',
+	                callback: this._setBackButtonListener.bind(this)
+	            });
+	
+	            this.q(this.selectorOfNextButton).className = 'hidden';
+	        }
+	
+	        /**
+	         * @private
+	         */
+	
+	    }, {
+	        key: '_setBackButtonListener',
+	        value: function _setBackButtonListener() {
+	            var _this4 = this;
+	
+	            this.q(this.selectorOfBackButtonWhenNoResult).addEventListener('click', function () {
+	                _this4.pushBack();
+	            });
+	        }
+	
+	        /**
+	         * progress bar will be closer to toolbar
+	         */
+	
+	    }, {
+	        key: 'addLearnClassToContentWrapper',
+	        value: function addLearnClassToContentWrapper() {
+	            var contentWrapper = '.page__content';
+	            var learnClass = 'learn';
+	
+	            this.q(contentWrapper).classList.add(learnClass);
+	        }
+	
+	        /**
+	         * @param {boolean|null} index
+	         *      false - previous index
+	         *      null - current index
+	         *      true - next index
+	         * @return {string}
+	         */
+	
+	    }, {
+	        key: 'getLearnContentSelector',
+	        value: function getLearnContentSelector() {
+	            var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+	
+	            var basic = '.tabbar-';
+	
+	            switch (index) {
+	                case null:
+	                default:
+	                    return basic + this.index;
+	                    break;
+	                case false:
+	                    var previousIndex = this.index - 1;
+	                    if (previousIndex < 0) {
+	                        previousIndex = this.words.length - 1;
+	                    }
+	                    return basic + previousIndex;
+	                    break;
+	                case true:
+	                    return basic + (this.index + 1);
+	                    break;
+	
+	            }
+	        }
+	
+	        /**
+	         * @param {string} cssClass
+	         * @param {function} [callback]
+	         * @private
+	         */
+	
+	    }, {
+	        key: '_setLearnContentTemplate',
+	        value: function _setLearnContentTemplate(cssClass) {
+	            var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Function();
+	
+	            cssClass = cssClass.charAt(0) === '.' ? cssClass.substring(1) : cssClass;
+	            var html = '';
+	
+	            if (this.showBoth) {
+	                html = '<div class="' + cssClass + '">' + ('<div id="' + (this.showFirst === 0 ? 'native' : 'learnable') + '">') + '<div class="card"></div>' + '</div>' + ('<div id="' + (this.showFirst === 1 ? 'native' : 'learnable') + '">') + '<div class="card"></div>' + '<img>' + '</div>' + '</div>';
+	            } else {
+	                html = this.createOnsElement('<ons-tabbar class="' + cssClass + '" animation="fade">' + ('<ons-tab label="Native" page="native" ' + (this.showFirst === 0 ? 'active' : '') + '></ons-tab>') + ('<ons-tab label="Learnable" page="learnable" ' + (this.showFirst === 1 ? 'active' : '') + '></ons-tab>') + '</ons-tabbar>');
+	            }
+	
+	            this.setDomElement({
+	                where: this.selectorOfProgramArea,
+	                html: html,
+	                callback: callback
+	            });
+	        }
+	
+	        /**
+	         * @return {number}
+	         * @private
+	         */
+	
+	    }, {
+	        key: '_getProgressRate',
+	        value: function _getProgressRate() {
+	            return 100 / this.words.length;
+	        }
+	
+	        /**
+	         * @private
+	         */
+	
+	    }, {
+	        key: '_setProgressValue',
+	        value: function _setProgressValue() {
+	            this.q(this.selectorOfProgressBar).value = this.progressRate * (this.index + 1);
+	        }
+	    }, {
+	        key: 'hideNextButton',
+	        value: function hideNextButton() {
+	            this.q(this.selectorOfNextButton).className = 'hidden';
 	        }
 	    }]);
 	

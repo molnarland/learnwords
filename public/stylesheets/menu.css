@@ -27,6 +27,15 @@ ons-input.error:after, ons-input[data-error]:after, ons-select.error:after, ons-
   position: absolute;
   right: 2%; }
 
+ons-button:not(ons-toolbar-button) > .ons-icon--ion {
+  vertical-align: 0; }
+
+ons-button > ons-icon {
+  margin-right: 5px; }
+
+.hidden {
+  display: none; }
+
 #change-words-form section {
   margin-top: 17px;
   margin-bottom: 17px; }
@@ -54,3 +63,28 @@ ons-input.error:after, ons-input[data-error]:after, ons-select.error:after, ons-
 
 #change-words-items .right {
   text-align: right; }
+
+.page__content.learn {
+  padding: 0; }
+
+#learn-area {
+  height: calc(100% - 4px); }
+  #learn-area p {
+    text-align: center; }
+  #learn-area ons-tabbar {
+    margin-top: 4px; }
+    #learn-area ons-tabbar .page__content {
+      padding: 6px 10px 10px; }
+    #learn-area ons-tabbar.go-away {
+      right: 100% !important;
+      padding: 6px 0 10px;
+      transition: .4s ease-in; }
+    #learn-area ons-tabbar.come-here {
+      left: 0;
+      right: 0;
+      padding: 6px 10px 10px;
+      transition: .4s ease-out; }
+    #learn-area ons-tabbar.hidden {
+      display: initial;
+      left: 100%;
+      padding: 6px 0 10px; }
