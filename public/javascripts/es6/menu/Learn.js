@@ -266,29 +266,32 @@ export default class Learn extends Game
         cssClass = (cssClass.charAt(0) === '.') ? cssClass.substring(1) : cssClass;
         let html = '';
 
-
-        // if (this.showBoth)
-        // {
-        //     html =
-        //         `<div class="${cssClass}">` +
-        //             `<div id="${(this.showFirst === 0) ? 'native' : 'learnable'}">` +
-        //                 `<div class="card"></div>` +
-        //             `</div>` +
-        //             `<div id="${(this.showFirst === 1) ? 'native' : 'learnable'}">` +
-        //                 `<div class="card"></div>` +
-        //                 `<img>` +
-        //             `</div>` +
-        //         `</div>`;
-        // }
-        // else
-        // {
+        if (this.showBoth)
+        {
+            html =
+                `<div class="${cssClass}">` +
+                    `<div id="${(this.showFirst === 0) ? 'native' : 'learnable'}">` +
+                        `<div class="card">` +
+                            `<p></p>` +
+                        `</div>` +
+                    `</div>` +
+                    `<div id="${(this.showFirst === 1) ? 'native' : 'learnable'}">` +
+                        `<div class="card">` +
+                            `<p></p>` +
+                        `</div>` +
+                        `<img>` +
+                    `</div>` +
+                `</div>`;
+        }
+        else
+        {
             html = this.createOnsElement(
                 `<ons-tabbar class="${cssClass}" animation="fade">` +
                     `<ons-tab label="Native" page="native" ${(this.showFirst === 0) ? 'active' : ''}></ons-tab>` +
                     `<ons-tab label="Learnable" page="learnable" ${(this.showFirst === 1) ? 'active' : ''}></ons-tab>` +
                 `</ons-tabbar>`
             );
-        // }
+        }
 
         this.setDomElement({
             where: this.selectorOfProgramArea,

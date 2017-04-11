@@ -30011,9 +30011,9 @@
 	            var data = {
 	                sort: this.q(this.selectorOfSort).value,
 	                label: this.q(this.selectorOfLabel).value,
-	                showBoth: this.convertSwitchToBoolean(this.q(this.selectorOfShowBoth).value),
+	                showBoth: this.q(this.selectorOfShowBoth).checked,
 	                showFirst: this.q(this.selectorOfWhichShowFirst).value,
-	                loop: this.convertSwitchToBoolean(this.q(this.selectorOfLoop).value)
+	                loop: this.q(this.selectorOfLoop).checked
 	            };
 	
 	            return callback(data);
@@ -30404,7 +30404,7 @@
 	            var html = '';
 	
 	            if (this.showBoth) {
-	                html = '<div class="' + cssClass + '">' + ('<div id="' + (this.showFirst === 0 ? 'native' : 'learnable') + '">') + '<div class="card"></div>' + '</div>' + ('<div id="' + (this.showFirst === 1 ? 'native' : 'learnable') + '">') + '<div class="card"></div>' + '<img>' + '</div>' + '</div>';
+	                html = '<div class="' + cssClass + '">' + ('<div id="' + (this.showFirst === 0 ? 'native' : 'learnable') + '">') + '<div class="card">' + '<p></p>' + '</div>' + '</div>' + ('<div id="' + (this.showFirst === 1 ? 'native' : 'learnable') + '">') + '<div class="card">' + '<p></p>' + '</div>' + '<img>' + '</div>' + '</div>';
 	            } else {
 	                html = this.createOnsElement('<ons-tabbar class="' + cssClass + '" animation="fade">' + ('<ons-tab label="Native" page="native" ' + (this.showFirst === 0 ? 'active' : '') + '></ons-tab>') + ('<ons-tab label="Learnable" page="learnable" ' + (this.showFirst === 1 ? 'active' : '') + '></ons-tab>') + '</ons-tabbar>');
 	            }
