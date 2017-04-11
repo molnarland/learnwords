@@ -150,6 +150,7 @@ export default class Global
         }
         catch (e)
         {
+            console.error(e.message);
             callback(response);
         }
     }
@@ -356,8 +357,10 @@ export default class Global
 
     /**
      * Cannot use if want to get labels from backend
+     * @param {string} selectorOfLabel
+     * @param {function} callback
      */
-    getLabelsForSelect (selectorOfLabel)
+    getLabelsForSelect (selectorOfLabel, callback = new Function())
     {
         if (window.labels.length === 0)
         {
@@ -368,15 +371,19 @@ export default class Global
                 {
                     window.labels = result;
 
-                    return this.showLabelsInInput(selectorOfLabel);
+                    return this.showLabelsInInput(selectorOfLabel, callback);
                 }
             });
         }
 
-        return this.showLabelsInInput(selectorOfLabel);
+        return this.showLabelsInInput(selectorOfLabel, callback);
     }
 
-    showLabelsInInput (selectorOfLabel)
+    /**
+     * @param {string} selectorOfLabel
+     * @param {function} callback
+     */
+    showLabelsInInput (selectorOfLabel, callback = new Function())
     {
         const labelInput = this.q(selectorOfLabel);
 
@@ -388,6 +395,8 @@ export default class Global
 
             labelInput.add(option); //0630/683 1920
         }
+
+        return callback();
     }
 
     /**

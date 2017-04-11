@@ -15,8 +15,9 @@ export default class Settings extends Global
 
     init ()
     {
-        this.getLabelsForSelect(this.selectorOfLabelInput);
+        this.getLabelsForSelect(this.selectorOfLabelInput, this.setDefaultValue.bind(this));
         this.initOfPushToGame();
+
     }
 
 
@@ -27,6 +28,7 @@ export default class Settings extends Global
             this.getValue((data) =>
             {
                 this.pushPage(this.changeForm, { data: data });
+                this.saveAsDefaultValues(data);
             });
         });
     }
@@ -38,4 +40,8 @@ export default class Settings extends Global
     {
         return callback();
     }
+
+    saveAsDefaultValues () {}
+
+    setDefaultValue () {}
 }

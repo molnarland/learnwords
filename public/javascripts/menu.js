@@ -77,11 +77,11 @@
 	
 	var _SettingsLearn2 = _interopRequireDefault(_SettingsLearn);
 	
-	var _Learn = __webpack_require__(/*! ./Learn */ 16);
+	var _Learn = __webpack_require__(/*! ./Learn */ 17);
 	
 	var _Learn2 = _interopRequireDefault(_Learn);
 	
-	var _Quiz = __webpack_require__(/*! ./Quiz */ 18);
+	var _Quiz = __webpack_require__(/*! ./Quiz */ 19);
 	
 	var _Quiz2 = _interopRequireDefault(_Quiz);
 	
@@ -28487,6 +28487,7 @@
 	            try {
 	                callback(JSON.parse(response));
 	            } catch (e) {
+	                console.error(e.message);
 	                callback(response);
 	            }
 	        }
@@ -28748,12 +28749,16 @@
 	
 	        /**
 	         * Cannot use if want to get labels from backend
+	         * @param {string} selectorOfLabel
+	         * @param {function} callback
 	         */
 	
 	    }, {
 	        key: 'getLabelsForSelect',
 	        value: function getLabelsForSelect(selectorOfLabel) {
 	            var _this8 = this;
+	
+	            var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Function();
 	
 	            if (window.labels.length === 0) {
 	                this.ajax({
@@ -28762,16 +28767,24 @@
 	                    success: function success(result) {
 	                        window.labels = result;
 	
-	                        return _this8.showLabelsInInput(selectorOfLabel);
+	                        return _this8.showLabelsInInput(selectorOfLabel, callback);
 	                    }
 	                });
 	            }
 	
-	            return this.showLabelsInInput(selectorOfLabel);
+	            return this.showLabelsInInput(selectorOfLabel, callback);
 	        }
+	
+	        /**
+	         * @param {string} selectorOfLabel
+	         * @param {function} callback
+	         */
+	
 	    }, {
 	        key: 'showLabelsInInput',
 	        value: function showLabelsInInput(selectorOfLabel) {
+	            var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Function();
+	
 	            var labelInput = this.q(selectorOfLabel);
 	
 	            var _iteratorNormalCompletion3 = true;
@@ -28802,6 +28815,8 @@
 	                    }
 	                }
 	            }
+	
+	            return callback();
 	        }
 	
 	        /**
@@ -29951,6 +29966,12 @@
 	
 	var _Settings3 = _interopRequireDefault(_Settings2);
 	
+	var _jsCookie = __webpack_require__(/*! js-cookie */ 16);
+	
+	var Cookies = _interopRequireWildcard(_jsCookie);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -29997,6 +30018,25 @@
 	            };
 	
 	            return callback(data);
+	        }
+	    }, {
+	        key: 'setDefaultValue',
+	        value: function setDefaultValue() {
+	            var data = JSON.parse(Cookies.get('learn-settings'));
+	            if (data) //default value can be default of html
+	                {
+	                    this.q(this.selectorOfSort).value = data.sort || 0;
+	                    this.q(this.selectorOfShowBoth).checked = data.showBoth || false;
+	                    this.q(this.selectorOfWhichShowFirst).value = data.showFirst || 0;
+	                    this.q(this.selectorOfLabel).value = data.label || 0;
+	                }
+	
+	            this.q(this.selectorOfLoop).checked = data.loop == true || data.loop == false ? data.loop : true; //default value want to be true
+	        }
+	    }, {
+	        key: 'saveAsDefaultValues',
+	        value: function saveAsDefaultValues(data) {
+	            Cookies.set('learn-settings', JSON.stringify(data), { expires: 1000 });
 	        }
 	    }]);
 	
@@ -30050,7 +30090,7 @@
 	    _createClass(Settings, [{
 	        key: 'init',
 	        value: function init() {
-	            this.getLabelsForSelect(this.selectorOfLabelInput);
+	            this.getLabelsForSelect(this.selectorOfLabelInput, this.setDefaultValue.bind(this));
 	            this.initOfPushToGame();
 	        }
 	    }, {
@@ -30061,6 +30101,7 @@
 	            this.q(this.nextButton).addEventListener('click', function () {
 	                _this2.getValue(function (data) {
 	                    _this2.pushPage(_this2.changeForm, { data: data });
+	                    _this2.saveAsDefaultValues(data);
 	                });
 	            });
 	        }
@@ -30076,6 +30117,12 @@
 	
 	            return callback();
 	        }
+	    }, {
+	        key: 'saveAsDefaultValues',
+	        value: function saveAsDefaultValues() {}
+	    }, {
+	        key: 'setDefaultValue',
+	        value: function setDefaultValue() {}
 	    }]);
 	
 	    return Settings;
@@ -30085,6 +30132,171 @@
 
 /***/ },
 /* 16 */
+/*!**************************************!*\
+  !*** ./~/js-cookie/src/js.cookie.js ***!
+  \**************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	 * JavaScript Cookie v2.1.3
+	 * https://github.com/js-cookie/js-cookie
+	 *
+	 * Copyright 2006, 2015 Klaus Hartl & Fagner Brack
+	 * Released under the MIT license
+	 */
+	;(function (factory) {
+		var registeredInModuleLoader = false;
+		if (true) {
+			!(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+			registeredInModuleLoader = true;
+		}
+		if (true) {
+			module.exports = factory();
+			registeredInModuleLoader = true;
+		}
+		if (!registeredInModuleLoader) {
+			var OldCookies = window.Cookies;
+			var api = window.Cookies = factory();
+			api.noConflict = function () {
+				window.Cookies = OldCookies;
+				return api;
+			};
+		}
+	}(function () {
+		function extend () {
+			var i = 0;
+			var result = {};
+			for (; i < arguments.length; i++) {
+				var attributes = arguments[ i ];
+				for (var key in attributes) {
+					result[key] = attributes[key];
+				}
+			}
+			return result;
+		}
+	
+		function init (converter) {
+			function api (key, value, attributes) {
+				var result;
+				if (typeof document === 'undefined') {
+					return;
+				}
+	
+				// Write
+	
+				if (arguments.length > 1) {
+					attributes = extend({
+						path: '/'
+					}, api.defaults, attributes);
+	
+					if (typeof attributes.expires === 'number') {
+						var expires = new Date();
+						expires.setMilliseconds(expires.getMilliseconds() + attributes.expires * 864e+5);
+						attributes.expires = expires;
+					}
+	
+					try {
+						result = JSON.stringify(value);
+						if (/^[\{\[]/.test(result)) {
+							value = result;
+						}
+					} catch (e) {}
+	
+					if (!converter.write) {
+						value = encodeURIComponent(String(value))
+							.replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent);
+					} else {
+						value = converter.write(value, key);
+					}
+	
+					key = encodeURIComponent(String(key));
+					key = key.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent);
+					key = key.replace(/[\(\)]/g, escape);
+	
+					return (document.cookie = [
+						key, '=', value,
+						attributes.expires ? '; expires=' + attributes.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+						attributes.path ? '; path=' + attributes.path : '',
+						attributes.domain ? '; domain=' + attributes.domain : '',
+						attributes.secure ? '; secure' : ''
+					].join(''));
+				}
+	
+				// Read
+	
+				if (!key) {
+					result = {};
+				}
+	
+				// To prevent the for loop in the first place assign an empty array
+				// in case there are no cookies at all. Also prevents odd result when
+				// calling "get()"
+				var cookies = document.cookie ? document.cookie.split('; ') : [];
+				var rdecode = /(%[0-9A-Z]{2})+/g;
+				var i = 0;
+	
+				for (; i < cookies.length; i++) {
+					var parts = cookies[i].split('=');
+					var cookie = parts.slice(1).join('=');
+	
+					if (cookie.charAt(0) === '"') {
+						cookie = cookie.slice(1, -1);
+					}
+	
+					try {
+						var name = parts[0].replace(rdecode, decodeURIComponent);
+						cookie = converter.read ?
+							converter.read(cookie, name) : converter(cookie, name) ||
+							cookie.replace(rdecode, decodeURIComponent);
+	
+						if (this.json) {
+							try {
+								cookie = JSON.parse(cookie);
+							} catch (e) {}
+						}
+	
+						if (key === name) {
+							result = cookie;
+							break;
+						}
+	
+						if (!key) {
+							result[name] = cookie;
+						}
+					} catch (e) {}
+				}
+	
+				return result;
+			}
+	
+			api.set = api;
+			api.get = function (key) {
+				return api.call(api, key);
+			};
+			api.getJSON = function () {
+				return api.apply({
+					json: true
+				}, [].slice.call(arguments));
+			};
+			api.defaults = {};
+	
+			api.remove = function (key, attributes) {
+				api(key, '', extend(attributes, {
+					expires: -1
+				}));
+			};
+	
+			api.withConverter = init;
+	
+			return api;
+		}
+	
+		return init(function () {});
+	}));
+
+
+/***/ },
+/* 17 */
 /*!***************************************!*\
   !*** ./javascripts/es6/menu/Learn.js ***!
   \***************************************/
@@ -30098,7 +30310,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _Game2 = __webpack_require__(/*! ./Game */ 17);
+	var _Game2 = __webpack_require__(/*! ./Game */ 18);
 	
 	var _Game3 = _interopRequireDefault(_Game2);
 	
@@ -30248,7 +30460,6 @@
 	        key: '_deletePreviousContent',
 	        value: function _deletePreviousContent() {
 	            var previous = this.q(this.getLearnContentSelector(false));
-	
 	            previous.classList.add('go-away');
 	
 	            setTimeout(function () {
@@ -30427,7 +30638,9 @@
 	    }, {
 	        key: '_setProgressValue',
 	        value: function _setProgressValue() {
-	            this.q(this.selectorOfProgressBar).value = this.progressRate * (this.index + 1);
+	            var result = this.progressRate * (this.index + 1);
+	            //TODO this is not working in firefox
+	            this.q(this.selectorOfProgressBar).value = result;
 	        }
 	
 	        /**
@@ -30457,7 +30670,7 @@
 	exports.default = Learn;
 
 /***/ },
-/* 17 */
+/* 18 */
 /*!**************************************!*\
   !*** ./javascripts/es6/menu/Game.js ***!
   \**************************************/
@@ -30499,7 +30712,7 @@
 	exports.default = Game;
 
 /***/ },
-/* 18 */
+/* 19 */
 /*!**************************************!*\
   !*** ./javascripts/es6/menu/Quiz.js ***!
   \**************************************/

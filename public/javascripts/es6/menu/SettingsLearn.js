@@ -1,4 +1,5 @@
 import Settings from './Settings';
+import * as Cookies from 'js-cookie';
 
 export default class SettingsLearn extends Settings
 {
@@ -32,5 +33,27 @@ export default class SettingsLearn extends Settings
         };
 
         return callback(data);
+    }
+
+    setDefaultValue ()
+    {
+        const data = JSON.parse(Cookies.get('learn-settings'));
+        if (data) //default value can be default of html
+        {
+            this.q(this.selectorOfSort).value = data.sort || 0;
+            this.q(this.selectorOfShowBoth).checked = data.showBoth || false;
+            this.q(this.selectorOfWhichShowFirst).value = data.showFirst || 0;
+            this.q(this.selectorOfLabel).value = data.label || 0;
+        }
+
+        this.q(this.selectorOfLoop).checked =
+            (data.loop == true || data.loop == false)
+                ? data.loop
+                : true; //default value want to be true
+    }
+
+    saveAsDefaultValues (data)
+    {
+        Cookies.set('learn-settings', JSON.stringify(data), {expires: 1000});
     }
 }
