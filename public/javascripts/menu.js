@@ -30216,9 +30216,16 @@
 	
 	            this.q(this.selectorOfNextButton).addEventListener('click', this.next.bind(this));
 	        }
+	
+	        /**
+	         * Event listener of next button
+	         */
+	
 	    }, {
 	        key: 'next',
 	        value: function next() {
+	            this.disableNextButton();
+	
 	            this.index++;
 	
 	            this._setProgressValue();
@@ -30252,6 +30259,8 @@
 	    }, {
 	        key: '_setCurrentContent',
 	        value: function _setCurrentContent() {
+	            var _this4 = this;
+	
 	            this._nextWord();
 	
 	            var currentContent = this.q(this.getLearnContentSelector());
@@ -30259,6 +30268,8 @@
 	            currentContent.classList.add('come-here');
 	
 	            setTimeout(function () {
+	                _this4.enableNextButton();
+	
 	                currentContent.classList.remove('come-here');
 	            }, this.animationDelay);
 	        }
@@ -30313,10 +30324,10 @@
 	    }, {
 	        key: '_setBackButtonListener',
 	        value: function _setBackButtonListener() {
-	            var _this4 = this;
+	            var _this5 = this;
 	
 	            this.q(this.selectorOfBackButtonWhenNoResult).addEventListener('click', function () {
-	                _this4.pushBack();
+	                _this5.pushBack();
 	            });
 	        }
 	
@@ -30427,6 +30438,16 @@
 	        key: '_hideNextButton',
 	        value: function _hideNextButton() {
 	            this.q(this.selectorOfNextButton).className = 'hidden';
+	        }
+	    }, {
+	        key: 'disableNextButton',
+	        value: function disableNextButton() {
+	            this.q(this.selectorOfNextButton).setAttribute('disabled', '');
+	        }
+	    }, {
+	        key: 'enableNextButton',
+	        value: function enableNextButton() {
+	            this.q(this.selectorOfNextButton).removeAttribute('disabled');
 	        }
 	    }]);
 	

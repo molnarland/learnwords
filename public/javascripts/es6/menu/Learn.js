@@ -103,8 +103,13 @@ export default class Learn extends Game
         this.q(this.selectorOfNextButton).addEventListener('click', this.next.bind(this));
     }
 
+    /**
+     * Event listener of next button
+     */
     next ()
     {
+        this.disableNextButton();
+
         this.index++;
 
         this._setProgressValue();
@@ -153,6 +158,8 @@ export default class Learn extends Game
 
         setTimeout(() =>
         {
+            this.enableNextButton();
+
             currentContent.classList.remove('come-here');
         }, this.animationDelay);
     }
@@ -330,5 +337,15 @@ export default class Learn extends Game
     _hideNextButton ()
     {
         this.q(this.selectorOfNextButton).className = 'hidden';
+    }
+
+    disableNextButton ()
+    {
+        this.q(this.selectorOfNextButton).setAttribute('disabled', '');
+    }
+
+    enableNextButton ()
+    {
+        this.q(this.selectorOfNextButton).removeAttribute('disabled');
     }
 }
