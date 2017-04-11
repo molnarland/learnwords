@@ -80,9 +80,9 @@ app.use((err, req, res, next) =>
 
 
 
-app.listen(3000, '192.168.0.4', () =>
+app.listen(3000, 'localhost', () =>
 {
-    console.log('192.168.0.4:3000');
+    console.log('localhost:3000');
 });
 
 module.exports = app;
