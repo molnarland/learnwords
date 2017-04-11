@@ -432,23 +432,4 @@ export default class Global
     {
         document.querySelector(this.selectorOfNavigator).popPage(options);
     }
-
-    /**
-     * @param {string} switchValue - "on" or "off"
-     */
-    convertSwitchToBoolean (switchValue)
-    {
-        switch (switchValue)
-        {
-            case 'on':
-                return true;
-                break;
-            case 'off':
-                return false;
-                break;
-            default:
-                console.warn('Undefined switch value!');
-                break;
-        }
-    }
 }
