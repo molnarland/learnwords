@@ -98,6 +98,9 @@ export default class Learn extends Game
             setTimeout(this._nextWord.bind(this), 300);
             this._setNextContent();
         });
+
+
+        this.q(this.selectorOfNextButton).addEventListener('click', this.next.bind(this));
     }
 
     next ()
@@ -115,15 +118,15 @@ export default class Learn extends Game
         }
         else
         {
-            // if (this.loop)
-            // {
-            //     this.index = -1;
-            //     this._setNextContent();
-            // }
-            // else
-            // {
+            if (this.loop)
+            {
+                this.index = -1;
+                this._setNextContent();
+            }
+            else
+            {
                 this.hideNextButton();
-            // }
+            }
         }
     }
 
@@ -135,6 +138,7 @@ export default class Learn extends Game
 
         setTimeout(() =>
         {
+            //TODO parentNode is null when showBoth is true
             previous.parentNode.removeChild(previous);
         }, this.animationDelay)
     }
@@ -177,8 +181,6 @@ export default class Learn extends Game
             this.q(currentContentSelector + this.native.image).src = photo;
             this.q(currentContentSelector + this.learnable.image).src = photo;
         }
-
-        this.q(this.selectorOfNextButton).addEventListener('click', this.next.bind(this));
 	}
 
 
@@ -250,7 +252,12 @@ export default class Learn extends Game
                 return basic + previousIndex;
                 break;
             case true:
-                return basic + (this.index + 1);
+                let nextIndex = this.index + 1;
+                if (nextIndex >= this.words.length)
+                {
+                    nextIndex = 0;
+                }
+                return basic + nextIndex;
                 break;
 
         }
@@ -269,7 +276,7 @@ export default class Learn extends Game
         if (this.showBoth)
         {
             html =
-                `<div class="${cssClass}">` +
+                `<div class="word-container ${cssClass}">` +
                     `<div id="${(this.showFirst === 0) ? 'native' : 'learnable'}">` +
                         `<div class="card">` +
                             `<p></p>` +
@@ -286,7 +293,7 @@ export default class Learn extends Game
         else
         {
             html = this.createOnsElement(
-                `<ons-tabbar class="${cssClass}" animation="fade">` +
+                `<ons-tabbar class="word-container ${cssClass}" animation="fade">` +
                     `<ons-tab label="Native" page="native" ${(this.showFirst === 0) ? 'active' : ''}></ons-tab>` +
                     `<ons-tab label="Learnable" page="learnable" ${(this.showFirst === 1) ? 'active' : ''}></ons-tab>` +
                 `</ons-tabbar>`
@@ -317,7 +324,10 @@ export default class Learn extends Game
         this.q(this.selectorOfProgressBar).value = this.progressRate * (this.index + 1);
     }
 
-    hideNextButton ()
+    /**
+     * @private
+     */
+    _hideNextButton ()
     {
         this.q(this.selectorOfNextButton).className = 'hidden';
     }

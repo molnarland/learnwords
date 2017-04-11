@@ -28854,26 +28854,6 @@
 	
 	            document.querySelector(this.selectorOfNavigator).popPage(options);
 	        }
-	
-	        /**
-	         * @param {string} switchValue - "on" or "off"
-	         */
-	
-	    }, {
-	        key: 'convertSwitchToBoolean',
-	        value: function convertSwitchToBoolean(switchValue) {
-	            switch (switchValue) {
-	                case 'on':
-	                    return true;
-	                    break;
-	                case 'off':
-	                    return false;
-	                    break;
-	                default:
-	                    console.warn('Undefined switch value!');
-	                    break;
-	            }
-	        }
 	    }]);
 	
 	    return Global;
@@ -30233,6 +30213,8 @@
 	                setTimeout(_this3._nextWord.bind(_this3), 300);
 	                _this3._setNextContent();
 	            });
+	
+	            this.q(this.selectorOfNextButton).addEventListener('click', this.next.bind(this));
 	        }
 	    }, {
 	        key: 'next',
@@ -30247,15 +30229,12 @@
 	            if (this.words[this.index + 1]) {
 	                this._setNextContent();
 	            } else {
-	                // if (this.loop)
-	                // {
-	                //     this.index = -1;
-	                //     this._setNextContent();
-	                // }
-	                // else
-	                // {
-	                this.hideNextButton();
-	                // }
+	                if (this.loop) {
+	                    this.index = -1;
+	                    this._setNextContent();
+	                } else {
+	                    this.hideNextButton();
+	                }
 	            }
 	        }
 	    }, {
@@ -30266,6 +30245,7 @@
 	            previous.classList.add('go-away');
 	
 	            setTimeout(function () {
+	                //TODO parentNode is null when showBoth is true
 	                previous.parentNode.removeChild(previous);
 	            }, this.animationDelay);
 	        }
@@ -30308,8 +30288,6 @@
 	                this.q(currentContentSelector + this.native.image).src = photo;
 	                this.q(currentContentSelector + this.learnable.image).src = photo;
 	            }
-	
-	            this.q(this.selectorOfNextButton).addEventListener('click', this.next.bind(this));
 	        }
 	
 	        /**
@@ -30383,7 +30361,11 @@
 	                    return basic + previousIndex;
 	                    break;
 	                case true:
-	                    return basic + (this.index + 1);
+	                    var nextIndex = this.index + 1;
+	                    if (nextIndex >= this.words.length) {
+	                        nextIndex = 0;
+	                    }
+	                    return basic + nextIndex;
 	                    break;
 	
 	            }
@@ -30404,9 +30386,9 @@
 	            var html = '';
 	
 	            if (this.showBoth) {
-	                html = '<div class="' + cssClass + '">' + ('<div id="' + (this.showFirst === 0 ? 'native' : 'learnable') + '">') + '<div class="card">' + '<p></p>' + '</div>' + '</div>' + ('<div id="' + (this.showFirst === 1 ? 'native' : 'learnable') + '">') + '<div class="card">' + '<p></p>' + '</div>' + '<img>' + '</div>' + '</div>';
+	                html = '<div class="word-container ' + cssClass + '">' + ('<div id="' + (this.showFirst === 0 ? 'native' : 'learnable') + '">') + '<div class="card">' + '<p></p>' + '</div>' + '</div>' + ('<div id="' + (this.showFirst === 1 ? 'native' : 'learnable') + '">') + '<div class="card">' + '<p></p>' + '</div>' + '<img>' + '</div>' + '</div>';
 	            } else {
-	                html = this.createOnsElement('<ons-tabbar class="' + cssClass + '" animation="fade">' + ('<ons-tab label="Native" page="native" ' + (this.showFirst === 0 ? 'active' : '') + '></ons-tab>') + ('<ons-tab label="Learnable" page="learnable" ' + (this.showFirst === 1 ? 'active' : '') + '></ons-tab>') + '</ons-tabbar>');
+	                html = this.createOnsElement('<ons-tabbar class="word-container ' + cssClass + '" animation="fade">' + ('<ons-tab label="Native" page="native" ' + (this.showFirst === 0 ? 'active' : '') + '></ons-tab>') + ('<ons-tab label="Learnable" page="learnable" ' + (this.showFirst === 1 ? 'active' : '') + '></ons-tab>') + '</ons-tabbar>');
 	            }
 	
 	            this.setDomElement({
@@ -30436,9 +30418,14 @@
 	        value: function _setProgressValue() {
 	            this.q(this.selectorOfProgressBar).value = this.progressRate * (this.index + 1);
 	        }
+	
+	        /**
+	         * @private
+	         */
+	
 	    }, {
-	        key: 'hideNextButton',
-	        value: function hideNextButton() {
+	        key: '_hideNextButton',
+	        value: function _hideNextButton() {
 	            this.q(this.selectorOfNextButton).className = 'hidden';
 	        }
 	    }]);

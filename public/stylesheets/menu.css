@@ -75,16 +75,22 @@ ons-button > ons-icon {
     margin-top: 4px; }
     #learn-area ons-tabbar .page__content {
       padding: 6px 10px 10px; }
-    #learn-area ons-tabbar.go-away {
-      right: 100% !important;
+  #learn-area .word-container {
+    position: absolute;
+    display: block;
+    overflow: hidden;
+    left: 0;
+    right: 0;
+    padding: 6px 10px 10px; }
+    #learn-area .word-container.go-away {
+      left: -105%;
       padding: 6px 0 10px;
       transition: .4s ease-in; }
-    #learn-area ons-tabbar.come-here {
+    #learn-area .word-container.come-here {
       left: 0;
-      right: 0;
       padding: 6px 10px 10px;
       transition: .4s ease-out; }
-    #learn-area ons-tabbar.hidden {
+    #learn-area .word-container.hidden {
       display: initial;
       left: 100%;
       padding: 6px 0 10px; }

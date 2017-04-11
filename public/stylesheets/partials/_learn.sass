@@ -8,18 +8,25 @@
 
   ons-tabbar
     margin-top: 4px
+    .page__content
+      padding: 6px 10px 10px
+
+  .word-container
+    position: absolute
+    display: block
+    overflow: hidden
+    left: 0
+    right: 0
+    padding: 6px 10px 10px
     &.go-away
-      right: 100% !important
+      left: -105%
       padding: 6px 0 10px
       transition: .4s ease-in
     &.come-here
       left: 0
-      right: 0
       padding: 6px 10px 10px
       transition: .4s ease-out
     &.hidden
       display: initial
       left: 100%
       padding: 6px 0 10px
-    .page__content
-      padding: 6px 10px 10px
