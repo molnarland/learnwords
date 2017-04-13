@@ -30022,15 +30022,13 @@
 	    }, {
 	        key: 'setDefaultValue',
 	        value: function setDefaultValue() {
-	            var data = JSON.parse(Cookies.get('learn-settings'));
-	            if (data) //default value can be default of html
-	                {
-	                    this.q(this.selectorOfSort).value = data.sort || 0;
-	                    this.q(this.selectorOfShowBoth).checked = data.showBoth || false;
-	                    this.q(this.selectorOfWhichShowFirst).value = data.showFirst || 0;
-	                    this.q(this.selectorOfLabel).value = data.label || 0;
-	                }
+	            var data = Cookies.get('learn-settings');
+	            data = data ? JSON.parse(data) : {};
 	
+	            this.q(this.selectorOfSort).value = data.sort || 0;
+	            this.q(this.selectorOfShowBoth).checked = data.showBoth || false;
+	            this.q(this.selectorOfWhichShowFirst).value = data.showFirst || 0;
+	            this.q(this.selectorOfLabel).value = data.label || 0;
 	            this.q(this.selectorOfLoop).checked = data.loop == true || data.loop == false ? data.loop : true; //default value want to be true
 	        }
 	    }, {
@@ -30463,6 +30461,7 @@
 	            previous.classList.add('go-away');
 	
 	            setTimeout(function () {
+	                // let previous = this.q(this.getLearnContentSelector(false));
 	                //TODO parentNode is null when showBoth is true
 	                previous.parentNode.removeChild(previous);
 	            }, this.animationDelay);
@@ -30608,7 +30607,7 @@
 	            var html = '';
 	
 	            if (this.showBoth) {
-	                html = '<div class="word-container ' + cssClass + '">' + ('<div id="' + (this.showFirst === 0 ? 'native' : 'learnable') + '">') + '<div class="card">' + '<p></p>' + '</div>' + '</div>' + ('<div id="' + (this.showFirst === 1 ? 'native' : 'learnable') + '">') + '<div class="card">' + '<p></p>' + '</div>' + '<img>' + '</div>' + '</div>';
+	                html = this.createOnsElement('<div class="word-container ' + cssClass + '">' + ('<div id="' + (this.showFirst === 0 ? 'native' : 'learnable') + '">') + '<div class="card">' + '<p></p>' + '</div>' + '</div>' + ('<div id="' + (this.showFirst === 1 ? 'native' : 'learnable') + '">') + '<div class="card">' + '<p></p>' + '</div>' + '<img>' + '</div>' + '</div>');
 	            } else {
 	                html = this.createOnsElement('<ons-tabbar class="word-container ' + cssClass + '" animation="fade">' + ('<ons-tab label="Native" page="native" ' + (this.showFirst === 0 ? 'active' : '') + '></ons-tab>') + ('<ons-tab label="Learnable" page="learnable" ' + (this.showFirst === 1 ? 'active' : '') + '></ons-tab>') + '</ons-tabbar>');
 	            }

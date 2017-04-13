@@ -138,11 +138,11 @@ export default class Learn extends Game
     _deletePreviousContent ()
     {
         let previous = this.q(this.getLearnContentSelector(false));
-
         previous.classList.add('go-away');
 
         setTimeout(() =>
         {
+            // let previous = this.q(this.getLearnContentSelector(false));
             //TODO parentNode is null when showBoth is true
             previous.parentNode.removeChild(previous);
         }, this.animationDelay)
@@ -282,7 +282,7 @@ export default class Learn extends Game
 
         if (this.showBoth)
         {
-            html =
+            html = this.createOnsElement(
                 `<div class="word-container ${cssClass}">` +
                     `<div id="${(this.showFirst === 0) ? 'native' : 'learnable'}">` +
                         `<div class="card">` +
@@ -295,7 +295,8 @@ export default class Learn extends Game
                         `</div>` +
                         `<img>` +
                     `</div>` +
-                `</div>`;
+                `</div>`
+            );
         }
         else
         {
@@ -328,7 +329,9 @@ export default class Learn extends Game
      */
     _setProgressValue ()
     {
-        this.q(this.selectorOfProgressBar).value = this.progressRate * (this.index + 1);
+        let result = this.progressRate * (this.index + 1);
+        //TODO this is not working in firefox
+        this.q(this.selectorOfProgressBar).value = result;
     }
 
     /**
