@@ -7,7 +7,8 @@
     "test": "clear && mocha",
     "menu": "clear && cd public/ && gulp jsMenu",
     "wmenu": "clear && cd public/ && gulp watch-menu",
-    "sass": "clear && cd public/ && gulp sass"
+    "sass": "clear && cd public/ && gulp sass",
+    "wsass": "clear && cd public/ && gulp watch-sass"
   },
   "dependencies": {
     "body-parser": "^1.16.1",

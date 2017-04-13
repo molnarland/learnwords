@@ -185,8 +185,25 @@ export default class Learn extends Game
         this.q(currentContentSelector + this.learnable.spaceOfWord).innerText = learnable;
         if (photo)
         {
-            this.q(currentContentSelector + this.native.image).src = photo;
-            this.q(currentContentSelector + this.learnable.image).src = photo;
+            let pathOfPhoto = `${this.directoryOfPhotos}/${photo}`;
+
+            if (this.showBoth)
+            {
+                if (Boolean(this.showFirst)) //true -> native
+                {
+                    this.q(currentContentSelector + this.native.image).src = pathOfPhoto;
+                }
+                else //false -> learnable
+                {
+                    this.q(currentContentSelector + this.learnable.image).src = pathOfPhoto;
+                }
+            }
+            else
+            {
+                this.q(currentContentSelector + this.native.image).src
+                    = this.q(currentContentSelector + this.learnable.image).src
+                    = pathOfPhoto;
+            }
         }
 	}
 

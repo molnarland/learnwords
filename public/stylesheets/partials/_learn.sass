@@ -1,32 +1,46 @@
+@import "../reusable/values"
+
 .page__content.learn
   padding: 0
 
 #learn-area
-  height: calc(100% - 4px)
-  p
-    text-align: center
+  height: calc(100% - 4px) //$progressBarHeight
 
   ons-tabbar
     margin-top: 4px
     .page__content
-      padding: 6px 10px 10px
+      padding: $contentPaddingWithProgressBar
 
   .word-container
     position: absolute
     display: block
-    overflow: hidden
     left: 0
     right: 0
-    padding: 6px 10px 10px
+    height: calc(100% - 4px - 16px) //$progressBarHeight & $paddingTopPlusBottom
+    padding: $contentPaddingWithProgressBar
+    overflow: hidden
     &.go-away
       left: -105%
-      padding: 6px 0 10px
+      padding: $contentPaddingWithProgressBarSidesNull
       transition: .4s ease-in
     &.come-here
       left: 0
-      padding: 6px 10px 10px
+      padding: $contentPaddingWithProgressBar
       transition: .4s ease-out
     &.hidden
       display: initial
       left: 100%
-      padding: 6px 0 10px
+      padding: $contentPaddingWithProgressBarSidesNull
+
+    p
+      text-align: center
+
+    img
+      max-width: 500px
+      width: 90%
+      display: block
+      margin: 0 auto
+      position: absolute
+      bottom: 10px
+      left: 0
+      right: 0

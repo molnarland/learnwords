@@ -69,8 +69,6 @@ ons-button > ons-icon {
 
 #learn-area {
   height: calc(100% - 4px); }
-  #learn-area p {
-    text-align: center; }
   #learn-area ons-tabbar {
     margin-top: 4px; }
     #learn-area ons-tabbar .page__content {
@@ -78,10 +76,11 @@ ons-button > ons-icon {
   #learn-area .word-container {
     position: absolute;
     display: block;
-    overflow: hidden;
     left: 0;
     right: 0;
-    padding: 6px 10px 10px; }
+    height: calc(100% - 4px - 16px);
+    padding: 6px 10px 10px;
+    overflow: hidden; }
     #learn-area .word-container.go-away {
       left: -105%;
       padding: 6px 0 10px;
@@ -94,3 +93,14 @@ ons-button > ons-icon {
       display: initial;
       left: 100%;
       padding: 6px 0 10px; }
+    #learn-area .word-container p {
+      text-align: center; }
+    #learn-area .word-container img {
+      max-width: 500px;
+      width: 90%;
+      display: block;
+      margin: 0 auto;
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      right: 0; }

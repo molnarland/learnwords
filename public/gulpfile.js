@@ -122,7 +122,7 @@ gulp.task('watch-menu', ['jsMenu'], function ()
 
 gulp.task('watch-sass', ['sass'], function ()
 {
-    gulp.watch(paths.sass, ['sass']);
+    gulp.watch('./stylesheets/**/*.sass', ['sass']);
 });
 
 //mixed watches
