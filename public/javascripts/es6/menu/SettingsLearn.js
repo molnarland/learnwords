@@ -37,15 +37,13 @@ export default class SettingsLearn extends Settings
 
     setDefaultValue ()
     {
-        const data = JSON.parse(Cookies.get('learn-settings'));
-        if (data) //default value can be default of html
-        {
-            this.q(this.selectorOfSort).value = data.sort || 0;
-            this.q(this.selectorOfShowBoth).checked = data.showBoth || false;
-            this.q(this.selectorOfWhichShowFirst).value = data.showFirst || 0;
-            this.q(this.selectorOfLabel).value = data.label || 0;
-        }
+        let data = Cookies.get('learn-settings');
+        data = (data) ? JSON.parse(data) : {};
 
+        this.q(this.selectorOfSort).value = data.sort || 0;
+        this.q(this.selectorOfShowBoth).checked = data.showBoth || false;
+        this.q(this.selectorOfWhichShowFirst).value = data.showFirst || 0;
+        this.q(this.selectorOfLabel).value = data.label || 0;
         this.q(this.selectorOfLoop).checked =
             (data.loop == true || data.loop == false)
                 ? data.loop
