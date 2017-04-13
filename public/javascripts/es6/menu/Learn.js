@@ -245,9 +245,19 @@ export default class Learn extends Game
     addLearnClassToContentWrapper ()
     {
         const contentWrapper = '.page__content';
+
         const learnClass = 'learn';
 
-        this.q(contentWrapper).classList.add(learnClass);
+
+        let wrapper = this.q(contentWrapper);
+        wrapper.classList.add(learnClass);
+
+        if (!this.showBoth)
+        {
+            const notShowBothClass = 'single';
+
+            wrapper.classList.add(notShowBothClass);
+        }
     }
 
     /**

@@ -66,6 +66,8 @@ ons-button > ons-icon {
 
 .page__content.learn {
   padding: 0; }
+  .page__content.learn.single .fab--bottom__right {
+    bottom: 69px; }
 
 #learn-area {
   height: calc(100% - 4px); }

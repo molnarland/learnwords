@@ -30560,9 +30560,17 @@
 	        key: 'addLearnClassToContentWrapper',
 	        value: function addLearnClassToContentWrapper() {
 	            var contentWrapper = '.page__content';
+	
 	            var learnClass = 'learn';
 	
-	            this.q(contentWrapper).classList.add(learnClass);
+	            var wrapper = this.q(contentWrapper);
+	            wrapper.classList.add(learnClass);
+	
+	            if (!this.showBoth) {
+	                var notShowBothClass = 'single';
+	
+	                wrapper.classList.add(notShowBothClass);
+	            }
 	        }
 	
 	        /**
