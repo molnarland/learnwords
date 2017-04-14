@@ -47,6 +47,7 @@ mixin template (id, toolbarCenter, backButtonText, iosNextButtonText, nextButton
                 .center= toolbarCenter
                 if iosNextButtonText
                     .right
+                        //TODO other is not working
                         ons-if(platform="ios other")
                             ons-toolbar-button(id!=nextButtonId)= iosNextButtonText
 

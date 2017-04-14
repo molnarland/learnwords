@@ -106,3 +106,10 @@ ons-button > ons-icon {
       bottom: 10px;
       left: 0;
       right: 0; }
+
+.card {
+  border-color: black;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 10px;
+  margin-bottom: 10px; }
