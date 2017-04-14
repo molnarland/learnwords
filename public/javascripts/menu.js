@@ -57,31 +57,31 @@
 	
 	var _Menu2 = _interopRequireDefault(_Menu);
 	
-	var _ListWords = __webpack_require__(/*! ./ListWords */ 8);
+	var _ListWords = __webpack_require__(/*! ./List/ListWords */ 8);
 	
 	var _ListWords2 = _interopRequireDefault(_ListWords);
 	
-	var _WordsForm = __webpack_require__(/*! ./WordsForm */ 10);
+	var _WordsForm = __webpack_require__(/*! ./Form/WordsForm */ 10);
 	
 	var _WordsForm2 = _interopRequireDefault(_WordsForm);
 	
-	var _ListLabels = __webpack_require__(/*! ./ListLabels */ 12);
+	var _ListLabels = __webpack_require__(/*! ./List/ListLabels */ 12);
 	
 	var _ListLabels2 = _interopRequireDefault(_ListLabels);
 	
-	var _LabelsForm = __webpack_require__(/*! ./LabelsForm */ 13);
+	var _LabelsForm = __webpack_require__(/*! ./Form/LabelsForm */ 13);
 	
 	var _LabelsForm2 = _interopRequireDefault(_LabelsForm);
 	
-	var _SettingsLearn = __webpack_require__(/*! ./SettingsLearn */ 14);
+	var _SettingsLearn = __webpack_require__(/*! ./GameSettings/SettingsLearn */ 14);
 	
 	var _SettingsLearn2 = _interopRequireDefault(_SettingsLearn);
 	
-	var _Learn = __webpack_require__(/*! ./Learn */ 17);
+	var _Learn = __webpack_require__(/*! ./Game/Learn */ 17);
 	
 	var _Learn2 = _interopRequireDefault(_Learn);
 	
-	var _Quiz = __webpack_require__(/*! ./Quiz */ 19);
+	var _Quiz = __webpack_require__(/*! ./Game/Quiz */ 19);
 	
 	var _Quiz2 = _interopRequireDefault(_Quiz);
 	
@@ -28878,9 +28878,9 @@
 
 /***/ },
 /* 8 */
-/*!*******************************************!*\
-  !*** ./javascripts/es6/menu/ListWords.js ***!
-  \*******************************************/
+/*!************************************************!*\
+  !*** ./javascripts/es6/menu/List/ListWords.js ***!
+  \************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28893,9 +28893,9 @@
 	
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 	
-	var _Listing2 = __webpack_require__(/*! ./Listing */ 9);
+	var _List2 = __webpack_require__(/*! ./List */ 9);
 	
-	var _Listing3 = _interopRequireDefault(_Listing2);
+	var _List3 = _interopRequireDefault(_List2);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -28905,8 +28905,8 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var ListWords = function (_Listing) {
-	    _inherits(ListWords, _Listing);
+	var ListWords = function (_List) {
+	    _inherits(ListWords, _List);
 	
 	    function ListWords(page) {
 	        _classCallCheck(this, ListWords);
@@ -29018,15 +29018,15 @@
 	    }]);
 	
 	    return ListWords;
-	}(_Listing3.default);
+	}(_List3.default);
 	
 	exports.default = ListWords;
 
 /***/ },
 /* 9 */
-/*!*****************************************!*\
-  !*** ./javascripts/es6/menu/Listing.js ***!
-  \*****************************************/
+/*!*******************************************!*\
+  !*** ./javascripts/es6/menu/List/List.js ***!
+  \*******************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29039,7 +29039,7 @@
 	
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 	
-	var _Global2 = __webpack_require__(/*! ./Global */ 7);
+	var _Global2 = __webpack_require__(/*! ./../Global */ 7);
 	
 	var _Global3 = _interopRequireDefault(_Global2);
 	
@@ -29051,13 +29051,13 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var Listing = function (_Global) {
-	    _inherits(Listing, _Global);
+	var List = function (_Global) {
+	    _inherits(List, _Global);
 	
-	    function Listing(page) {
-	        _classCallCheck(this, Listing);
+	    function List(page) {
+	        _classCallCheck(this, List);
 	
-	        var _this = _possibleConstructorReturn(this, (Listing.__proto__ || Object.getPrototypeOf(Listing)).call(this, page));
+	        var _this = _possibleConstructorReturn(this, (List.__proto__ || Object.getPrototypeOf(List)).call(this, page));
 	
 	        _this.plusButton = String;
 	        _this.changeForm = String;
@@ -29075,7 +29075,7 @@
 	        return _this;
 	    }
 	
-	    _createClass(Listing, [{
+	    _createClass(List, [{
 	        key: 'showItems',
 	        value: function showItems(_ref) {
 	            var _this2 = this;
@@ -29156,20 +29156,20 @@
 	            data.titleOfNew = this.titleOfNewForm;
 	            data.titleOfEdit = this.titleOfEditForm;
 	
-	            _get(Listing.prototype.__proto__ || Object.getPrototypeOf(Listing.prototype), 'pushPage', this).call(this, where, data, animation);
+	            _get(List.prototype.__proto__ || Object.getPrototypeOf(List.prototype), 'pushPage', this).call(this, where, data, animation);
 	        }
 	    }]);
 	
-	    return Listing;
+	    return List;
 	}(_Global3.default);
 	
-	exports.default = Listing;
+	exports.default = List;
 
 /***/ },
 /* 10 */
-/*!*******************************************!*\
-  !*** ./javascripts/es6/menu/WordsForm.js ***!
-  \*******************************************/
+/*!************************************************!*\
+  !*** ./javascripts/es6/menu/Form/WordsForm.js ***!
+  \************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29467,9 +29467,9 @@
 
 /***/ },
 /* 11 */
-/*!**************************************!*\
-  !*** ./javascripts/es6/menu/Form.js ***!
-  \**************************************/
+/*!*******************************************!*\
+  !*** ./javascripts/es6/menu/Form/Form.js ***!
+  \*******************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29482,7 +29482,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _Global2 = __webpack_require__(/*! ./Global */ 7);
+	var _Global2 = __webpack_require__(/*! ./../Global */ 7);
 	
 	var _Global3 = _interopRequireDefault(_Global2);
 	
@@ -29637,9 +29637,9 @@
 
 /***/ },
 /* 12 */
-/*!********************************************!*\
-  !*** ./javascripts/es6/menu/ListLabels.js ***!
-  \********************************************/
+/*!*************************************************!*\
+  !*** ./javascripts/es6/menu/List/ListLabels.js ***!
+  \*************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29652,9 +29652,9 @@
 	
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 	
-	var _Listing2 = __webpack_require__(/*! ./Listing */ 9);
+	var _List2 = __webpack_require__(/*! ./List */ 9);
 	
-	var _Listing3 = _interopRequireDefault(_Listing2);
+	var _List3 = _interopRequireDefault(_List2);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29664,8 +29664,8 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var ListLabels = function (_Listing) {
-	    _inherits(ListLabels, _Listing);
+	var ListLabels = function (_List) {
+	    _inherits(ListLabels, _List);
 	
 	    function ListLabels(page) {
 	        _classCallCheck(this, ListLabels);
@@ -29772,15 +29772,15 @@
 	    }]);
 	
 	    return ListLabels;
-	}(_Listing3.default);
+	}(_List3.default);
 	
 	exports.default = ListLabels;
 
 /***/ },
 /* 13 */
-/*!********************************************!*\
-  !*** ./javascripts/es6/menu/LabelsForm.js ***!
-  \********************************************/
+/*!*************************************************!*\
+  !*** ./javascripts/es6/menu/Form/LabelsForm.js ***!
+  \*************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29949,9 +29949,9 @@
 
 /***/ },
 /* 14 */
-/*!***********************************************!*\
-  !*** ./javascripts/es6/menu/SettingsLearn.js ***!
-  \***********************************************/
+/*!************************************************************!*\
+  !*** ./javascripts/es6/menu/GameSettings/SettingsLearn.js ***!
+  \************************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30045,9 +30045,9 @@
 
 /***/ },
 /* 15 */
-/*!******************************************!*\
-  !*** ./javascripts/es6/menu/Settings.js ***!
-  \******************************************/
+/*!*******************************************************!*\
+  !*** ./javascripts/es6/menu/GameSettings/Settings.js ***!
+  \*******************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30058,7 +30058,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _Global2 = __webpack_require__(/*! ./Global */ 7);
+	var _Global2 = __webpack_require__(/*! ./../Global */ 7);
 	
 	var _Global3 = _interopRequireDefault(_Global2);
 	
@@ -30295,9 +30295,9 @@
 
 /***/ },
 /* 17 */
-/*!***************************************!*\
-  !*** ./javascripts/es6/menu/Learn.js ***!
-  \***************************************/
+/*!********************************************!*\
+  !*** ./javascripts/es6/menu/Game/Learn.js ***!
+  \********************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30311,10 +30311,6 @@
 	var _Game2 = __webpack_require__(/*! ./Game */ 18);
 	
 	var _Game3 = _interopRequireDefault(_Game2);
-	
-	var _onsenui = __webpack_require__(/*! onsenui */ 1);
-	
-	var _onsenui2 = _interopRequireDefault(_onsenui);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -30689,9 +30685,9 @@
 
 /***/ },
 /* 18 */
-/*!**************************************!*\
-  !*** ./javascripts/es6/menu/Game.js ***!
-  \**************************************/
+/*!*******************************************!*\
+  !*** ./javascripts/es6/menu/Game/Game.js ***!
+  \*******************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30700,7 +30696,7 @@
 	    value: true
 	});
 	
-	var _Global2 = __webpack_require__(/*! ./Global */ 7);
+	var _Global2 = __webpack_require__(/*! ./../Global */ 7);
 	
 	var _Global3 = _interopRequireDefault(_Global2);
 	
@@ -30731,9 +30727,9 @@
 
 /***/ },
 /* 19 */
-/*!**************************************!*\
-  !*** ./javascripts/es6/menu/Quiz.js ***!
-  \**************************************/
+/*!*******************************************!*\
+  !*** ./javascripts/es6/menu/Game/Quiz.js ***!
+  \*******************************************/
 /***/ function(module, exports) {
 
 	"use strict";

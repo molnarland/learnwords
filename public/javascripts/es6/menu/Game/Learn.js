@@ -1,5 +1,4 @@
 import Game from './Game';
-import ons from 'onsenui';
 
 export default class Learn extends Game
 {

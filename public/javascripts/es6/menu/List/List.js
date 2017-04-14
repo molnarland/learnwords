@@ -1,6 +1,6 @@
-import Global from './Global';
+import Global from './../Global';
 
-export default class Listing extends Global
+export default class List extends Global
 {
     constructor (page)
     {

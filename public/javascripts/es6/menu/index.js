@@ -1,13 +1,13 @@
 import ons from 'onsenui';
 
 import Menu from './Menu';
-import ListWords from './ListWords';
-import WordsForm from './WordsForm';
-import ListLabels from './ListLabels';
-import LabelsForm from './LabelsForm';
-import SettingsLearn from './SettingsLearn';
-import Learn from './Learn';
-import Quiz from './Quiz';
+import ListWords from './List/ListWords';
+import WordsForm from './Form/WordsForm';
+import ListLabels from './List/ListLabels';
+import LabelsForm from './Form/LabelsForm';
+import SettingsLearn from './GameSettings/SettingsLearn';
+import Learn from './Game/Learn';
+import Quiz from './Game/Quiz';
 
 
 window.labels = [];
