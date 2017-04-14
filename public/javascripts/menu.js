@@ -85,6 +85,10 @@
 	
 	var _Quiz2 = _interopRequireDefault(_Quiz);
 	
+	var _Settings = __webpack_require__(/*! ./Settings */ 20);
+	
+	var _Settings2 = _interopRequireDefault(_Settings);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	window.labels = [];
@@ -109,7 +113,8 @@
 	        'change-label-form': _LabelsForm2.default,
 	        'settings-learn': _SettingsLearn2.default,
 	        'learn': _Learn2.default,
-	        'quiz': _Quiz2.default
+	        'quiz': _Quiz2.default,
+	        'settings': _Settings2.default
 	    }, ['learnable', 'native']);
 	});
 	
@@ -28220,6 +28225,11 @@
 	                button: '#settings-learn',
 	                urlHash: 'learn',
 	                onsPage: 'settings-learn'
+	            },
+	            settings: {
+	                button: '#settings',
+	                urlHash: 'settings',
+	                onsPage: 'settings'
 	            }
 	        };
 	
@@ -30745,6 +30755,90 @@
 	};
 	
 	exports.default = Quiz;
+
+/***/ },
+/* 20 */
+/*!******************************************!*\
+  !*** ./javascripts/es6/menu/Settings.js ***!
+  \******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _Global2 = __webpack_require__(/*! ./Global */ 7);
+	
+	var _Global3 = _interopRequireDefault(_Global2);
+	
+	var _jsCookie = __webpack_require__(/*! js-cookie */ 16);
+	
+	var Cookies = _interopRequireWildcard(_jsCookie);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Settings = function (_Global) {
+	    _inherits(Settings, _Global);
+	
+	    function Settings(page) {
+	        _classCallCheck(this, Settings);
+	
+	        var _this = _possibleConstructorReturn(this, (Settings.__proto__ || Object.getPrototypeOf(Settings)).call(this, page));
+	
+	        _this.selectorOfStyle = '#style';
+	        _this.selectorOfColour = '#colour';
+	
+	        _this.init();
+	        return _this;
+	    }
+	
+	    _createClass(Settings, [{
+	        key: 'init',
+	        value: function init() {
+	            this.styleChange();
+	            this.colourChange();
+	        }
+	    }, {
+	        key: 'styleChange',
+	        value: function styleChange() {
+	            this.addChangeListener(this.selectorOfStyle, 'style');
+	        }
+	    }, {
+	        key: 'colourChange',
+	        value: function colourChange() {
+	            this.addChangeListener(this.selectorOfColour, 'colour');
+	        }
+	
+	        /**
+	         * @param {string} selector
+	         * @param {string} dataset
+	         */
+	
+	    }, {
+	        key: 'addChangeListener',
+	        value: function addChangeListener(selector, dataset) {
+	            this.q(selector).addEventListener('change', function (event) {
+	                document.getElementsByTagName('body')[0].dataset[dataset] = event.target.value;
+	            });
+	        }
+	    }]);
+	
+	    return Settings;
+	}(_Global3.default);
+	
+	exports.default = Settings;
 
 /***/ }
 /******/ ]);

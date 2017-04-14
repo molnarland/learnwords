@@ -21,6 +21,11 @@ export default class Menu extends Global
                 button: '#settings-learn',
                 urlHash: 'learn',
                 onsPage: 'settings-learn'
+            },
+            settings: {
+                button: '#settings',
+                urlHash: 'settings',
+                onsPage: 'settings'
             }
         };
 

@@ -1,0 +1,24 @@
++template('settings', 'Settings', 'Main', 'Save', 'save')
+    ons-list#settings-items
+        ons-list-item(modifier="longdivider")
+            .left
+                label(for="style") Style:
+            .center
+                ons-select(select-id="style").wide
+                    option(value="light") Light
+                    option(value="dark") Dark
+        ons-list-item(modifier="longdivider")
+            .left
+                label(for="colour") Colour:
+            .center
+                ons-select(select-id="colour").wide
+                    option(value="red") Red
+                    option(value="orange") Orange
+                    option(value="yellow") Yellow
+                    option(value="green") Green
+                    option(value="teal-blue") Teal blue
+                    option(value="blue") Blue
+                    option(value="purple") Purple
+                    option(value="pink") Pink
+
+

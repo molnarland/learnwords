@@ -8,6 +8,7 @@ import LabelsForm from './Form/LabelsForm';
 import SettingsLearn from './GameSettings/SettingsLearn';
 import Learn from './Game/Learn';
 import Quiz from './Game/Quiz';
+import Settings from './Settings';
 
 
 window.labels = [];
@@ -31,7 +32,8 @@ document.addEventListener('init', (event) =>
         'change-label-form': LabelsForm,
         'settings-learn': SettingsLearn,
         'learn': Learn,
-        'quiz': Quiz
+        'quiz': Quiz,
+        'settings': Settings
     }, ['learnable', 'native']);
 });
 
