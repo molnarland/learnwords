@@ -1,4 +1,5 @@
 import Global from './Global';
+import * as Cookies from 'js-cookie';
 
 export default class Menu extends Global
 {
@@ -31,6 +32,7 @@ export default class Menu extends Global
 
         this.goToPageByButtonClick();
         this.goToPageByHash();
+        this.setCurrentStyleAndColour();
         /*if ("onhashchange" in window)
         {
             window.addEventListener("hashchange", () => this.goToPageByHash(), false);
@@ -62,7 +64,6 @@ export default class Menu extends Global
             }
         }
 
-        // const infoOfCurrentPage = this.infoOfMainPages.find(info => info.urlHash === window.location.hash.substring(1));
 
         if (infoOfCurrentPage)
         {
@@ -70,4 +71,29 @@ export default class Menu extends Global
         }
     }
 
+
+    setCurrentStyleAndColour ()
+    {
+        this.setCurrentCookie(this.cookieNameOfStyle, 'light');
+        this.setCurrentCookie(this.cookieNameOfColour, 'blue');
+    }
+
+    /**
+     * @param {string} cookieName
+     * @param {string} defaultValue
+     * @param {string} [dataset]
+     */
+    setCurrentCookie (cookieName, defaultValue, dataset = cookieName)
+    {
+        let cookie = Cookies.get(cookieName);
+        if (cookie)
+        {
+            this.getBody().dataset[dataset] = cookie;
+        }
+        else
+        {
+            Cookies.set(cookieName, defaultValue, { expires: 100000 });
+            this.getBody().dataset[dataset] = defaultValue;
+        }
+    }
 }

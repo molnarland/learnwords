@@ -9,31 +9,59 @@ export default class Settings extends Global
 
         this.selectorOfStyle = '#style';
         this.selectorOfColour = '#colour';
+        this.selectorOfSaveButton = '#save';
 
         this.init();
     }
 
     init ()
     {
+        this.setDefaultValues();
         this.styleChange();
         this.colourChange();
+        this.save();
+        this.pushBack();
+    }
+
+    setDefaultValues ()
+    {
+        this.q(this.selectorOfStyle).value = Cookies.get(this.cookieNameOfStyle);
+        this.q(this.selectorOfColour).value = Cookies.get(this.cookieNameOfColour);
     }
 
     styleChange ()
     {
-        this.addChangeListener(this.selectorOfStyle, 'style');
+        this._addChangeListener(this.selectorOfStyle, 'style');
     }
 
     colourChange ()
     {
-        this.addChangeListener(this.selectorOfColour, 'colour');
+        this._addChangeListener(this.selectorOfColour, 'colour');
+    }
+
+    save ()
+    {
+        this.q(this.selectorOfSaveButton).addEventListener('click', () =>
+        {
+            Cookies.set(this.cookieNameOfStyle, this.q(this.selectorOfStyle).value);
+            Cookies.set(this.cookieNameOfColour, this.q(this.selectorOfColour).value);
+        });
+    }
+
+    pushBack ()
+    {
+        this.q(this.backButton).addEventListener('click', () =>
+        {
+            super.pushBackWithRefresh();
+        });
     }
 
     /**
      * @param {string} selector
      * @param {string} dataset
+     * @private
      */
-    addChangeListener (selector, dataset)
+    _addChangeListener (selector, dataset)
     {
         this.q(selector).addEventListener('change', (event) =>
         {

@@ -1,6 +1,6 @@
 import Global from './../Global';
 
-export default class Settings extends Global
+export default class GameSettings extends Global
 {
     constructor (page)
     {

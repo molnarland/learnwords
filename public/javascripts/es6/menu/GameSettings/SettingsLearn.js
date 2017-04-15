@@ -1,7 +1,7 @@
-import Settings from './Settings';
+import GameSettings from './GameSettings';
 import * as Cookies from 'js-cookie';
 
-export default class SettingsLearn extends Settings
+export default class SettingsLearn extends GameSettings
 {
     constructor (page)
     {

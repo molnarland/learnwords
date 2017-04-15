@@ -21,6 +21,9 @@ export default class Global
             method: 'GET'
         };
 
+        this.cookieNameOfStyle = 'style';
+        this.cookieNameOfColour = 'colour';
+
         this.initInputCleaners();
     }
 
@@ -440,5 +443,13 @@ export default class Global
     pushBack (options = {})
     {
         document.querySelector(this.selectorOfNavigator).popPage(options);
+    }
+
+    /**
+     * @return {HTMLElement}
+     */
+    getBody ()
+    {
+        return document.getElementsByTagName('body')[0];
     }
 }
