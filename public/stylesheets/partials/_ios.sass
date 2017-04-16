@@ -1,27 +1,72 @@
 @import "../reusable/ios_values"
+@import "../reusable/mixins"
+
 
 body.ios
-  .button
-    background-color: $ios-blue
-    &.red
-      background-color: $ios-red
+  //colours
+  @each $name, $color in (red: $ios-red, orange: $ios-orange, yellow: $ios-yellow, green: $ios-green, teal-blue: $ios-teal-blue, blue: $ios-blue, purple: $ios-purple, pink: $ios-pink)
+    &[data-colour = '#{$name}']
+      .back-button, .toolbar-button, .select-input, .ons-icon
+        color: $color
 
-  ons-input, ons-select, .list__item
-    &.error, &[data-error]
-      &:after
-        color: $ios-red
+      //inputs' errors
+      ons-input, ons-select, .list__item
+        &.error, &[data-error]
+          &:after
+            +colorRed($name, $ios-white, $ios-red)
 
-  .list__item
-    &.error, &[data-error]
-      &:after
-        bottom: -13px
-      > .center
-        color: $ios-red
+        .list__item
+          &.error, &[data-error]
+            > .center
+              +colorRed($name, $ios-white, $ios-red)
+
+      input:checked + .switch__toggle
+        box-shadow: inset 0 0 0 2px $color
+        background-color: $color
+
+      .button
+        background-color: $color
+        @if $name != red
+          &.red
+            background-color: $ios-red
+
+      @if $name == red
+        @each $styleName, $style in (light: $ios-black, dark: $ios-white) //for instance
+          &[data-style = '#{$styleName}']
+            .button.red
+              background-color: $style
+              @if $styleName == dark
+                color: $ios-black
+
+  //styles
+  @each $name, $backgroundColor, $fontColor in ((light, $ios-white, $ios-black), (dark, $ios-black, $ios-white))
+    &[data-style = '#{$name}']
+      //colours
+      .page, .page__content, .list, .toolbar
+        background-color: $backgroundColor !important
+      .toolbar__title, .list-item, input
+        color: $fontColor
+      .switch__toggle
+        background-color: $backgroundColor
+        +boxShadowIfDark($name, inset 0 0 0 2px lighten($backgroundColor, $ios-shadowPercent), inset 0 0 0 2px darken($backgroundColor, $ios-shadowPercent))
+      .switch__handle
+        background-color: $backgroundColor
+        +boxShadowIfDark($name, (0 0 0 1px $backgroundColor, 0 3px 2px rgba(255, 255, 255, .25)), (0 0 0 1px $backgroundColor, 0 3px 2px rgba(0, 0, 0, .25)))
+      //colours of lines
+      .toolbar
+        +bgImageIfDark($name, linear-gradient(0deg, lighten($backgroundColor, $ios-toolbarLinePercent), lighten($backgroundColor, $ios-toolbarLinePercent) 100%), linear-gradient(0deg, darken($backgroundColor, $ios-toolbarLinePercent), darken($backgroundColor, $ios-toolbarLinePercent) 100%))
+      .list
+        +bgImageIfDark($name, (linear-gradient(lighten($backgroundColor, $ios-listLinePercent), lighten($backgroundColor, $ios-listLinePercent)), linear-gradient(lighten($backgroundColor, $ios-listLinePercent), lighten($backgroundColor, $ios-listLinePercent))), (linear-gradient(darken($backgroundColor, $ios-listLinePercent), darken($backgroundColor, $ios-listLinePercent)), linear-gradient(darken($backgroundColor, $ios-listLinePercent), darken($backgroundColor, $ios-listLinePercent))))
+      .list-item--longdivider
+        +bgImageIfDark($name, linear-gradient(0deg, lighten($backgroundColor, $ios-listLinePercent), lighten($backgroundColor, $ios-listLinePercent) 100%), linear-gradient(0deg, darken($backgroundColor, $ios-listLinePercent), darken($backgroundColor, $ios-listLinePercent) 100%))
+
 
 
   .input-cleaner
     padding: 10px
     right: 1%
 
-  .back-button
-    color: $ios-blue
+  .list__item //lis items'
+    &.error, &[data-error] //errors
+      &:after
+        bottom: -13px
