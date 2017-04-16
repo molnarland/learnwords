@@ -1,0 +1,46 @@
+#wrapper {
+  height: 3200px; }
+  #wrapper > img, #wrapper div {
+    position: fixed; }
+
+#fake-heart, #real-heart, #text {
+  left: 10px; }
+
+#fake-heart, #real-heart {
+  max-width: calc(300px - 20px);
+  width: calc(100% - 20px);
+  height: 300px; }
+
+#fake-heart {
+  background: black; }
+
+#left-x, #right-x {
+  max-width: 400px;
+  width: 120%;
+  height: 20px;
+  background: red;
+  top: 140px; }
+
+#left-x {
+  transform: rotate(45deg) scale(0);
+  left: -30px; }
+
+#right-x {
+  transform: rotate(-45deg) scale(0);
+  left: -30px; }
+
+#real-heart {
+  background: purple;
+  top: -300px;
+  transition: linear .1s; }
+
+#text {
+  font-size: 20px;
+  font-weight: bolder;
+  color: red;
+  transform: scaleX(0);
+  bottom: 5px; }
+  #text > #left, #text > #right {
+    float: left; }
+  #text > #left {
+    margin-right: 20px; }
