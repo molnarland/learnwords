@@ -95,14 +95,6 @@
 	window.posts = [];
 	
 	document.addEventListener('init', function (event) {
-	    var platform = _onsenui2.default.platform;
-	    var body = document.querySelector('body');
-	    if (platform.isAndroid()) {
-	        body.className = 'android';
-	    } else {
-	        body.className = 'ios';
-	    }
-	
 	    var page = event.target;
 	
 	    router(page, {
@@ -28235,7 +28227,6 @@
 	
 	        _this.goToPageByButtonClick();
 	        _this.goToPageByHash();
-	        _this.setCurrentStyleAndColour();
 	        /*if ("onhashchange" in window)
 	        {
 	            window.addEventListener("hashchange", () => this.goToPageByHash(), false);
@@ -28273,32 +28264,6 @@
 	
 	            if (infoOfCurrentPage) {
 	                this.q(infoOfCurrentPage.button).click();
-	            }
-	        }
-	    }, {
-	        key: 'setCurrentStyleAndColour',
-	        value: function setCurrentStyleAndColour() {
-	            this.setCurrentCookie(this.cookieNameOfStyle, 'light');
-	            this.setCurrentCookie(this.cookieNameOfColour, 'blue');
-	        }
-	
-	        /**
-	         * @param {string} cookieName
-	         * @param {string} defaultValue
-	         * @param {string} [dataset]
-	         */
-	
-	    }, {
-	        key: 'setCurrentCookie',
-	        value: function setCurrentCookie(cookieName, defaultValue) {
-	            var dataset = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : cookieName;
-	
-	            var cookie = Cookies.get(cookieName);
-	            if (cookie) {
-	                this.getBody().dataset[dataset] = cookie;
-	            } else {
-	                Cookies.set(cookieName, defaultValue, { expires: 100000 });
-	                this.getBody().dataset[dataset] = defaultValue;
 	            }
 	        }
 	    }]);
@@ -30894,7 +30859,7 @@
 	        key: '_addChangeListener',
 	        value: function _addChangeListener(selector, dataset) {
 	            this.q(selector).addEventListener('change', function (event) {
-	                document.getElementsByTagName('body')[0].dataset[dataset] = event.target.value;
+	                document.querySelector('html').dataset[dataset] = event.target.value;
 	            });
 	        }
 	    }]);

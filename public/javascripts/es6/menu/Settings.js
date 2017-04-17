@@ -64,7 +64,7 @@ export default class Settings extends Global
     {
         this.q(selector).addEventListener('change', (event) =>
         {
-            document.getElementsByTagName('body')[0].dataset[dataset] = event.target.value;
+            document.querySelector('html').dataset[dataset] = event.target.value;
         });
     }
 }
