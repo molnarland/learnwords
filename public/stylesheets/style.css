@@ -167,7 +167,7 @@ body.ios[data-style='light'] .toolbar {
 body.ios[data-style='light'] .list {
   background-image: linear-gradient(#bbbbbb, #bbbbbb), linear-gradient(#bbbbbb, #bbbbbb); }
 
-body.ios[data-style='light'] .list-item--longdivider {
+body.ios[data-style='light'] .list-item--longdivider, body.ios[data-style='light'] .list-item__center, body.ios[data-style='light'] .list-item__right {
   background-image: linear-gradient(0deg, #bbbbbb, #bbbbbb 100%); }
 
 body.ios[data-style='dark'] .page, body.ios[data-style='dark'] .page__content, body.ios[data-style='dark'] .list, body.ios[data-style='dark'] .toolbar {
@@ -190,7 +190,7 @@ body.ios[data-style='dark'] .toolbar {
 body.ios[data-style='dark'] .list {
   background-image: linear-gradient(#444444, #444444), linear-gradient(#444444, #444444); }
 
-body.ios[data-style='dark'] .list-item--longdivider {
+body.ios[data-style='dark'] .list-item--longdivider, body.ios[data-style='dark'] .list-item__center, body.ios[data-style='dark'] .list-item__right {
   background-image: linear-gradient(0deg, #444444, #444444 100%); }
 
 body.ios .input-cleaner {

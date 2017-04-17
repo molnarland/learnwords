@@ -57,7 +57,7 @@ body.ios
         +bgImageIfDark($name, linear-gradient(0deg, lighten($backgroundColor, $ios-toolbarLinePercent), lighten($backgroundColor, $ios-toolbarLinePercent) 100%), linear-gradient(0deg, darken($backgroundColor, $ios-toolbarLinePercent), darken($backgroundColor, $ios-toolbarLinePercent) 100%))
       .list
         +bgImageIfDark($name, (linear-gradient(lighten($backgroundColor, $ios-listLinePercent), lighten($backgroundColor, $ios-listLinePercent)), linear-gradient(lighten($backgroundColor, $ios-listLinePercent), lighten($backgroundColor, $ios-listLinePercent))), (linear-gradient(darken($backgroundColor, $ios-listLinePercent), darken($backgroundColor, $ios-listLinePercent)), linear-gradient(darken($backgroundColor, $ios-listLinePercent), darken($backgroundColor, $ios-listLinePercent))))
-      .list-item--longdivider
+      .list-item--longdivider, .list-item__center, .list-item__right
         +bgImageIfDark($name, linear-gradient(0deg, lighten($backgroundColor, $ios-listLinePercent), lighten($backgroundColor, $ios-listLinePercent) 100%), linear-gradient(0deg, darken($backgroundColor, $ios-listLinePercent), darken($backgroundColor, $ios-listLinePercent) 100%))
 
 

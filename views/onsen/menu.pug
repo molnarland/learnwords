@@ -2,13 +2,13 @@ extends layout
 
 include _mixins
 
-
-block scriptsInFoot
-    script(src="javascripts/menu.js")
+block scriptsInHead
+    script(src="/node_modules/js-cookie/src/js.cookie.js")
 
 block styles
     link(rel="stylesheet" href="/stylesheets/style.css")
     link(rel="stylesheet" href="/stylesheets/menu.css")
+
 
 block content
     ons-navigator(page="menu")#navigator
@@ -34,3 +34,7 @@ block content
     include partials/change-labels
     include partials/settings-learn
     include partials/settings
+
+
+block scriptsInFoot
+    script(src="javascripts/menu.js")

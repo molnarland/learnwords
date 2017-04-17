@@ -1,5 +1,4 @@
 import Global from './Global';
-import * as Cookies from 'js-cookie';
 
 export default class Menu extends Global
 {

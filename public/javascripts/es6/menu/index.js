@@ -10,7 +10,6 @@ import Learn from './Game/Learn';
 import Quiz from './Game/Quiz';
 import Settings from './Settings';
 
-
 window.labels = [];
 window.posts = [];
 

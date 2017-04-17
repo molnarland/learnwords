@@ -38,7 +38,7 @@ export default class ListLabels extends List
                 const name = label.name;
 
                 return this.createOnsElement(
-                    `<ons-list-item data-id="${id}" tappable>
+                    `<ons-list-item data-id="${id}" tappable modifier="longdivider">
                         <div class="center">${name}</div>
                         <div class="right"><ons-icon icon="ion-edit"></ons-icon></div>
                     </ons-list-item>`
