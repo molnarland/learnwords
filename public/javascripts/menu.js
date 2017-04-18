@@ -28325,6 +28325,11 @@
 	        this.initInputCleaners();
 	    }
 	
+	    /**
+	     * @desc Event listener for Xs on inputs
+	     */
+	
+	
 	    _createClass(Global, [{
 	        key: 'initInputCleaners',
 	        value: function initInputCleaners() {
@@ -28365,9 +28370,11 @@
 	        }
 	
 	        /**
-	         * @param {string} where
-	         * @param {object} data
-	         * @param {string} animation
+	         * @desc Make sorter the ons's pushPage()
+	         *
+	         * @param {string} where - Next page
+	         * @param {object} [data]
+	         * @param {string} [animation]
 	         */
 	
 	    }, {
@@ -28383,8 +28390,10 @@
 	        }
 	
 	        /**
+	         * @desc Add click eventListener for an element what will push next page
+	         *
 	         * @param {string} selectorOfButton
-	         * @param {string} where
+	         * @param {string} where - Next page
 	         * @param {object} [data]
 	         * @param {object} [callback]
 	         */
@@ -28404,6 +28413,8 @@
 	        }
 	
 	        /**
+	         * @desc Replace ':variable' part in url with data.variable
+	         *
 	         * @param {string} url
 	         * @param {object} data
 	         * @param {function} callback
@@ -28414,7 +28425,7 @@
 	        value: function replacePartsOfUrlWithData(url, data, callback) {
 	            if (data && !this.isEmptyObject(data) && url) {
 	                for (var index in data) {
-	                    var argumentInUrl = '{' + index + '}';
+	                    var argumentInUrl = ':' + index;
 	                    if (url.search(argumentInUrl) > -1) {
 	                        url = url.replace(argumentInUrl, data[index]);
 	                        delete data[index];
@@ -28437,6 +28448,8 @@
 	        }
 	
 	        /**
+	         * @desc Call correct method what depends from file and method variables
+	         *
 	         * @param {string} [method]
 	         * @param {string} url
 	         * @param {object} [data]
@@ -28462,9 +28475,9 @@
 	                if (!file) {
 	                    if (method === 'GET' || method === 'get') {
 	                        data = _this2.isEmptyObject(data) ? null : data;
-	                        _this2.getAjax(url, success, data);
+	                        _this2.ajaxGet(url, success, data);
 	                    } else {
-	                        _this2.postBasedAjax(method, url, data, success);
+	                        _this2.ajaxPostBased(method, url, data, success);
 	                    }
 	                } else {
 	                    if (method === 'GET' || method === 'get') {
@@ -28477,7 +28490,7 @@
 	        }
 	
 	        /**
-	         * Try return json in callback, if cannot then return with official variable
+	         * @desc Try return json in callback, if cannot return with official variable
 	         *
 	         * @param {string} response
 	         * @param {function} callback
@@ -28496,6 +28509,8 @@
 	        }
 	
 	        /**
+	         * @desc For file upload through ajax
+	         *
 	         * @param {string} method
 	         * @param {string} url
 	         * @param {file}  file
@@ -28521,14 +28536,16 @@
 	        }
 	
 	        /**
+	         * @desc For GET ajax calls
+	         *
 	         * @param {string} url
 	         * @param {function(object)} callback
 	         * @param {object|null} [data]
 	         */
 	
 	    }, {
-	        key: 'getAjax',
-	        value: function getAjax(url, callback) {
+	        key: 'ajaxGet',
+	        value: function ajaxGet(url, callback) {
 	            var _this4 = this;
 	
 	            var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
@@ -28556,6 +28573,8 @@
 	        }
 	
 	        /**
+	         * @desc For POST, PUT, DELETE ajax calls
+	         *
 	         * @param {string} method
 	         * @param {string} url
 	         * @param {object} data
@@ -28563,8 +28582,8 @@
 	         */
 	
 	    }, {
-	        key: 'postBasedAjax',
-	        value: function postBasedAjax(method, url, data, callback) {
+	        key: 'ajaxPostBased',
+	        value: function ajaxPostBased(method, url, data, callback) {
 	            var _this5 = this;
 	
 	            var xobj = new XMLHttpRequest();
@@ -28579,7 +28598,9 @@
 	        }
 	
 	        /**
-	         * @param {string} where
+	         * @desc Call setDomElement() each data object and pass result of returnHtml with where variable
+	         *
+	         * @param {Element|string} where
 	         * @param {object} datas
 	         * @param {function} returnHtml
 	         * @param {function} [after]
@@ -28593,10 +28614,6 @@
 	                returnHtml = _ref2.returnHtml,
 	                _ref2$after = _ref2.after,
 	                after = _ref2$after === undefined ? new Function() : _ref2$after;
-	
-	            var aimDom = this.q(where);
-	
-	            aimDom.innerHTML = '';
 	            var _iteratorNormalCompletion2 = true;
 	            var _didIteratorError2 = false;
 	            var _iteratorError2 = undefined;
@@ -28608,7 +28625,7 @@
 	                    var html = returnHtml(data);
 	
 	                    this.setDomElement({
-	                        where: aimDom,
+	                        where: where,
 	                        html: html
 	                    });
 	                }
@@ -28672,10 +28689,12 @@
 	        }
 	
 	        /**
+	         * @desc Call showEveryDatas() after got data from server
+	         *
 	         * @param {string} url
 	         * @param {string} showWhere
 	         * @param {function} showableHtml
-	         * @param {string} [store] - name of variable on window object, data save here
+	         * @param {string} [store] - Name of variable on window object, data will save here
 	         * @param {function} [after]
 	         */
 	
@@ -28691,7 +28710,7 @@
 	                store = _ref4$store === undefined ? null : _ref4$store,
 	                after = _ref4.after;
 	
-	            this.getAjax(url, function (response) {
+	            this.ajaxGet(url, function (response) {
 	                if (store) {
 	                    window[store] = response;
 	                }
@@ -28706,6 +28725,8 @@
 	        }
 	
 	        /**
+	         * @desc Call downAndShow() after send data to server
+	         *
 	         * @param {string} upUrl
 	         * @param {object} upData
 	         * @param {string} downUrl
@@ -28751,7 +28772,8 @@
 	        }
 	
 	        /**
-	         * Cannot use if want to get labels from backend
+	         * @desc Call the showLabelsInInput() after got labels from backend
+	         *
 	         * @param {string} selectorOfLabel
 	         * @param {function} [callback]
 	         */
@@ -28779,6 +28801,8 @@
 	        }
 	
 	        /**
+	         * @desc Put labels from window.labels to select input
+	         *
 	         * @param {string} selectorOfLabel
 	         * @param {function} [callback]
 	         */
@@ -28823,7 +28847,7 @@
 	        }
 	
 	        /**
-	         * @desc Sort of querySelector
+	         * @desc Make sorter the querySelector
 	         *
 	         * @param {string} selector
 	         * @return {Element}
@@ -28843,7 +28867,7 @@
 	        }
 	
 	        /**
-	         * @desc Sort of querySelectorAll
+	         * @desc Make sorter the querySelectorAll
 	         *
 	         * @param {string} selector
 	         * @return {NodeList}
@@ -30351,7 +30375,7 @@
 	        var _this = _possibleConstructorReturn(this, (Learn.__proto__ || Object.getPrototypeOf(Learn)).call(this, page));
 	
 	        _this.ajaxOfGetWordsForLearn = {
-	            url: _this.urlOfGameMethods + '/{label}/{sort}/{first}',
+	            url: _this.urlOfGameMethods + '/:label/:sort/:first',
 	            method: 'GET'
 	        };
 	

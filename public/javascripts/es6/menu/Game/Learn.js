@@ -7,7 +7,7 @@ export default class Learn extends Game
         super(page);
 
         this.ajaxOfGetWordsForLearn = {
-            url: `${this.urlOfGameMethods}/{label}/{sort}/{first}`,
+            url: `${this.urlOfGameMethods}/:label/:sort/:first`,
             method: 'GET'
         };
 

@@ -27,6 +27,9 @@ export default class Global
         this.initInputCleaners();
     }
 
+    /**
+     * @desc Event listener for Xs on inputs
+     */
     initInputCleaners ()
     {
         const cleaners = this.qAll(this.selectorOfCleaner);
@@ -43,9 +46,11 @@ export default class Global
     }
 
     /**
-     * @param {string} where
-     * @param {object} data
-     * @param {string} animation
+     * @desc Make sorter the ons's pushPage()
+     *
+     * @param {string} where - Next page
+     * @param {object} [data]
+     * @param {string} [animation]
      */
     pushPage (where, data = {}, animation = '')
     {
@@ -56,8 +61,10 @@ export default class Global
     }
 
     /**
+     * @desc Add click eventListener for an element what will push next page
+     *
      * @param {string} selectorOfButton
-     * @param {string} where
+     * @param {string} where - Next page
      * @param {object} [data]
      * @param {object} [callback]
      */
@@ -71,6 +78,8 @@ export default class Global
     }
 
     /**
+     * @desc Replace ':variable' part in url with data.variable
+     *
      * @param {string} url
      * @param {object} data
      * @param {function} callback
@@ -81,7 +90,7 @@ export default class Global
         {
             for (let index in data)
             {
-                const argumentInUrl = `{${index}}`;
+                const argumentInUrl = `:${index}`;
                 if (url.search(argumentInUrl) > -1)
                 {
                     url = url.replace(argumentInUrl, data[index]);
@@ -103,6 +112,8 @@ export default class Global
     }
 
     /**
+     * @desc Call correct method what depends from file and method variables
+     *
      * @param {string} [method]
      * @param {string} url
      * @param {object} [data]
@@ -118,11 +129,11 @@ export default class Global
                 if (method === 'GET' || method === 'get')
                 {
                     data = (this.isEmptyObject(data)) ? null : data;
-                    this.getAjax(url, success, data);
+                    this.ajaxGet(url, success, data);
                 }
                 else
                 {
-                    this.postBasedAjax(method, url, data, success);
+                    this.ajaxPostBased(method, url, data, success);
                 }
             }
             else
@@ -139,7 +150,7 @@ export default class Global
 
 
     /**
-     * Try return json in callback, if cannot then return with official variable
+     * @desc Try return json in callback, if cannot return with official variable
      *
      * @param {string} response
      * @param {function} callback
@@ -159,6 +170,8 @@ export default class Global
     }
 
     /**
+     * @desc For file upload through ajax
+     *
      * @param {string} method
      * @param {string} url
      * @param {file}  file
@@ -182,11 +195,13 @@ export default class Global
     }
 
     /**
+     * @desc For GET ajax calls
+     *
      * @param {string} url
      * @param {function(object)} callback
      * @param {object|null} [data]
      */
-    getAjax (url, callback, data = null)
+    ajaxGet (url, callback, data = null)
     {
         let urlParams = '';
         /*if (data)
@@ -214,12 +229,14 @@ export default class Global
     }
 
     /**
+     * @desc For POST, PUT, DELETE ajax calls
+     *
      * @param {string} method
      * @param {string} url
      * @param {object} data
      * @param{function(object)}  callback
      */
-    postBasedAjax(method, url, data, callback)
+    ajaxPostBased(method, url, data, callback)
     {
         let xobj = new XMLHttpRequest();
         xobj.open(method, `/ajax${url}`, true);
@@ -235,23 +252,21 @@ export default class Global
     }
 
     /**
-     * @param {string} where
+     * @desc Call setDomElement() each data object and pass result of returnHtml with where variable
+     *
+     * @param {Element|string} where
      * @param {object} datas
      * @param {function} returnHtml
      * @param {function} [after]
      */
     showEveryDatas ({where, datas, returnHtml, after = new Function()})
     {
-        let aimDom = this.q(where);
-
-
-        aimDom.innerHTML = '';
         for (let data of datas)
         {
             const html = returnHtml(data);
 
             this.setDomElement({
-                where: aimDom,
+                where: where,
                 html: html
             });
         }
@@ -299,15 +314,17 @@ export default class Global
     }
 
     /**
+     * @desc Call showEveryDatas() after got data from server
+     *
      * @param {string} url
      * @param {string} showWhere
      * @param {function} showableHtml
-     * @param {string} [store] - name of variable on window object, data save here
+     * @param {string} [store] - Name of variable on window object, data will save here
      * @param {function} [after]
      */
     downAndShow ({url, showWhere, showableHtml, store = null, after})
     {
-        this.getAjax(url, (response) =>
+        this.ajaxGet(url, (response) =>
         {
             if (store)
             {
@@ -324,6 +341,8 @@ export default class Global
     }
 
     /**
+     * @desc Call downAndShow() after send data to server
+     *
      * @param {string} upUrl
      * @param {object} upData
      * @param {string} downUrl
@@ -359,7 +378,8 @@ export default class Global
 
 
     /**
-     * Cannot use if want to get labels from backend
+     * @desc Call the showLabelsInInput() after got labels from backend
+     *
      * @param {string} selectorOfLabel
      * @param {function} [callback]
      */
@@ -383,6 +403,8 @@ export default class Global
     }
 
     /**
+     * @desc Put labels from window.labels to select input
+     *
      * @param {string} selectorOfLabel
      * @param {function} [callback]
      */
@@ -403,7 +425,7 @@ export default class Global
     }
 
     /**
-     * @desc Sort of querySelector
+     * @desc Make sorter the querySelector
      *
      * @param {string} selector
      * @return {Element}
@@ -423,7 +445,7 @@ export default class Global
     }
 
     /**
-     * @desc Sort of querySelectorAll
+     * @desc Make sorter the querySelectorAll
      *
      * @param {string} selector
      * @return {NodeList}
