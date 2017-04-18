@@ -52,6 +52,6 @@ export default class SettingsLearn extends GameSettings
 
     saveAsDefaultValues (data)
     {
-        Cookies.set('learn-settings', JSON.stringify(data), {expires: 1000});
+        this.setCookie('learn-settings', JSON.stringify(data));
     }
 }

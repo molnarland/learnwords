@@ -42,8 +42,8 @@ export default class Settings extends Global
     {
         this.q(this.selectorOfSaveButton).addEventListener('click', () =>
         {
-            Cookies.set(this.cookieNameOfStyle, this.q(this.selectorOfStyle).value);
-            Cookies.set(this.cookieNameOfColour, this.q(this.selectorOfColour).value);
+            this.setCookie(this.cookieNameOfStyle, this.q(this.selectorOfStyle).value);
+            this.setCookie(this.cookieNameOfColour, this.q(this.selectorOfColour).value);
         });
     }
 

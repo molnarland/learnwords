@@ -361,7 +361,7 @@ export default class Global
     /**
      * Cannot use if want to get labels from backend
      * @param {string} selectorOfLabel
-     * @param {function} callback
+     * @param {function} [callback]
      */
     getLabelsForSelect (selectorOfLabel, callback = new Function())
     {
@@ -384,7 +384,7 @@ export default class Global
 
     /**
      * @param {string} selectorOfLabel
-     * @param {function} callback
+     * @param {function} [callback]
      */
     showLabelsInInput (selectorOfLabel, callback = new Function())
     {
@@ -396,13 +396,15 @@ export default class Global
             option.value = label._id;
             option.text = label.name;
 
-            labelInput.add(option); //0630/683 1920
+            labelInput.add(option);
         }
 
         return callback();
     }
 
     /**
+     * @desc Sort of querySelector
+     *
      * @param {string} selector
      * @return {Element}
      */
@@ -421,6 +423,8 @@ export default class Global
     }
 
     /**
+     * @desc Sort of querySelectorAll
+     *
      * @param {string} selector
      * @return {NodeList}
      */
@@ -430,7 +434,7 @@ export default class Global
     }
 
     /**
-     * if want to refresh elements from backend
+     * @desc If want to refresh elements from backend
      */
     pushBackWithRefresh ()
     {
@@ -438,6 +442,8 @@ export default class Global
     }
 
     /**
+     * @desc It push back to previous page from current, back buttons automatically from ONS
+     *
      * @param {object} [options]
      */
     pushBack (options = {})
@@ -446,10 +452,13 @@ export default class Global
     }
 
     /**
-     * @return {HTMLElement}
+     * @desc Set default expires time for do not forgot
+     *
+     * @param {string} name
+     * @param {string} value
      */
-    getBody ()
+    setCookie (name, value)
     {
-        return document.getElementsByTagName('body')[0];
+        Cookies.set(name, value, { expires: 1000000 });
     }
 }

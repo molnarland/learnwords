@@ -28753,7 +28753,7 @@
 	        /**
 	         * Cannot use if want to get labels from backend
 	         * @param {string} selectorOfLabel
-	         * @param {function} callback
+	         * @param {function} [callback]
 	         */
 	
 	    }, {
@@ -28780,7 +28780,7 @@
 	
 	        /**
 	         * @param {string} selectorOfLabel
-	         * @param {function} callback
+	         * @param {function} [callback]
 	         */
 	
 	    }, {
@@ -28802,7 +28802,7 @@
 	                    option.value = label._id;
 	                    option.text = label.name;
 	
-	                    labelInput.add(option); //0630/683 1920
+	                    labelInput.add(option);
 	                }
 	            } catch (err) {
 	                _didIteratorError3 = true;
@@ -28823,6 +28823,8 @@
 	        }
 	
 	        /**
+	         * @desc Sort of querySelector
+	         *
 	         * @param {string} selector
 	         * @return {Element}
 	         */
@@ -28841,6 +28843,8 @@
 	        }
 	
 	        /**
+	         * @desc Sort of querySelectorAll
+	         *
 	         * @param {string} selector
 	         * @return {NodeList}
 	         */
@@ -28852,7 +28856,7 @@
 	        }
 	
 	        /**
-	         * if want to refresh elements from backend
+	         * @desc If want to refresh elements from backend
 	         */
 	
 	    }, {
@@ -28862,6 +28866,8 @@
 	        }
 	
 	        /**
+	         * @desc It push back to previous page from current, back buttons automatically from ONS
+	         *
 	         * @param {object} [options]
 	         */
 	
@@ -28874,13 +28880,16 @@
 	        }
 	
 	        /**
-	         * @return {HTMLElement}
+	         * @desc Set default expires time for do not forgot
+	         *
+	         * @param {string} name
+	         * @param {string} value
 	         */
 	
 	    }, {
-	        key: 'getBody',
-	        value: function getBody() {
-	            return document.getElementsByTagName('body')[0];
+	        key: 'setCookie',
+	        value: function setCookie(name, value) {
+	            Cookies.set(name, value, { expires: 1000000 });
 	        }
 	    }]);
 	
@@ -30047,7 +30056,7 @@
 	    }, {
 	        key: 'saveAsDefaultValues',
 	        value: function saveAsDefaultValues(data) {
-	            Cookies.set('learn-settings', JSON.stringify(data), { expires: 1000 });
+	            this.setCookie('learn-settings', JSON.stringify(data));
 	        }
 	    }]);
 	
@@ -30835,8 +30844,8 @@
 	            var _this2 = this;
 	
 	            this.q(this.selectorOfSaveButton).addEventListener('click', function () {
-	                Cookies.set(_this2.cookieNameOfStyle, _this2.q(_this2.selectorOfStyle).value);
-	                Cookies.set(_this2.cookieNameOfColour, _this2.q(_this2.selectorOfColour).value);
+	                _this2.setCookie(_this2.cookieNameOfStyle, _this2.q(_this2.selectorOfStyle).value);
+	                _this2.setCookie(_this2.cookieNameOfColour, _this2.q(_this2.selectorOfColour).value);
 	            });
 	        }
 	    }, {
