@@ -20,45 +20,84 @@ html.ios
             > .center
               +colorRed($name, $ios-white, $ios-red)
 
-      input:checked + .switch__toggle
-        box-shadow: inset 0 0 0 2px $color
-        background-color: $color
+      input:checked
+        & + .switch__toggle
+          box-shadow: inset 0 0 0 2px $color
+          background-color: $color
+        & + .tabbar__button
+          color: $color
 
-      .button
+
+      .card
+        border-color: $color
+
+      .button, .progress-bar__primary
         background-color: $color
         @if $name != red
-          &.red
-            background-color: $ios-red
 
       @if $name == red
+        .button.red
+          background-color: $ios-red
+
         @each $styleName, $style in (light: $ios-black, dark: $ios-white) //for instance
           &[data-style = '#{$styleName}']
             .button.red
               background-color: $style
               @if $styleName == dark
                 color: $ios-black
+  //end of data-colours
 
   //styles
   @each $name, $backgroundColor, $fontColor in ((light, $ios-white, $ios-black), (dark, $ios-black, $ios-white))
     &[data-style = '#{$name}']
       //colours
-      .page, .page__content, .list, .toolbar
+      .page
+        background-color: $backgroundColor
+        color: $fontColor
+
+      .page__content, .list, .toolbar
         background-color: $backgroundColor !important
+
       .toolbar__title, .list-item, input
         color: $fontColor
+
       .switch__toggle
         background-color: $backgroundColor
-        +boxShadowIfDark($name, inset 0 0 0 2px lighten($backgroundColor, $ios-shadowPercent), inset 0 0 0 2px darken($backgroundColor, $ios-shadowPercent))
+        $lighten: lighten($backgroundColor, $ios-shadowPercent)
+        $darken: darken($backgroundColor, $ios-shadowPercent)
+        +boxShadowIfDark($name, inset 0 0 0 2px $lighten, inset 0 0 0 2px $darken)
+
       .switch__handle
         background-color: $backgroundColor
         +boxShadowIfDark($name, (0 0 0 1px $backgroundColor, 0 3px 2px rgba(255, 255, 255, .25)), (0 0 0 1px $backgroundColor, 0 3px 2px rgba(0, 0, 0, .25)))
+
       //colours of lines
       .toolbar
-        +bgImageIfDark($name, linear-gradient(0deg, lighten($backgroundColor, $ios-toolbarLinePercent), lighten($backgroundColor, $ios-toolbarLinePercent) 100%), linear-gradient(0deg, darken($backgroundColor, $ios-toolbarLinePercent), darken($backgroundColor, $ios-toolbarLinePercent) 100%))
+        $lighten: lighten($backgroundColor, $ios-toolbarLinePercent)
+        $darken: darken($backgroundColor, $ios-toolbarLinePercent)
+        +bgImageIfDark($name, linear-gradient(0deg, $lighten, $lighten 100%), linear-gradient(0deg, $darken, $darken 100%))
+
       .list
-        +bgImageIfDark($name, (linear-gradient(lighten($backgroundColor, $ios-listLinePercent), lighten($backgroundColor, $ios-listLinePercent)), linear-gradient(lighten($backgroundColor, $ios-listLinePercent), lighten($backgroundColor, $ios-listLinePercent))), (linear-gradient(darken($backgroundColor, $ios-listLinePercent), darken($backgroundColor, $ios-listLinePercent)), linear-gradient(darken($backgroundColor, $ios-listLinePercent), darken($backgroundColor, $ios-listLinePercent))))
+        $lighten: lighten($backgroundColor, $ios-listLinePercent)
+        $darken: darken($backgroundColor, $ios-listLinePercent)
+        +bgImageIfDark($name, (linear-gradient($lighten, $lighten), linear-gradient($lighten, $lighten)), (linear-gradient($darken, $darken), linear-gradient($darken, $darken)))
+
       .list-item--longdivider, .list-item__center, .list-item__right
-        +bgImageIfDark($name, linear-gradient(0deg, lighten($backgroundColor, $ios-listLinePercent), lighten($backgroundColor, $ios-listLinePercent) 100%), linear-gradient(0deg, darken($backgroundColor, $ios-listLinePercent), darken($backgroundColor, $ios-listLinePercent) 100%))
+        $lighten: lighten($backgroundColor, $ios-listLinePercent)
+        $darken: darken($backgroundColor, $ios-listLinePercent)
+        +bgImageIfDark($name, linear-gradient(0deg, $lighten, $lighten 100%), linear-gradient(0deg, $darken, $darken 100%))
+
+      .tabbar
+        $lighten: lighten($backgroundColor, $ios-toolbarLinePercent)
+        $darken: darken($backgroundColor, $ios-toolbarLinePercent)
+        +ifDark($name, border-top-color, $lighten, $darken)
+
+      .tabbar__button
+        background-color: $backgroundColor
+        $lighten: lighten($fontColor, $ios-tabbarInactivePercent)
+        $darken: darken($fontColor, $ios-tabbarInactivePercent)
+        +colorIfDark($name, $darken, $lighten)
+    //end of data-styles
 
 
 

@@ -108,7 +108,6 @@ ons-button > ons-icon {
       right: 0; }
 
 .card {
-  border-color: black;
   border-width: 2px;
   border-style: solid;
   border-radius: 10px;

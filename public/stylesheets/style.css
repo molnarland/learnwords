@@ -11,7 +11,16 @@ html.ios[data-colour='red'] input:checked + .switch__toggle {
   box-shadow: inset 0 0 0 2px #ff3b30;
   background-color: #ff3b30; }
 
-html.ios[data-colour='red'] .button {
+html.ios[data-colour='red'] input:checked + .tabbar__button {
+  color: #ff3b30; }
+
+html.ios[data-colour='red'] .card {
+  border-color: #ff3b30; }
+
+html.ios[data-colour='red'] .button, html.ios[data-colour='red'] .progress-bar__primary {
+  background-color: #ff3b30; }
+
+html.ios[data-colour='red'] .button.red {
   background-color: #ff3b30; }
 
 html.ios[data-colour='red'][data-style='light'] .button.red {
@@ -34,10 +43,14 @@ html.ios[data-colour='orange'] input:checked + .switch__toggle {
   box-shadow: inset 0 0 0 2px #ff9500;
   background-color: #ff9500; }
 
-html.ios[data-colour='orange'] .button {
+html.ios[data-colour='orange'] input:checked + .tabbar__button {
+  color: #ff9500; }
+
+html.ios[data-colour='orange'] .card {
+  border-color: #ff9500; }
+
+html.ios[data-colour='orange'] .button, html.ios[data-colour='orange'] .progress-bar__primary {
   background-color: #ff9500; }
-  html.ios[data-colour='orange'] .button.red {
-    background-color: #ff3b30; }
 
 html.ios[data-colour='yellow'] .back-button, html.ios[data-colour='yellow'] .toolbar-button, html.ios[data-colour='yellow'] .select-input, html.ios[data-colour='yellow'] .ons-icon {
   color: #ffcc00; }
@@ -52,10 +65,14 @@ html.ios[data-colour='yellow'] input:checked + .switch__toggle {
   box-shadow: inset 0 0 0 2px #ffcc00;
   background-color: #ffcc00; }
 
-html.ios[data-colour='yellow'] .button {
+html.ios[data-colour='yellow'] input:checked + .tabbar__button {
+  color: #ffcc00; }
+
+html.ios[data-colour='yellow'] .card {
+  border-color: #ffcc00; }
+
+html.ios[data-colour='yellow'] .button, html.ios[data-colour='yellow'] .progress-bar__primary {
   background-color: #ffcc00; }
-  html.ios[data-colour='yellow'] .button.red {
-    background-color: #ff3b30; }
 
 html.ios[data-colour='green'] .back-button, html.ios[data-colour='green'] .toolbar-button, html.ios[data-colour='green'] .select-input, html.ios[data-colour='green'] .ons-icon {
   color: #4fd964; }
@@ -70,10 +87,14 @@ html.ios[data-colour='green'] input:checked + .switch__toggle {
   box-shadow: inset 0 0 0 2px #4fd964;
   background-color: #4fd964; }
 
-html.ios[data-colour='green'] .button {
+html.ios[data-colour='green'] input:checked + .tabbar__button {
+  color: #4fd964; }
+
+html.ios[data-colour='green'] .card {
+  border-color: #4fd964; }
+
+html.ios[data-colour='green'] .button, html.ios[data-colour='green'] .progress-bar__primary {
   background-color: #4fd964; }
-  html.ios[data-colour='green'] .button.red {
-    background-color: #ff3b30; }
 
 html.ios[data-colour='teal-blue'] .back-button, html.ios[data-colour='teal-blue'] .toolbar-button, html.ios[data-colour='teal-blue'] .select-input, html.ios[data-colour='teal-blue'] .ons-icon {
   color: #5ac8fa; }
@@ -88,10 +109,14 @@ html.ios[data-colour='teal-blue'] input:checked + .switch__toggle {
   box-shadow: inset 0 0 0 2px #5ac8fa;
   background-color: #5ac8fa; }
 
-html.ios[data-colour='teal-blue'] .button {
+html.ios[data-colour='teal-blue'] input:checked + .tabbar__button {
+  color: #5ac8fa; }
+
+html.ios[data-colour='teal-blue'] .card {
+  border-color: #5ac8fa; }
+
+html.ios[data-colour='teal-blue'] .button, html.ios[data-colour='teal-blue'] .progress-bar__primary {
   background-color: #5ac8fa; }
-  html.ios[data-colour='teal-blue'] .button.red {
-    background-color: #ff3b30; }
 
 html.ios[data-colour='blue'] .back-button, html.ios[data-colour='blue'] .toolbar-button, html.ios[data-colour='blue'] .select-input, html.ios[data-colour='blue'] .ons-icon {
   color: #007aff; }
@@ -106,10 +131,14 @@ html.ios[data-colour='blue'] input:checked + .switch__toggle {
   box-shadow: inset 0 0 0 2px #007aff;
   background-color: #007aff; }
 
-html.ios[data-colour='blue'] .button {
+html.ios[data-colour='blue'] input:checked + .tabbar__button {
+  color: #007aff; }
+
+html.ios[data-colour='blue'] .card {
+  border-color: #007aff; }
+
+html.ios[data-colour='blue'] .button, html.ios[data-colour='blue'] .progress-bar__primary {
   background-color: #007aff; }
-  html.ios[data-colour='blue'] .button.red {
-    background-color: #ff3b30; }
 
 html.ios[data-colour='purple'] .back-button, html.ios[data-colour='purple'] .toolbar-button, html.ios[data-colour='purple'] .select-input, html.ios[data-colour='purple'] .ons-icon {
   color: #5856d6; }
@@ -124,10 +153,14 @@ html.ios[data-colour='purple'] input:checked + .switch__toggle {
   box-shadow: inset 0 0 0 2px #5856d6;
   background-color: #5856d6; }
 
-html.ios[data-colour='purple'] .button {
+html.ios[data-colour='purple'] input:checked + .tabbar__button {
+  color: #5856d6; }
+
+html.ios[data-colour='purple'] .card {
+  border-color: #5856d6; }
+
+html.ios[data-colour='purple'] .button, html.ios[data-colour='purple'] .progress-bar__primary {
   background-color: #5856d6; }
-  html.ios[data-colour='purple'] .button.red {
-    background-color: #ff3b30; }
 
 html.ios[data-colour='pink'] .back-button, html.ios[data-colour='pink'] .toolbar-button, html.ios[data-colour='pink'] .select-input, html.ios[data-colour='pink'] .ons-icon {
   color: #ff2d55; }
@@ -142,12 +175,20 @@ html.ios[data-colour='pink'] input:checked + .switch__toggle {
   box-shadow: inset 0 0 0 2px #ff2d55;
   background-color: #ff2d55; }
 
-html.ios[data-colour='pink'] .button {
-  background-color: #ff2d55; }
-  html.ios[data-colour='pink'] .button.red {
-    background-color: #ff3b30; }
+html.ios[data-colour='pink'] input:checked + .tabbar__button {
+  color: #ff2d55; }
 
-html.ios[data-style='light'] .page, html.ios[data-style='light'] .page__content, html.ios[data-style='light'] .list, html.ios[data-style='light'] .toolbar {
+html.ios[data-colour='pink'] .card {
+  border-color: #ff2d55; }
+
+html.ios[data-colour='pink'] .button, html.ios[data-colour='pink'] .progress-bar__primary {
+  background-color: #ff2d55; }
+
+html.ios[data-style='light'] .page {
+  background-color: #eee;
+  color: #111; }
+
+html.ios[data-style='light'] .page__content, html.ios[data-style='light'] .list, html.ios[data-style='light'] .toolbar {
   background-color: #eee !important; }
 
 html.ios[data-style='light'] .toolbar__title, html.ios[data-style='light'] .list-item, html.ios[data-style='light'] input {
@@ -170,7 +211,18 @@ html.ios[data-style='light'] .list {
 html.ios[data-style='light'] .list-item--longdivider, html.ios[data-style='light'] .list-item__center, html.ios[data-style='light'] .list-item__right {
   background-image: linear-gradient(0deg, #bbbbbb, #bbbbbb 100%); }
 
-html.ios[data-style='dark'] .page, html.ios[data-style='dark'] .page__content, html.ios[data-style='dark'] .list, html.ios[data-style='dark'] .toolbar {
+html.ios[data-style='light'] .tabbar {
+  border-top-color: #cccccc; }
+
+html.ios[data-style='light'] .tabbar__button {
+  background-color: #eee;
+  color: #8d8d8d; }
+
+html.ios[data-style='dark'] .page {
+  background-color: #111;
+  color: #eee; }
+
+html.ios[data-style='dark'] .page__content, html.ios[data-style='dark'] .list, html.ios[data-style='dark'] .toolbar {
   background-color: #111 !important; }
 
 html.ios[data-style='dark'] .toolbar__title, html.ios[data-style='dark'] .list-item, html.ios[data-style='dark'] input {
@@ -192,6 +244,13 @@ html.ios[data-style='dark'] .list {
 
 html.ios[data-style='dark'] .list-item--longdivider, html.ios[data-style='dark'] .list-item__center, html.ios[data-style='dark'] .list-item__right {
   background-image: linear-gradient(0deg, #444444, #444444 100%); }
+
+html.ios[data-style='dark'] .tabbar {
+  border-top-color: #333333; }
+
+html.ios[data-style='dark'] .tabbar__button {
+  background-color: #111;
+  color: #727272; }
 
 html.ios .input-cleaner {
   padding: 10px;
