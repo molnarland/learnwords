@@ -20,15 +20,15 @@ html.ios[data-colour='red'] .card {
 html.ios[data-colour='red'] .button, html.ios[data-colour='red'] .progress-bar__primary {
   background-color: #ff3b30; }
 
-html.ios[data-colour='red'] .button.red {
-  background-color: #ff3b30; }
-
 html.ios[data-colour='red'][data-style='light'] .button.red {
   background-color: #111; }
 
 html.ios[data-colour='red'][data-style='dark'] .button.red {
   background-color: #eee;
   color: #111; }
+
+html.ios[data-colour='red'] .button.red {
+  background-color: #eee; }
 
 html.ios[data-colour='orange'] .back-button, html.ios[data-colour='orange'] .toolbar-button, html.ios[data-colour='orange'] .select-input, html.ios[data-colour='orange'] .ons-icon {
   color: #ff9500; }
@@ -52,6 +52,9 @@ html.ios[data-colour='orange'] .card {
 html.ios[data-colour='orange'] .button, html.ios[data-colour='orange'] .progress-bar__primary {
   background-color: #ff9500; }
 
+html.ios[data-colour='orange'] .button.red {
+  background-color: #ff3b30; }
+
 html.ios[data-colour='yellow'] .back-button, html.ios[data-colour='yellow'] .toolbar-button, html.ios[data-colour='yellow'] .select-input, html.ios[data-colour='yellow'] .ons-icon {
   color: #ffcc00; }
 
@@ -73,6 +76,9 @@ html.ios[data-colour='yellow'] .card {
 
 html.ios[data-colour='yellow'] .button, html.ios[data-colour='yellow'] .progress-bar__primary {
   background-color: #ffcc00; }
+
+html.ios[data-colour='yellow'] .button.red {
+  background-color: #ff3b30; }
 
 html.ios[data-colour='green'] .back-button, html.ios[data-colour='green'] .toolbar-button, html.ios[data-colour='green'] .select-input, html.ios[data-colour='green'] .ons-icon {
   color: #4fd964; }
@@ -96,6 +102,9 @@ html.ios[data-colour='green'] .card {
 html.ios[data-colour='green'] .button, html.ios[data-colour='green'] .progress-bar__primary {
   background-color: #4fd964; }
 
+html.ios[data-colour='green'] .button.red {
+  background-color: #ff3b30; }
+
 html.ios[data-colour='teal-blue'] .back-button, html.ios[data-colour='teal-blue'] .toolbar-button, html.ios[data-colour='teal-blue'] .select-input, html.ios[data-colour='teal-blue'] .ons-icon {
   color: #5ac8fa; }
 
@@ -117,6 +126,9 @@ html.ios[data-colour='teal-blue'] .card {
 
 html.ios[data-colour='teal-blue'] .button, html.ios[data-colour='teal-blue'] .progress-bar__primary {
   background-color: #5ac8fa; }
+
+html.ios[data-colour='teal-blue'] .button.red {
+  background-color: #ff3b30; }
 
 html.ios[data-colour='blue'] .back-button, html.ios[data-colour='blue'] .toolbar-button, html.ios[data-colour='blue'] .select-input, html.ios[data-colour='blue'] .ons-icon {
   color: #007aff; }
@@ -140,6 +152,9 @@ html.ios[data-colour='blue'] .card {
 html.ios[data-colour='blue'] .button, html.ios[data-colour='blue'] .progress-bar__primary {
   background-color: #007aff; }
 
+html.ios[data-colour='blue'] .button.red {
+  background-color: #ff3b30; }
+
 html.ios[data-colour='purple'] .back-button, html.ios[data-colour='purple'] .toolbar-button, html.ios[data-colour='purple'] .select-input, html.ios[data-colour='purple'] .ons-icon {
   color: #5856d6; }
 
@@ -162,6 +177,9 @@ html.ios[data-colour='purple'] .card {
 html.ios[data-colour='purple'] .button, html.ios[data-colour='purple'] .progress-bar__primary {
   background-color: #5856d6; }
 
+html.ios[data-colour='purple'] .button.red {
+  background-color: #ff3b30; }
+
 html.ios[data-colour='pink'] .back-button, html.ios[data-colour='pink'] .toolbar-button, html.ios[data-colour='pink'] .select-input, html.ios[data-colour='pink'] .ons-icon {
   color: #ff2d55; }
 
@@ -183,6 +201,9 @@ html.ios[data-colour='pink'] .card {
 
 html.ios[data-colour='pink'] .button, html.ios[data-colour='pink'] .progress-bar__primary {
   background-color: #ff2d55; }
+
+html.ios[data-colour='pink'] .button.red {
+  background-color: #ff3b30; }
 
 html.ios[data-style='light'] .page {
   background-color: #eee;
