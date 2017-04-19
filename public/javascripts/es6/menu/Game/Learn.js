@@ -141,8 +141,6 @@ export default class Learn extends Game
 
         setTimeout(() =>
         {
-            // let previous = this.q(this.getLearnContentSelector(false));
-            //TODO parentNode is null when showBoth is true
             previous.parentNode.removeChild(previous);
         }, this.animationDelay)
     }
@@ -356,7 +354,7 @@ export default class Learn extends Game
     _setProgressValue ()
     {
         let result = this.progressRate * (this.index + 1);
-        //TODO this is not working in firefox
+        //TODO this is not working in firefox at !showBoth
         this.q(this.selectorOfProgressBar).value = result;
     }
 

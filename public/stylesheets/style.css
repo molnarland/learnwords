@@ -2,10 +2,10 @@ html.ios[data-colour='red'] .back-button, html.ios[data-colour='red'] .toolbar-b
   color: #ff3b30; }
 
 html.ios[data-colour='red'] ons-input.error:after, html.ios[data-colour='red'] ons-input[data-error]:after, html.ios[data-colour='red'] ons-select.error:after, html.ios[data-colour='red'] ons-select[data-error]:after, html.ios[data-colour='red'] .list__item.error:after, html.ios[data-colour='red'] .list__item[data-error]:after {
-  color: #eee; }
+  color: #fff; }
 
 html.ios[data-colour='red'] ons-input .list__item.error > .center, html.ios[data-colour='red'] ons-input .list__item[data-error] > .center, html.ios[data-colour='red'] ons-select .list__item.error > .center, html.ios[data-colour='red'] ons-select .list__item[data-error] > .center, html.ios[data-colour='red'] .list__item .list__item.error > .center, html.ios[data-colour='red'] .list__item .list__item[data-error] > .center {
-  color: #eee; }
+  color: #fff; }
 
 html.ios[data-colour='red'] input:checked + .switch__toggle {
   box-shadow: inset 0 0 0 2px #ff3b30;
@@ -24,11 +24,11 @@ html.ios[data-colour='red'][data-style='light'] .button.red {
   background-color: #111; }
 
 html.ios[data-colour='red'][data-style='dark'] .button.red {
-  background-color: #eee;
+  background-color: #fff;
   color: #111; }
 
 html.ios[data-colour='red'] .button.red {
-  background-color: #eee; }
+  background-color: #fff; }
 
 html.ios[data-colour='orange'] .back-button, html.ios[data-colour='orange'] .toolbar-button, html.ios[data-colour='orange'] .select-input, html.ios[data-colour='orange'] .ons-icon {
   color: #ff9500; }
@@ -206,48 +206,48 @@ html.ios[data-colour='pink'] .button.red {
   background-color: #ff3b30; }
 
 html.ios[data-style='light'] .page {
-  background-color: #eee;
+  background-color: #fff;
   color: #111; }
 
 html.ios[data-style='light'] .page__content, html.ios[data-style='light'] .list, html.ios[data-style='light'] .toolbar {
-  background-color: #eee !important; }
+  background-color: #fff !important; }
 
 html.ios[data-style='light'] .toolbar__title, html.ios[data-style='light'] .list-item, html.ios[data-style='light'] input {
   color: #111; }
 
 html.ios[data-style='light'] .switch__toggle {
-  background-color: #eee;
-  box-shadow: inset 0 0 0 2px #d4d4d4; }
+  background-color: #fff;
+  box-shadow: inset 0 0 0 2px #e5e5e5; }
 
 html.ios[data-style='light'] .switch__handle {
-  background-color: #eee;
-  box-shadow: 0 0 0 1px #eee, 0 3px 2px rgba(0, 0, 0, 0.25); }
+  background-color: #fff;
+  box-shadow: 0 0 0 1px #fff, 0 3px 2px rgba(0, 0, 0, 0.25); }
 
 html.ios[data-style='light'] .toolbar {
-  background-image: linear-gradient(0deg, #cccccc, #cccccc 100%); }
+  background-image: linear-gradient(0deg, #dddddd, #dddddd 100%); }
 
 html.ios[data-style='light'] .list {
-  background-image: linear-gradient(#bbbbbb, #bbbbbb), linear-gradient(#bbbbbb, #bbbbbb); }
+  background-image: linear-gradient(#cccccc, #cccccc), linear-gradient(#cccccc, #cccccc); }
 
 html.ios[data-style='light'] .list-item--longdivider, html.ios[data-style='light'] .list-item__center, html.ios[data-style='light'] .list-item__right {
-  background-image: linear-gradient(0deg, #bbbbbb, #bbbbbb 100%); }
+  background-image: linear-gradient(0deg, #cccccc, #cccccc 100%); }
 
 html.ios[data-style='light'] .tabbar {
-  border-top-color: #cccccc; }
+  border-top-color: #dddddd; }
 
 html.ios[data-style='light'] .tabbar__button {
-  background-color: #eee;
+  background-color: #fff;
   color: #8d8d8d; }
 
 html.ios[data-style='dark'] .page {
   background-color: #111;
-  color: #eee; }
+  color: #fff; }
 
 html.ios[data-style='dark'] .page__content, html.ios[data-style='dark'] .list, html.ios[data-style='dark'] .toolbar {
   background-color: #111 !important; }
 
 html.ios[data-style='dark'] .toolbar__title, html.ios[data-style='dark'] .list-item, html.ios[data-style='dark'] input {
-  color: #eee; }
+  color: #fff; }
 
 html.ios[data-style='dark'] .switch__toggle {
   background-color: #111;
@@ -271,7 +271,7 @@ html.ios[data-style='dark'] .tabbar {
 
 html.ios[data-style='dark'] .tabbar__button {
   background-color: #111;
-  color: #727272; }
+  color: #838383; }
 
 html.ios .input-cleaner {
   padding: 10px;
@@ -279,6 +279,10 @@ html.ios .input-cleaner {
 
 html.ios .list__item.error:after, html.ios .list__item[data-error]:after {
   bottom: -13px; }
+
+html.ios ons-input.error:after, html.ios ons-input[data-error]:after, html.ios ons-select.error:after, html.ios ons-select[data-error]:after {
+  left: 0;
+  bottom: 0; }
 
 body.android #native .text-input--material__label, body.android #learnable .text-input--material__label {
   top: initial; }

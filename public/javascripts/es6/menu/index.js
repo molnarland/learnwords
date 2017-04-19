@@ -1,4 +1,4 @@
-import ons from 'onsenui';
+// import ons from 'onsenui';
 
 import Menu from './Menu';
 import ListWords from './List/ListWords';

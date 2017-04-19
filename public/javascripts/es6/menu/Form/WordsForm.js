@@ -1,5 +1,4 @@
 import Form from './Form';
-import ons from 'onsenui';
 
 export default class WordsForm extends Form
 {
@@ -53,52 +52,44 @@ export default class WordsForm extends Form
         this.handlingOfUploadFile();
     }
 
+    /**
+     * @desc Call super function and pass default selectors
+     *
+     * @param {function} callback
+     */
+    validate (callback)
+    {
+        super.validate([this.selectorOfNative, this.selectorOfLearnable], callback);
+    }
 
     setNewItem ()
     {
-        const file = this.getFile();
-        let data = {
-            native: this.getNative(),
-            learnable: this.getLearnable(),
-            label: this.getLabel()
-        };
-
-        if (file)
+        this.validate(() =>
         {
-            return this.ajax({
-                url:'/files/photo',
-                data: file,
-                file: true,
-                success: (photo) =>
-                {
-                    data.photo = photo;
-                    super.setNewItem({data: data})
-                }
-            });
-        }
+            const file = this.getFile();
+            let data = {
+                native: this.getNative(),
+                learnable: this.getLearnable(),
+                label: this.getLabel()
+            };
 
-        return super.setNewItem({data});
-    }
 
-    postAWord (photo)
-    {
-        this.ajax({
-            method: 'post',
-            url: `${this.urlOfWordMethods}/`,
-            data: {
-                native: this.q(this.selectorOfNative).value,
-                learnable: this.q(this.selectorOfLearnable).value,
-                photo: photo,
-                label: this.q(this.selectorOfLabel).value
-            },
-            success: (response) =>
+            if (file)
             {
-                if (response)
-                {
-                    this.pushBackWithRefresh();
-                }
+                return this.ajax({
+                    url:'/files/photo',
+                    data: file,
+                    file: true,
+                    success: (photo) =>
+                    {
+                        data.photo = photo;
+                        super.setNewItem({data: data})
+                    }
+                });
             }
-        })
+
+            return super.setNewItem({data});
+        });
     }
 
 
@@ -119,34 +110,40 @@ export default class WordsForm extends Form
 
     editItem ()
     {
-        const file = this.getFile();
-        const oldPhoto = this.page.data.item.photo;
-        let data = {
-            id: this.page.data.item._id,
-            native: this.getNative(),
-            learnable: this.getLearnable(),
-            label: this.getLabel(),
-        };
-
-        if (file)
+        this.validate(() =>
         {
-            return this.ajax({
-                method: 'PUT',
-                url: '/files/photo/',
-                file: true,
-                data: file,
-                success: (photo) =>
-                {
-                    data.photo = photo;
-                    super.editItem({data: data});
-                }
-            });
-        }
+            const file = this.getFile();
+            const oldPhoto = this.page.data.item.photo;
+            let data = {
+                id: this.page.data.item._id,
+                native: this.getNative(),
+                learnable: this.getLearnable(),
+                label: this.getLabel(),
+            };
 
-        super.editItem({data: data});
+            if (file)
+            {
+                return this.ajax({
+                    method: 'PUT',
+                    url: '/files/photo/',
+                    file: true,
+                    data: file,
+                    success: (photo) =>
+                    {
+                        data.photo = photo;
+                        super.editItem({data: data});
+                    }
+                });
+            }
+
+            super.editItem({data: data});
+        });
     }
 
 
+    /**
+     * @desc Change event listener of file upload input
+     */
     handlingOfUploadFile ()
     {
         this.q(this.selectorOfUploadFile).addEventListener('change', (event) =>

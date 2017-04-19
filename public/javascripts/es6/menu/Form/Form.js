@@ -45,6 +45,40 @@ export default class Form extends Global
     }
 
     /**
+     * @desc Show error and return false in callback if now valid otherwise return true
+     *
+     * @param {array} selectors
+     * @param {function} callback
+     * @return {boolean|function}
+     */
+    validate (selectors, callback)
+    {
+        let valid = true;
+
+        for (const selector of selectors)
+        {
+            let input = this.q(selector);
+
+            if (input.value)
+            {
+                delete input.dataset.error;
+            }
+            else
+            {
+                input.dataset.error = 'Have to be filled';
+                valid = false;
+            }
+        }
+
+        if (valid)
+        {
+            return callback(valid);
+        }
+
+        return false;
+    }
+
+    /**
      * @param {function} [before]
      * @param {object} data
      */
