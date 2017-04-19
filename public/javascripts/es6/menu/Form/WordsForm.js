@@ -6,39 +6,70 @@ export default class WordsForm extends Form
     {
         super(page);
 
-        /*this.datasForInputs = {
-            native: {
-                selectorOfPlus: '#native-plus',
-                selectorOfList: '#native',
-                whichLanguage: 'native'
-            },
-            learnable: {
-                selectorOfPlus: '#learnable-plus',
-                selectorOfList: '#learnable',
-                whichLanguage: 'learnable'
-            }
-        };*/
-
-        this.selectorOfNative = '#native';
-        this.selectorOfLearnable = '#learnable';
-        this.selectorOfUploadFile = '#upload-file';
-        this.selectorOfShowedUploadInput = '#file-upload-input';
-        this.selectorOfPhotoPreview = '.photo-preview';
-        this.selectorOfSaveButton = '#save';
-        this.selectorOfLabel = '#label-input';
+        /**
+         * @property SELECTOR_OF_NATIVE
+         * @type {string}
+         * @const
+         */
+        this.SELECTOR_OF_NATIVE = '#native';
+        /**
+         * @property SELECTOR_OF_LEARNABLE
+         * @type {string}
+         * @const
+         */
+        this.SELECTOR_OF_LEARNABLE = '#learnable';
+        /**
+         * @property SELECTOR_OF_UPLOAD_FILE
+         * @type {string}
+         * @const
+         */
+        this.SELECTOR_OF_UPLOAD_FILE = '#upload-file'
+        /**
+         * @property SELECTOR_OF_SHOWED_UPLOAD_INPUT
+         * @type {string}
+         * @const
+         */
+        this.SELECTOR_OF_SHOWED_UPLOAD_INPUT = '#file-upload-input';
+        /**
+         * @property SELECTOR_OF_PHOTO_PREVIEW
+         * @type {string}
+         * @const
+         */
+        this.SELECTOR_OF_PHOTO_PREVIEW = '.photo-preview';
+        /**
+         * @property SELECTOR_OF_SAVE_BUTTON
+         * @type {string}
+         * @const
+         */
+        this.SELECTOR_OF_SAVE_BUTTON = '#save';
+        /**
+         * @property SELECTOR_OF_LABEL
+         * @type {string}
+         * @const
+         */
+        this.SELECTOR_OF_LABEL = '#label-input';
 
 
         this.ajaxOfSaveOne = {
-            url: `${this.urlOfWordMethods}/`,
+            url: `${this.URL_OF_WORD_METHODS}/`,
             method: 'POST'
         };
         this.ajaxOfEditOne = {
-            url: `${this.urlOfWordMethods}/`,
+            url: `${this.URL_OF_WORD_METHODS}/`,
             method: 'PUT'
         };
         this.ajaxOfDeleteOne = {
-            url: `${this.urlOfWordMethods}/`,
+            url: `${this.URL_OF_WORD_METHODS}/`,
             method: 'DELETE'
+        };
+
+        this.ajaxOfSavePhoto = {
+            url: `/files/photo/`,
+            method: 'POST'
+        };
+        this.ajaxOfEditPhoto = {
+            url: `/files/photo/`,
+            method: 'PUT'
         };
 
         this.init();
@@ -59,7 +90,7 @@ export default class WordsForm extends Form
      */
     validate (callback)
     {
-        super.validate([this.selectorOfNative, this.selectorOfLearnable], callback);
+        super.validate([this.SELECTOR_OF_NATIVE, this.SELECTOR_OF_LEARNABLE], callback);
     }
 
     setNewItem ()
@@ -77,7 +108,8 @@ export default class WordsForm extends Form
             if (file)
             {
                 return this.ajax({
-                    url:'/files/photo',
+                    method: this.ajaxOfSavePhoto.METHOD,
+                    url: this.ajaxOfSavePhoto.URL,
                     data: file,
                     file: true,
                     success: (photo) =>
@@ -95,17 +127,17 @@ export default class WordsForm extends Form
 
     showLabelsInInput ()
     {
-        super.showLabelsInInput(this.selectorOfLabel);
+        super.showLabelsInInput(this.SELECTOR_OF_LABEL);
     }
 
     setValues ()
     {
         const word = this.page.data.item;
 
-        this.q(this.selectorOfNative).value = word.native;
-        this.q(this.selectorOfLearnable).value = word.learnable;
+        this.q(this.SELECTOR_OF_NATIVE).value = word.NATIVE;
+        this.q(this.SELECTOR_OF_LEARNABLE).value = word.LEARNABLE;
         this.showPhoto(word.photo);
-        this.q(this.selectorOfLabel).value = word.labelId;
+        this.q(this.SELECTOR_OF_LABEL).value = word.labelId;
     }
 
     editItem ()
@@ -124,19 +156,19 @@ export default class WordsForm extends Form
             if (file)
             {
                 return this.ajax({
-                    method: 'PUT',
-                    url: '/files/photo/',
+                    method: this.ajaxOfEditPhoto.METHOD,
+                    url: this.ajaxOfEditPhoto.URL,
                     file: true,
                     data: file,
                     success: (photo) =>
                     {
                         data.photo = photo;
-                        super.editItem({data: data});
+                        super.editItem(data);
                     }
                 });
             }
 
-            super.editItem({data: data});
+            super.editItem(data);
         });
     }
 
@@ -146,35 +178,38 @@ export default class WordsForm extends Form
      */
     handlingOfUploadFile ()
     {
-        this.q(this.selectorOfUploadFile).addEventListener('change', (event) =>
+        this.q(this.SELECTOR_OF_UPLOAD_FILE).addEventListener('change', (event) =>
         {
             let files = event.target.files;
 
             if (files && files.length > 0)
             {
                 const file = files[0];
-                const showedUploadInput = document.querySelector(this.selectorOfShowedUploadInput);
+                const showedUploadInput = document.querySelector(this.SELECTOR_OF_SHOWED_UPLOAD_INPUT);
 
 
                 showedUploadInput.value = file.name;
 
                 if (file.type.split('/')[0] !== 'image')
                 {
-                    this.q(this.selectorOfPhotoPreview).removeAttribute('src');
+                    this.q(this.SELECTOR_OF_PHOTO_PREVIEW).removeAttribute('src');
                     showedUploadInput.dataset.error = 'Images upload only';
-                    this.q(this.selectorOfSaveButton).disabled = true;
-
+                    this.q(this.SELECTOR_OF_SAVE_BUTTON).disabled = true;
                 }
                 else
                 {
                     this.preShowPhoto(file);
                     delete showedUploadInput.dataset.error;
-                    this.q(this.selectorOfSaveButton).disabled = false;
+                    this.q(this.SELECTOR_OF_SAVE_BUTTON).disabled = false;
                 }
             }
         });
     }
 
+    /**
+     * @desc Programmatically basic if show photo, it call this.showPhoto()
+     * @param {File} file
+     */
     preShowPhoto (file)
     {
         const reader = new FileReader();
@@ -185,12 +220,16 @@ export default class WordsForm extends Form
         reader.readAsDataURL(file);
     }
 
+    /**
+     * @desc Actually show the photo
+     * @param {string} photo - Name of photo or a whole photo hashed by base64
+     */
     showPhoto (photo)
     {
         if (photo)
         {
-            photo = (photo.search('base64') > -1) ? photo : `${this.directoryOfPhotos}/${photo}`;
-            this.q(this.selectorOfPhotoPreview).setAttribute('src', photo);
+            photo = (photo.search('base64') > -1) ? photo : `${this.DIRECTORY_OF_PHOTOS}/${photo}`;
+            this.q(this.SELECTOR_OF_PHOTO_PREVIEW).setAttribute('src', photo);
         }
     }
 
@@ -198,22 +237,22 @@ export default class WordsForm extends Form
 
     getNative ()
     {
-        return this.q(this.selectorOfNative).value;
+        return this.q(this.SELECTOR_OF_NATIVE).value;
     }
 
     getLearnable ()
     {
-        return this.q(this.selectorOfLearnable).value
+        return this.q(this.SELECTOR_OF_LEARNABLE).value
     }
 
     getLabel ()
     {
-        return this.q(this.selectorOfLabel).value
+        return this.q(this.SELECTOR_OF_LABEL).value
     }
 
     getFile ()
     {
-        return this.q(this.selectorOfUploadFile).files[0];
+        return this.q(this.SELECTOR_OF_UPLOAD_FILE).files[0];
     }
 
     /*initInputs ()

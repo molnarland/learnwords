@@ -6,7 +6,16 @@ export default class Menu extends Global
     {
         super(page);
 
-        this.infoOfMainPages = {
+        /**
+         * @property INFO_OF_MAIN_PAGES
+         * @type {{
+         *          addWords: {button: string, urlHash: string, onsPage: string},
+         *          addLabels: {button: string, urlHash: string, onsPage: string},
+         *          learn: {button: string, urlHash: string, onsPage: string},
+         *          settings: {button: string, urlHash: string, onsPage: string}
+         * }}
+         */
+        this.INFO_OF_MAIN_PAGES = {
             addWords: {
                 button: '#change-words',
                 urlHash: 'change_words',
@@ -37,11 +46,14 @@ export default class Menu extends Global
         }*/
     }
 
+    /**
+     * @desc Add click event listener for each button what will push to correct page
+     */
     goToPageByButtonClick ()
     {
-        for (let index in this.infoOfMainPages)
+        for (let index in this.INFO_OF_MAIN_PAGES)
         {
-            const infoOfPage = this.infoOfMainPages[index];
+            const infoOfPage = this.INFO_OF_MAIN_PAGES[index];
             this.initByClickPushPage(infoOfPage.button, infoOfPage.onsPage, null, () =>
             {
                 window.location.hash = infoOfPage.urlHash;
@@ -49,12 +61,15 @@ export default class Menu extends Global
         }
     }
 
+    /**
+     * @desc At loading check hash in url and pass to there
+     */
     goToPageByHash ()
     {
         let infoOfCurrentPage = null;
-        for (let index in this.infoOfMainPages)
+        for (let index in this.INFO_OF_MAIN_PAGES)
         {
-            const info = this.infoOfMainPages[index];
+            const info = this.INFO_OF_MAIN_PAGES[index];
             if (info.urlHash === window.location.hash.substring(1))
             {
                 infoOfCurrentPage = info;
@@ -68,9 +83,4 @@ export default class Menu extends Global
             this.q(infoOfCurrentPage.button).click();
         }
     }
-
-
-
-
-
 }

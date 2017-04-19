@@ -6,16 +6,31 @@ export default class GameSettings extends Global
     {
         super(page);
 
+        /**
+         * @property nextButton
+         * @type {String}
+         * @protected
+         */
         this.nextButton = String;
+        /**
+         * @property changeForm
+         * @type {String}
+         * @protected
+         */
         this.changeForm = String;
 
-        this.selectorOfLabelInput = '#label';
+        /**
+         * @property SELECTOR_OF_LABEL_INPUT
+         * @type {string}
+         * @const
+         */
+        this.SELECTOR_OF_LABEL_INPUT = '#label';
     }
 
 
     init ()
     {
-        this.getLabelsForSelect(this.selectorOfLabelInput, this.setDefaultValue.bind(this));
+        this.getLabelsForSelect(this.SELECTOR_OF_LABEL_INPUT, this.setDefaultValue.bind(this));
         this.initOfPushToGame();
 
     }

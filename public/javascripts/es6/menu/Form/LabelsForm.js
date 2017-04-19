@@ -7,18 +7,19 @@ export default class LabelsForm extends Form
 
         super(page);
 
-        this.selectorOfLabelInput = '#label';
+        this.SELECTOR_OF_LABEL_INPUT = '#label';
 
+        //CHECK @define in jsdoc
         this.ajaxOfSaveOne = {
-            url: `${this.urlOfLabelMethods}/`,
+            url: `${this.URL_OF_LABEL_METHODS}/`,
             method: 'POST'
         };
         this.ajaxOfEditOne = {
-            url: `${this.urlOfLabelMethods}/`,
+            url: `${this.URL_OF_LABEL_METHODS}/`,
             method: 'PUT'
         };
         this.ajaxOfDeleteOne = {
-            url: `${this.urlOfLabelMethods}/`,
+            url: `${this.URL_OF_LABEL_METHODS}/`,
             method: 'DELETE'
         };
 
@@ -33,7 +34,7 @@ export default class LabelsForm extends Form
      */
     validate (callback)
     {
-        super.validate([this.selectorOfLabelInput], callback);
+        super.validate([this.SELECTOR_OF_LABEL_INPUT], callback);
     }
 
     setNewItem ()
@@ -50,7 +51,7 @@ export default class LabelsForm extends Form
 
     setValues ()
     {
-        this.q(this.selectorOfLabelInput).value = this.page.data.item.name;
+        this.q(this.SELECTOR_OF_LABEL_INPUT).value = this.page.data.item.name;
     }
 
     editItem ()
@@ -58,17 +59,15 @@ export default class LabelsForm extends Form
         this.validate(() =>
         {
             super.editItem({
-                data: {
-                    userId: this.page.data.item.userId,
-                    oldLabel: this.page.data.item.name,
-                    newLabel: this.getLabelFromInput()
-                }
+                userId: this.page.data.item.userId,
+                oldLabel: this.page.data.item.name,
+                newLabel: this.getLabelFromInput()
             });
         });
     }
 
     getLabelFromInput ()
     {
-        return this.q(this.selectorOfLabelInput).value;
+        return this.q(this.SELECTOR_OF_LABEL_INPUT).value;
     }
 }

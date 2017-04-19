@@ -6,28 +6,75 @@ export default class Learn extends Game
     {
         super(page);
 
-        this.ajaxOfGetWordsForLearn = {
-            url: `${this.urlOfGameMethods}/:label/:sort/:first`,
-            method: 'GET'
+        /**
+         * @property AJAX_OF_GET_WORDS_FOR_LEARN
+         * @type {{URL: string, METHOD: string}}
+         * @const
+         */
+        this.AJAX_OF_GET_WORDS_FOR_LEARN = {
+            URL: `${this.URL_OF_GAME_METHODS}/:label/:sort/:first`,
+            METHOD: 'GET'
         };
 
-        this.currentPageName = 'learn';
-        this.selectorOfProgressBar = '#progress';
-        this.selectorOfProgramArea = '#learn-area';
-        this.selectorOfBackButtonWhenNoResult = '#back-to-settings';
-        this.selectorOfNextButton = '#next';
-        this.learnable = {
-            selector: '#learnable',
-            spaceOfWord: '#learnable .card p',
-            image: '#learnable img'
+        /**
+         * @property CURRENT_PAGE_NAME
+         * @type {string}
+         * @const
+         */
+        this.CURRENT_PAGE_NAME = 'learn';
+        /**
+         * @property SELECTOR_OF_PROGRESS_BAR
+         * @type {string}
+         * @const
+         */
+        this.SELECTOR_OF_PROGRESS_BAR = '#progress';
+        /**
+         * @property SELECTOR_OF_PROGRAM_AREA
+         * @type {string}
+         * @const
+         */
+        this.SELECTOR_OF_PROGRAM_AREA = '#learn-area';
+        /**
+         * @property SELECTOR_OF_BACK_BUTTON_WHEN_NO_RESULT
+         * @type {string}
+         * @const
+         */
+        this.SELECTOR_OF_BACK_BUTTON_WHEN_NO_RESULT = '#back-to-settings';
+        /**
+         * @property SELECTOR_OF_NEXT_BUTTON
+         * @type {string}
+         * @const
+         */
+        this.SELECTOR_OF_NEXT_BUTTON = '#next';
+        /**
+         * @property LEARNABLE
+         * @type {{SELECTOR: string, SPACE_OF_WORD: string, IMAGE: string}}
+         * @const
+         */
+        this.LEARNABLE = {
+            SELECTOR: '#learnable',
+            SPACE_OF_WORD: '#learnable .card p',
+            IMAGE: '#learnable img'
         };
-        this.native = {
-            selector: '#native',
-            spaceOfWord: '#native .card p',
-            image: '#native img'
+        /**
+         * @property NATIVE
+         * @type {{SELECTOR: string, SPACE_OF_WORD: string, IMAGE: string}}
+         * @const
+         */
+        this.NATIVE = {
+            SELECTOR: '#native',
+            SPACE_OF_WORD: '#native .card p',
+            IMAGE: '#native img'
         };
 
-        this.animationDelay = 400; //millisecond
+        /**
+         * @property animationDelay
+         * @desc In millisecond for setTimeout()
+         * @type {number}
+         * @default 400
+         */
+        this.animationDelay = 400;
+
 
         //from previous page
         const data = this.page.data.data;
@@ -51,8 +98,8 @@ export default class Learn extends Game
     getWords ()
     {
         this.ajax({
-            method: this.ajaxOfGetWordsForLearn.method,
-            url: `${this.ajaxOfGetWordsForLearn.url}/`,
+            method: this.AJAX_OF_GET_WORDS_FOR_LEARN.METHOD,
+            url: `${this.AJAX_OF_GET_WORDS_FOR_LEARN.URL}/`,
             data: {
                 label: this.label,
                 sort: this.sort,
@@ -99,7 +146,7 @@ export default class Learn extends Game
         });
 
 
-        this.q(this.selectorOfNextButton).addEventListener('click', this.next.bind(this));
+        this.q(this.SELECTOR_OF_NEXT_BUTTON).addEventListener('click', this.next.bind(this));
     }
 
     /**
@@ -172,33 +219,33 @@ export default class Learn extends Game
     _nextWord ()
     {
         const word = this.words[this.index];
-        const native = word.native;
-        const learnable = word.learnable;
+        const native = word.NATIVE;
+        const learnable = word.LEARNABLE;
         const photo = word.photo;
 
         let currentContentSelector = this.getLearnContentSelector() + ' ';
 
-        this.q(currentContentSelector + this.native.spaceOfWord).innerText = native;
-        this.q(currentContentSelector + this.learnable.spaceOfWord).innerText = learnable;
+        this.q(currentContentSelector + this.NATIVE.SPACE_OF_WORD).innerText = native;
+        this.q(currentContentSelector + this.LEARNABLE.SPACE_OF_WORD).innerText = learnable;
         if (photo)
         {
-            let pathOfPhoto = `${this.directoryOfPhotos}/${photo}`;
+            let pathOfPhoto = `${this.DIRECTORY_OF_PHOTOS}/${photo}`;
 
             if (this.showBoth)
             {
                 if (Boolean(this.showFirst)) //true -> native
                 {
-                    this.q(currentContentSelector + this.native.image).src = pathOfPhoto;
+                    this.q(currentContentSelector + this.NATIVE.IMAGE).src = pathOfPhoto;
                 }
                 else //false -> learnable
                 {
-                    this.q(currentContentSelector + this.learnable.image).src = pathOfPhoto;
+                    this.q(currentContentSelector + this.LEARNABLE.IMAGE).src = pathOfPhoto;
                 }
             }
             else
             {
-                this.q(currentContentSelector + this.native.image).src
-                    = this.q(currentContentSelector + this.learnable.image).src
+                this.q(currentContentSelector + this.NATIVE.IMAGE).src
+                    = this.q(currentContentSelector + this.LEARNABLE.IMAGE).src
                     = pathOfPhoto;
             }
         }
@@ -211,7 +258,7 @@ export default class Learn extends Game
     _setNoResult ()
     {
         this.setDomElement({
-            where: this.selectorOfProgramArea,
+            where: this.SELECTOR_OF_PROGRAM_AREA,
             html:   '<p>So sorry, but I didn\'t find any words with those settings...</p>' +
                     '<p>' +
                         '<ons-button id="back-to-settings">' +
@@ -222,7 +269,7 @@ export default class Learn extends Game
             callback: this._setBackButtonListener.bind(this)
         });
 
-        this.q(this.selectorOfNextButton).className = 'hidden';
+        this.q(this.SELECTOR_OF_NEXT_BUTTON).className = 'hidden';
     }
 
     /**
@@ -230,7 +277,7 @@ export default class Learn extends Game
      */
     _setBackButtonListener ()
     {
-        this.q(this.selectorOfBackButtonWhenNoResult).addEventListener('click', () =>
+        this.q(this.SELECTOR_OF_BACK_BUTTON_WHEN_NO_RESULT).addEventListener('click', () =>
         {
             this.pushBack();
         });
@@ -333,7 +380,7 @@ export default class Learn extends Game
         }
 
         this.setDomElement({
-            where: this.selectorOfProgramArea,
+            where: this.SELECTOR_OF_PROGRAM_AREA,
             html: html,
             callback: callback
         });
@@ -355,7 +402,7 @@ export default class Learn extends Game
     {
         let result = this.progressRate * (this.index + 1);
         //TODO this is not working in firefox at !showBoth
-        this.q(this.selectorOfProgressBar).value = result;
+        this.q(this.SELECTOR_OF_PROGRESS_BAR).value = result;
     }
 
     /**
@@ -363,16 +410,16 @@ export default class Learn extends Game
      */
     _hideNextButton ()
     {
-        this.q(this.selectorOfNextButton).className = 'hidden';
+        this.q(this.SELECTOR_OF_NEXT_BUTTON).className = 'hidden';
     }
 
     disableNextButton ()
     {
-        this.q(this.selectorOfNextButton).setAttribute('disabled', '');
+        this.q(this.SELECTOR_OF_NEXT_BUTTON).setAttribute('disabled', '');
     }
 
     enableNextButton ()
     {
-        this.q(this.selectorOfNextButton).removeAttribute('disabled');
+        this.q(this.SELECTOR_OF_NEXT_BUTTON).removeAttribute('disabled');
     }
 }

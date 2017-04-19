@@ -10,11 +10,36 @@ export default class SettingsLearn extends GameSettings
         this.nextButton = '#go-learn';
         this.changeForm = 'learn';
 
-        this.selectorOfSort = '#sort';
-        this.selectorOfLabel = '#label';
-        this.selectorOfShowBoth = '#show-both';
-        this.selectorOfWhichShowFirst = '#show-first';
-        this.selectorOfLoop = '#loop';
+        /**
+         * @property SELECTOR_OF_SORT
+         * @type {string}
+         * @const
+         */
+        this.SELECTOR_OF_SORT = '#sort';
+        /**
+         * @property SELECTOR_OF_LABEL
+         * @type {string}
+         * @const
+         */
+        this.SELECTOR_OF_LABEL = '#label';
+        /**
+         * @property SELECTOR_OF_SHOW_BOTH
+         * @type {string}
+         * @const
+         */
+        this.SELECTOR_OF_SHOW_BOTH = '#show-both';
+        /**
+         * @property SELECTOR_OF_WHICH_SHOW_FIRST
+         * @type {string}
+         * @const
+         */
+        this.SELECTOR_OF_WHICH_SHOW_FIRST = '#show-first';
+        /**
+         * @property SELECTOR_OF_LOOP
+         * @type {string}
+         * @const
+         */
+        this.SELECTOR_OF_LOOP = '#loop';
 
         this.init();
     }
@@ -25,11 +50,11 @@ export default class SettingsLearn extends GameSettings
     getValue (callback)
     {
         const data = {
-            sort: this.q(this.selectorOfSort).value,
-            label: this.q(this.selectorOfLabel).value,
-            showBoth: this.q(this.selectorOfShowBoth).checked,
-            showFirst: this.q(this.selectorOfWhichShowFirst).value,
-            loop: this.q(this.selectorOfLoop).checked
+            sort: this.q(this.SELECTOR_OF_SORT).value,
+            label: this.q(this.SELECTOR_OF_LABEL).value,
+            showBoth: this.q(this.SELECTOR_OF_SHOW_BOTH).checked,
+            showFirst: this.q(this.SELECTOR_OF_WHICH_SHOW_FIRST).value,
+            loop: this.q(this.SELECTOR_OF_LOOP).checked
         };
 
         return callback(data);
@@ -40,11 +65,11 @@ export default class SettingsLearn extends GameSettings
         let data = Cookies.get('learn-settings');
         data = (data) ? JSON.parse(data) : {};
 
-        this.q(this.selectorOfSort).value = data.sort || 0;
-        this.q(this.selectorOfShowBoth).checked = data.showBoth || false;
-        this.q(this.selectorOfWhichShowFirst).value = data.showFirst || 0;
-        this.q(this.selectorOfLabel).value = data.label || 0;
-        this.q(this.selectorOfLoop).checked =
+        this.q(this.SELECTOR_OF_SORT).value = data.sort || 0;
+        this.q(this.SELECTOR_OF_SHOW_BOTH).checked = data.showBoth || false;
+        this.q(this.SELECTOR_OF_WHICH_SHOW_FIRST).value = data.showFirst || 0;
+        this.q(this.SELECTOR_OF_LABEL).value = data.label || 0;
+        this.q(this.SELECTOR_OF_LOOP).checked =
             (data.loop == true || data.loop == false)
                 ? data.loop
                 : true; //default value want to be true

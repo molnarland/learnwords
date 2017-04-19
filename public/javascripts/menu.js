@@ -108,8 +108,8 @@
 	});
 	
 	/**
-	 * Call classes
-	 * If require here these objects, will be slow!
+	 * @desc Call classes
+	 * @summary If require here these objects, will be slow!
 	 *
 	 * @param {object} page
 	 * @param {object} routes
@@ -163,9 +163,18 @@
 	    function Menu(page) {
 	        _classCallCheck(this, Menu);
 	
+	        /**
+	         * @property INFO_OF_MAIN_PAGES
+	         * @type {{
+	         *          addWords: {button: string, urlHash: string, onsPage: string},
+	         *          addLabels: {button: string, urlHash: string, onsPage: string},
+	         *          learn: {button: string, urlHash: string, onsPage: string},
+	         *          settings: {button: string, urlHash: string, onsPage: string}
+	         * }}
+	         */
 	        var _this = _possibleConstructorReturn(this, (Menu.__proto__ || Object.getPrototypeOf(Menu)).call(this, page));
 	
-	        _this.infoOfMainPages = {
+	        _this.INFO_OF_MAIN_PAGES = {
 	            addWords: {
 	                button: '#change-words',
 	                urlHash: 'change_words',
@@ -197,28 +206,38 @@
 	        return _this;
 	    }
 	
+	    /**
+	     * @desc Add click event listener for each button what will push to correct page
+	     */
+	
+	
 	    _createClass(Menu, [{
 	        key: 'goToPageByButtonClick',
 	        value: function goToPageByButtonClick() {
 	            var _this2 = this;
 	
 	            var _loop = function _loop(index) {
-	                var infoOfPage = _this2.infoOfMainPages[index];
+	                var infoOfPage = _this2.INFO_OF_MAIN_PAGES[index];
 	                _this2.initByClickPushPage(infoOfPage.button, infoOfPage.onsPage, null, function () {
 	                    window.location.hash = infoOfPage.urlHash;
 	                });
 	            };
 	
-	            for (var index in this.infoOfMainPages) {
+	            for (var index in this.INFO_OF_MAIN_PAGES) {
 	                _loop(index);
 	            }
 	        }
+	
+	        /**
+	         * @desc At loading check hash in url and pass to there
+	         */
+	
 	    }, {
 	        key: 'goToPageByHash',
 	        value: function goToPageByHash() {
 	            var infoOfCurrentPage = null;
-	            for (var index in this.infoOfMainPages) {
-	                var info = this.infoOfMainPages[index];
+	            for (var index in this.INFO_OF_MAIN_PAGES) {
+	                var info = this.INFO_OF_MAIN_PAGES[index];
 	                if (info.urlHash === window.location.hash.substring(1)) {
 	                    infoOfCurrentPage = info;
 	                    break;
@@ -267,23 +286,73 @@
 	
 	        this.page = page;
 	
-	        this.selectorOfNavigator = '#navigator';
-	        this.selectorOfTitle = 'ons-toolbar .center';
-	        this.backButton = 'ons-back-button';
-	        this.selectorOfCleaner = '.input-cleaner';
+	        /**
+	         * @property SELECTOR_OF_NAVIGATOR
+	         * @type {string}
+	         * @const
+	         */
+	        this.SELECTOR_OF_NAVIGATOR = '#navigator';
+	        /**
+	         * @property SELECTOR_OF_TITLE
+	         * @type {string}
+	         * @const
+	         */
+	        this.SELECTOR_OF_TITLE = 'ons-toolbar .center';
+	        /**
+	         * @property BACK_BUTTON
+	         * @type {string}
+	         * @const
+	         */
+	        this.BACK_BUTTON = 'ons-back-button';
+	        /**
+	         * @property SELECTOR_OF_CLEANER
+	         * @type {string}
+	         * @const
+	         */
+	        this.SELECTOR_OF_CLEANER = '.input-cleaner';
 	
-	        this.urlOfWordMethods = '/words';
-	        this.urlOfLabelMethods = '/labels';
+	        /**
+	         * @property URL_OF_WORD_METHODS
+	         * @type {string}
+	         * @const
+	         */
+	        this.URL_OF_WORD_METHODS = '/words';
+	        /**
+	         * @property URL_OF_LABEL_METHODS
+	         * @type {string}
+	         * @const
+	         */
+	        this.URL_OF_LABEL_METHODS = '/labels';
 	
-	        this.directoryOfPhotos = '/photos';
+	        /**
+	         * @property DIRECTORY_OF_PHOTOS
+	         * @type {string}
+	         * @const
+	         */
+	        this.DIRECTORY_OF_PHOTOS = '/photos';
 	
-	        this.ajaxOfGetAllLabels = {
-	            url: this.urlOfLabelMethods + '/',
-	            method: 'GET'
+	        /**
+	         * @property AJAX_OF_GET_ALL_LABELS
+	         * @type {{URL: string, METHOD: string}}
+	         * @const
+	         */
+	        this.AJAX_OF_GET_ALL_LABELS = {
+	            URL: this.URL_OF_LABEL_METHODS + '/',
+	            METHOD: 'GET'
 	        };
 	
-	        this.cookieNameOfStyle = 'style';
-	        this.cookieNameOfColour = 'colour';
+	        /**
+	         * @property COOKIE_NAME_OF_STYLE
+	         * @type {string}
+	         * @const
+	         */
+	        this.COOKIE_NAME_OF_STYLE = 'style';
+	        /**
+	         * @property COOKIE_NAME_OF_COLOUR
+	         * @type {string}
+	         * @const
+	         */
+	        this.COOKIE_NAME_OF_COLOUR = 'colour';
 	
 	        this.initInputCleaners();
 	    }
@@ -296,7 +365,7 @@
 	    _createClass(Global, [{
 	        key: 'initInputCleaners',
 	        value: function initInputCleaners() {
-	            var cleaners = this.qAll(this.selectorOfCleaner);
+	            var cleaners = this.qAll(this.SELECTOR_OF_CLEANER);
 	            var _iteratorNormalCompletion = true;
 	            var _didIteratorError = false;
 	            var _iteratorError = undefined;
@@ -346,7 +415,7 @@
 	            var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 	            var animation = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
 	
-	            document.querySelector(this.selectorOfNavigator).pushPage(where, {
+	            document.querySelector(this.SELECTOR_OF_NAVIGATOR).pushPage(where, {
 	                data: data,
 	                animation: animation
 	            });
@@ -370,7 +439,7 @@
 	            var callback = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : new Function();
 	
 	            this.q(selectorOfButton).addEventListener('click', function () {
-	                document.querySelector(_this.selectorOfNavigator).pushPage(where, data);
+	                document.querySelector(_this.SELECTOR_OF_NAVIGATOR).pushPage(where, data);
 	                callback();
 	            });
 	        }
@@ -618,6 +687,7 @@
 	    }, {
 	        key: 'createOnsElement',
 	        value: function createOnsElement(html) {
+	            console.log(html, html.length);
 	            return _onsenui2.default._util.createElement(html);
 	        }
 	
@@ -687,7 +757,7 @@
 	            });
 	        }
 	
-	        /**
+	        /*/**
 	         * @desc Call downAndShow() after send data to server
 	         *
 	         * @param {string} upUrl
@@ -696,43 +766,30 @@
 	         * @param {string} showWhere
 	         * @param {function} showableHtml
 	         * @param {function} [after]
-	         */
-	
-	    }, {
-	        key: 'upDownAndShow',
-	        value: function upDownAndShow(_ref5) {
-	            var _this7 = this;
-	
-	            var upUrl = _ref5.upUrl,
-	                upData = _ref5.upData,
-	                downUrl = _ref5.downUrl,
-	                showWhere = _ref5.showWhere,
-	                showableHtml = _ref5.showableHtml,
-	                after = _ref5.after;
-	
-	            this.postAjax(upUrl, upData, function (response) {
-	                if (response) {
-	                    return _this7.downAndShow({
+	         *!/
+	        upDownAndShow ({upUrl, upData, downUrl, showWhere, showableHtml, after})
+	        {
+	            this.postAjax(upUrl, upData, (response) =>
+	            {
+	                if (response)
+	                {
+	                    return this.downAndShow({
 	                        url: downUrl,
 	                        showWhere: showWhere,
 	                        showableHtml: showableHtml,
 	                        after: after
 	                    });
 	                }
-	
-	                return false;
+	                 return false;
 	            });
 	        }
-	
-	        /**
+	         /**
 	         * @param {string} hash
-	         */
-	
-	    }, {
-	        key: 'changeHash',
-	        value: function changeHash(hash) {
+	         *!/
+	        changeHash (hash)
+	        {
 	            window.location.hash = hash;
-	        }
+	        }*/
 	
 	        /**
 	         * @desc Call the showLabelsInInput() after got labels from backend
@@ -744,18 +801,18 @@
 	    }, {
 	        key: 'getLabelsForSelect',
 	        value: function getLabelsForSelect(selectorOfLabel) {
-	            var _this8 = this;
+	            var _this7 = this;
 	
 	            var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Function();
 	
 	            if (window.labels.length === 0) {
 	                this.ajax({
-	                    method: this.ajaxOfGetAllLabels.method,
-	                    url: this.ajaxOfGetAllLabels.url,
+	                    method: this.AJAX_OF_GET_ALL_LABELS.METHOD,
+	                    url: this.AJAX_OF_GET_ALL_LABELS.URL,
 	                    success: function success(result) {
 	                        window.labels = result;
 	
-	                        return _this8.showLabelsInInput(selectorOfLabel, callback);
+	                        return _this7.showLabelsInInput(selectorOfLabel, callback);
 	                    }
 	                });
 	            }
@@ -863,7 +920,7 @@
 	        value: function pushBack() {
 	            var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	
-	            document.querySelector(this.selectorOfNavigator).popPage(options);
+	            document.querySelector(this.SELECTOR_OF_NAVIGATOR).popPage(options);
 	        }
 	
 	        /**
@@ -28966,7 +29023,7 @@
 	        _this.selectorOfChangeItem = _this.selectorOfList + ' ons-list-item';
 	
 	        _this.ajaxOfGetAll = {
-	            url: _this.urlOfWordMethods + '/',
+	            url: _this.URL_OF_WORD_METHODS + '/',
 	            method: 'GET'
 	        };
 	
@@ -28980,6 +29037,11 @@
 	            this.initOfPushToForm();
 	            this.showItems();
 	        }
+	
+	        /**
+	         * @desc Define html each element
+	         */
+	
 	    }, {
 	        key: 'showItems',
 	        value: function showItems() {
@@ -28988,76 +29050,14 @@
 	            _get(ListWords.prototype.__proto__ || Object.getPrototypeOf(ListWords.prototype), 'showItems', this).call(this, {
 	                showableHtml: function showableHtml(word) {
 	                    var id = word._id;
-	                    var native = word.native;
-	                    var learnable = word.learnable;
+	                    var native = word.NATIVE;
+	                    var learnable = word.LEARNABLE;
 	
-	                    return _this2.createOnsElement('<ons-list-item data-id=' + id + ' tappable modifier="longdivider">\n                        <div class="left">' + native + '</div>\n                        <div class="center"><ons-icon icon="arrows-h"></ons-icon></div>\n                        <div class="right">' + learnable + '</div>\n                    </ons-list-item>');
+	                    return _this2.createOnsElement('<ons-list-item data-id=' + id + ' tappable modifier="longdivider">' + ('<div class="left">' + native + '</div>') + '<div class="center"><ons-icon icon="arrows-h"></ons-icon></div>' + ('<div class="right">' + learnable + '</div>') + '</ons-list-item>');
 	                },
 	                store: 'words'
 	            });
 	        }
-	
-	        /*    initOfPushToForm ()
-	            {
-	                this.q(this.plusWordButton).addEventListener('click', () =>
-	                {
-	                    this.pushPage(this.changeWordsForm, {title: this.titleOfNewWordsForm});
-	                });
-	            }
-	        
-	            showWords ()
-	            {
-	                this.downAndShow({
-	                    url: this.urlOfWordMethods,
-	                    showWhere: this.selectorOfWordList,
-	                    showableHtml: (word) =>
-	                    {
-	                        const id = word._id;
-	                        const native = word.native;
-	                        const learnable = word.learnable;
-	        
-	                        return this.createOnsElement(
-	                            `<ons-list-item data-id=${id} tappable modifier="longdivider">
-	                                <div class="left">${native}</div>
-	                                <div class="center"><ons-icon icon="arrows-h"></ons-icon></div>
-	                                <div class="right">${learnable}</div>
-	                            </ons-list-item>`
-	                        );
-	                    },
-	                    store: 'words',
-	                    after: () =>
-	                    {
-	                        const clickableItems = this.qAll(this.selectorOfChangeItem);
-	                        for (let clickableItem of clickableItems)
-	                        {
-	                            clickableItem.addEventListener('click', () =>
-	                            {
-	                                this.pushPage(this.changeWordsForm, {
-	                                    title: this.titleOfEditWordForm,
-	                                    item: window.words.find((word) => word._id == clickableItem.dataset.id)
-	                                }, 'lift');
-	                            });
-	                        }
-	                    }
-	                })
-	            }
-	        
-	            /!**
-	             * Send 'titleOfNewWordsForm' and 'titleOfEditWordForm' arguments to next page automatically
-	             * as titleOfNew and titleOfEdit
-	             *
-	             * @param {string} where
-	             * @param {object} data
-	             * @param {string} animation
-	             *!/
-	            pushPage (where, data = {}, animation = '')
-	            {
-	                data.titleOfNew = this.titleOfNewWordsForm;
-	                data.titleOfEdit = this.titleOfEditWordForm;
-	        
-	                super.pushPage(where, data, animation);
-	            }*/
-	
 	    }]);
 	
 	    return ListWords;
@@ -29100,23 +29100,71 @@
 	    function List(page) {
 	        _classCallCheck(this, List);
 	
+	        /**
+	         * @property plusButton
+	         * @desc Push to newItem page when click it
+	         * @type {String}
+	         * @protected
+	         */
 	        var _this = _possibleConstructorReturn(this, (List.__proto__ || Object.getPrototypeOf(List)).call(this, page));
 	
 	        _this.plusButton = String;
+	        /**
+	         * @property changeForm
+	         * @desc newItem or editItem page,
+	         *       next page can be: onsen/partials/change-labels-form.pug, onsen/partials/change-words-form.
+	         *       value is an ID of template
+	         * @type {String}
+	         * @protected
+	         */
 	        _this.changeForm = String;
 	
+	        /**
+	         * @property titleOfNewForm
+	         * @type {String}
+	         * @protected
+	         */
 	        _this.titleOfNewForm = String;
+	        /**
+	         * @property titleOfEditForm
+	         * @type {String}
+	         * @protected
+	         */
 	        _this.titleOfEditForm = String;
 	
+	        /**
+	         * @property selectorOfList
+	         * @type {String}
+	         * @protected
+	         */
 	        _this.selectorOfList = String;
+	        /**
+	         * @property selectorOfChangeItem
+	         * @type {String}
+	         * @protected
+	         */
 	        _this.selectorOfChangeItem = String;
 	
+	        /**
+	         * @property ajaxOfGetAll
+	         * @type {{url: String, method: string}}
+	         * @protected
+	         */
 	        _this.ajaxOfGetAll = {
 	            url: String,
 	            method: 'GET'
 	        };
 	        return _this;
 	    }
+	
+	    /**
+	     * @desc Call Global.downAndShow() after that add click event
+	     *       listener each showed element what'll pass to changeForm
+	     *
+	     * @param {function} showableHtml
+	     * @param {string} store
+	     */
+	
 	
 	    _createClass(List, [{
 	        key: 'showItems',
@@ -29127,7 +29175,7 @@
 	                store = _ref.store;
 	
 	            this.downAndShow({
-	                url: this.ajaxOfGetAll.url,
+	                url: this.ajaxOfGetAll.URL,
 	                showWhere: this.selectorOfList,
 	                showableHtml: showableHtml,
 	                store: store,
@@ -29171,6 +29219,12 @@
 	                }
 	            });
 	        }
+	
+	        /**
+	         * @desc Add a click event listener to plusButton for push page to form
+	         *       Not called basically
+	         */
+	
 	    }, {
 	        key: 'initOfPushToForm',
 	        value: function initOfPushToForm() {
@@ -29182,8 +29236,8 @@
 	        }
 	
 	        /**
-	         * Send 'titleOfNewForm' and 'titleOfEditForm' arguments to next page automatically
-	         * as titleOfNew and titleOfEdit
+	         * @desc Send 'titleOfNewForm' and 'titleOfEditForm' arguments to next page automatically
+	         *       as titleOfNew and titleOfEdit
 	         *
 	         * @param {string} where
 	         * @param {object} data
@@ -29243,40 +29297,71 @@
 	    function WordsForm(page) {
 	        _classCallCheck(this, WordsForm);
 	
-	        /*this.datasForInputs = {
-	            native: {
-	                selectorOfPlus: '#native-plus',
-	                selectorOfList: '#native',
-	                whichLanguage: 'native'
-	            },
-	            learnable: {
-	                selectorOfPlus: '#learnable-plus',
-	                selectorOfList: '#learnable',
-	                whichLanguage: 'learnable'
-	            }
-	        };*/
-	
+	        /**
+	         * @property SELECTOR_OF_NATIVE
+	         * @type {string}
+	         * @const
+	         */
 	        var _this = _possibleConstructorReturn(this, (WordsForm.__proto__ || Object.getPrototypeOf(WordsForm)).call(this, page));
 	
-	        _this.selectorOfNative = '#native';
-	        _this.selectorOfLearnable = '#learnable';
-	        _this.selectorOfUploadFile = '#upload-file';
-	        _this.selectorOfShowedUploadInput = '#file-upload-input';
-	        _this.selectorOfPhotoPreview = '.photo-preview';
-	        _this.selectorOfSaveButton = '#save';
-	        _this.selectorOfLabel = '#label-input';
+	        _this.SELECTOR_OF_NATIVE = '#native';
+	        /**
+	         * @property SELECTOR_OF_LEARNABLE
+	         * @type {string}
+	         * @const
+	         */
+	        _this.SELECTOR_OF_LEARNABLE = '#learnable';
+	        /**
+	         * @property SELECTOR_OF_UPLOAD_FILE
+	         * @type {string}
+	         * @const
+	         */
+	        _this.SELECTOR_OF_UPLOAD_FILE = '#upload-file';
+	        /**
+	         * @property SELECTOR_OF_SHOWED_UPLOAD_INPUT
+	         * @type {string}
+	         * @const
+	         */
+	        _this.SELECTOR_OF_SHOWED_UPLOAD_INPUT = '#file-upload-input';
+	        /**
+	         * @property SELECTOR_OF_PHOTO_PREVIEW
+	         * @type {string}
+	         * @const
+	         */
+	        _this.SELECTOR_OF_PHOTO_PREVIEW = '.photo-preview';
+	        /**
+	         * @property SELECTOR_OF_SAVE_BUTTON
+	         * @type {string}
+	         * @const
+	         */
+	        _this.SELECTOR_OF_SAVE_BUTTON = '#save';
+	        /**
+	         * @property SELECTOR_OF_LABEL
+	         * @type {string}
+	         * @const
+	         */
+	        _this.SELECTOR_OF_LABEL = '#label-input';
 	
 	        _this.ajaxOfSaveOne = {
-	            url: _this.urlOfWordMethods + '/',
+	            url: _this.URL_OF_WORD_METHODS + '/',
 	            method: 'POST'
 	        };
 	        _this.ajaxOfEditOne = {
-	            url: _this.urlOfWordMethods + '/',
+	            url: _this.URL_OF_WORD_METHODS + '/',
 	            method: 'PUT'
 	        };
 	        _this.ajaxOfDeleteOne = {
-	            url: _this.urlOfWordMethods + '/',
+	            url: _this.URL_OF_WORD_METHODS + '/',
 	            method: 'DELETE'
+	        };
+	
+	        _this.ajaxOfSavePhoto = {
+	            url: '/files/photo/',
+	            method: 'POST'
+	        };
+	        _this.ajaxOfEditPhoto = {
+	            url: '/files/photo/',
+	            method: 'PUT'
 	        };
 	
 	        _this.init();
@@ -29301,7 +29386,7 @@
 	    }, {
 	        key: 'validate',
 	        value: function validate(callback) {
-	            _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'validate', this).call(this, [this.selectorOfNative, this.selectorOfLearnable], callback);
+	            _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'validate', this).call(this, [this.SELECTOR_OF_NATIVE, this.SELECTOR_OF_LEARNABLE], callback);
 	        }
 	    }, {
 	        key: 'setNewItem',
@@ -29318,7 +29403,8 @@
 	
 	                if (file) {
 	                    return _this2.ajax({
-	                        url: '/files/photo',
+	                        method: _this2.ajaxOfSavePhoto.METHOD,
+	                        url: _this2.ajaxOfSavePhoto.URL,
 	                        data: file,
 	                        file: true,
 	                        success: function success(photo) {
@@ -29334,17 +29420,17 @@
 	    }, {
 	        key: 'showLabelsInInput',
 	        value: function showLabelsInInput() {
-	            _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'showLabelsInInput', this).call(this, this.selectorOfLabel);
+	            _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'showLabelsInInput', this).call(this, this.SELECTOR_OF_LABEL);
 	        }
 	    }, {
 	        key: 'setValues',
 	        value: function setValues() {
 	            var word = this.page.data.item;
 	
-	            this.q(this.selectorOfNative).value = word.native;
-	            this.q(this.selectorOfLearnable).value = word.learnable;
+	            this.q(this.SELECTOR_OF_NATIVE).value = word.NATIVE;
+	            this.q(this.SELECTOR_OF_LEARNABLE).value = word.LEARNABLE;
 	            this.showPhoto(word.photo);
-	            this.q(this.selectorOfLabel).value = word.labelId;
+	            this.q(this.SELECTOR_OF_LABEL).value = word.labelId;
 	        }
 	    }, {
 	        key: 'editItem',
@@ -29363,18 +29449,18 @@
 	
 	                if (file) {
 	                    return _this3.ajax({
-	                        method: 'PUT',
-	                        url: '/files/photo/',
+	                        method: _this3.ajaxOfEditPhoto.METHOD,
+	                        url: _this3.ajaxOfEditPhoto.URL,
 	                        file: true,
 	                        data: file,
 	                        success: function success(photo) {
 	                            data.photo = photo;
-	                            _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'editItem', _this3).call(_this3, { data: data });
+	                            _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'editItem', _this3).call(_this3, data);
 	                        }
 	                    });
 	                }
 	
-	                _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'editItem', _this3).call(_this3, { data: data });
+	                _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'editItem', _this3).call(_this3, data);
 	            });
 	        }
 	
@@ -29387,27 +29473,33 @@
 	        value: function handlingOfUploadFile() {
 	            var _this4 = this;
 	
-	            this.q(this.selectorOfUploadFile).addEventListener('change', function (event) {
+	            this.q(this.SELECTOR_OF_UPLOAD_FILE).addEventListener('change', function (event) {
 	                var files = event.target.files;
 	
 	                if (files && files.length > 0) {
 	                    var file = files[0];
-	                    var showedUploadInput = document.querySelector(_this4.selectorOfShowedUploadInput);
+	                    var showedUploadInput = document.querySelector(_this4.SELECTOR_OF_SHOWED_UPLOAD_INPUT);
 	
 	                    showedUploadInput.value = file.name;
 	
 	                    if (file.type.split('/')[0] !== 'image') {
-	                        _this4.q(_this4.selectorOfPhotoPreview).removeAttribute('src');
+	                        _this4.q(_this4.SELECTOR_OF_PHOTO_PREVIEW).removeAttribute('src');
 	                        showedUploadInput.dataset.error = 'Images upload only';
-	                        _this4.q(_this4.selectorOfSaveButton).disabled = true;
+	                        _this4.q(_this4.SELECTOR_OF_SAVE_BUTTON).disabled = true;
 	                    } else {
 	                        _this4.preShowPhoto(file);
 	                        delete showedUploadInput.dataset.error;
-	                        _this4.q(_this4.selectorOfSaveButton).disabled = false;
+	                        _this4.q(_this4.SELECTOR_OF_SAVE_BUTTON).disabled = false;
 	                    }
 	                }
 	            });
 	        }
+	
+	        /**
+	         * @desc Programmatically basic if show photo, it call this.showPhoto()
+	         * @param {File} file
+	         */
+	
 	    }, {
 	        key: 'preShowPhoto',
 	        value: function preShowPhoto(file) {
@@ -29419,33 +29511,39 @@
 	            };
 	            reader.readAsDataURL(file);
 	        }
+	
+	        /**
+	         * @desc Actually show the photo
+	         * @param {string} photo - Name of photo or a whole photo hashed by base64
+	         */
+	
 	    }, {
 	        key: 'showPhoto',
 	        value: function showPhoto(photo) {
 	            if (photo) {
-	                photo = photo.search('base64') > -1 ? photo : this.directoryOfPhotos + '/' + photo;
-	                this.q(this.selectorOfPhotoPreview).setAttribute('src', photo);
+	                photo = photo.search('base64') > -1 ? photo : this.DIRECTORY_OF_PHOTOS + '/' + photo;
+	                this.q(this.SELECTOR_OF_PHOTO_PREVIEW).setAttribute('src', photo);
 	            }
 	        }
 	    }, {
 	        key: 'getNative',
 	        value: function getNative() {
-	            return this.q(this.selectorOfNative).value;
+	            return this.q(this.SELECTOR_OF_NATIVE).value;
 	        }
 	    }, {
 	        key: 'getLearnable',
 	        value: function getLearnable() {
-	            return this.q(this.selectorOfLearnable).value;
+	            return this.q(this.SELECTOR_OF_LEARNABLE).value;
 	        }
 	    }, {
 	        key: 'getLabel',
 	        value: function getLabel() {
-	            return this.q(this.selectorOfLabel).value;
+	            return this.q(this.SELECTOR_OF_LABEL).value;
 	        }
 	    }, {
 	        key: 'getFile',
 	        value: function getFile() {
-	            return this.q(this.selectorOfUploadFile).files[0];
+	            return this.q(this.SELECTOR_OF_UPLOAD_FILE).files[0];
 	        }
 	
 	        /*initInputs ()
@@ -29539,22 +29637,42 @@
 	    function Form(page) {
 	        _classCallCheck(this, Form);
 	
+	        /**
+	         * @property SELECTORS
+	         * @type {{SAVE_BUTTON: string, DELETE_BUTTON: string, DELETE_WRAPPER: string}}
+	         * @const
+	         */
 	        var _this = _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).call(this, page));
 	
-	        _this.selectors = {
-	            saveButton: '#save',
-	            deleteButton: '#delete',
-	            deleteWrapper: '#delete-wrapper'
+	        _this.SELECTORS = {
+	            SAVE_BUTTON: '#save',
+	            DELETE_BUTTON: '#delete',
+	            DELETE_WRAPPER: '#delete-wrapper'
 	        };
 	
+	        /**
+	         * @property ajaxOfSaveOne
+	         * @type {{url: String, method: string}}
+	         * @protected
+	         */
 	        _this.ajaxOfSaveOne = {
 	            url: String,
 	            method: 'POST'
 	        };
+	        /**
+	         * @property ajaxOfEditOne
+	         * @type {{url: String, method: string}}
+	         * @protected
+	         */
 	        _this.ajaxOfEditOne = {
 	            url: String,
 	            method: 'PUT'
 	        };
+	        /**
+	         * @property ajaxOfDeleteOne
+	         * @type {{url: String, method: string}}
+	         * @protected
+	         */
 	        _this.ajaxOfDeleteOne = {
 	            url: String,
 	            method: 'DELETE'
@@ -29562,10 +29680,15 @@
 	        return _this;
 	    }
 	
+	    /**
+	     * @desc Mainly look and choose setNewItem or editItem
+	     */
+	
+	
 	    _createClass(Form, [{
 	        key: 'init',
 	        value: function init() {
-	            this.q(this.selectorOfTitle).innerHTML = this.page.data.title;
+	            this.q(this.SELECTOR_OF_TITLE).innerHTML = this.page.data.title;
 	
 	            var listenerOfSaveButtonClick = this.setNewItem.bind(this); //this is default
 	            if (this.page.data.title === this.page.data.titleOfEdit && _typeof(this.page.data.item) === 'object') {
@@ -29575,7 +29698,7 @@
 	                this.setUpDeleteButton();
 	            }
 	
-	            this.q(this.selectors.saveButton).addEventListener('click', function () {
+	            this.q(this.SELECTORS.SAVE_BUTTON).addEventListener('click', function () {
 	                return listenerOfSaveButtonClick();
 	            });
 	        }
@@ -29649,8 +29772,8 @@
 	            before();
 	
 	            this.ajax({
-	                method: this.ajaxOfSaveOne.method,
-	                url: this.ajaxOfSaveOne.url,
+	                method: this.ajaxOfSaveOne.METHOD,
+	                url: this.ajaxOfSaveOne.URL,
 	                data: data,
 	                success: function success(response) {
 	                    if (response) {
@@ -29659,29 +29782,27 @@
 	                }
 	            });
 	        }
+	
+	        /**
+	         * @desc Default values
+	         */
+	
 	    }, {
 	        key: 'setValues',
 	        value: function setValues() {}
 	
 	        /**
-	         * @param {function} [before]
 	         * @param {object} data
 	         */
 	
 	    }, {
 	        key: 'editItem',
-	        value: function editItem(_ref2) {
+	        value: function editItem(data) {
 	            var _this3 = this;
 	
-	            var _ref2$before = _ref2.before,
-	                before = _ref2$before === undefined ? new Function() : _ref2$before,
-	                data = _ref2.data;
-	
-	            before();
-	
 	            this.ajax({
-	                method: this.ajaxOfEditOne.method,
-	                url: this.ajaxOfEditOne.url,
+	                method: this.ajaxOfEditOne.METHOD,
+	                url: this.ajaxOfEditOne.URL,
 	                data: data,
 	                success: function success(response) {
 	                    if (response) {
@@ -29696,10 +29817,10 @@
 	            var _this4 = this;
 	
 	            this.setDomElement({
-	                where: this.selectors.deleteWrapper,
+	                where: this.SELECTORS.DELETE_WRAPPER,
 	                html: '<ons-button modifier="large" id="delete" class="red">Delete</ons-button>',
 	                callback: function callback() {
-	                    _this4.q(_this4.selectors.deleteButton).addEventListener('click', _this4.deleteItem.bind(_this4));
+	                    _this4.q(_this4.SELECTORS.DELETE_BUTTON).addEventListener('click', _this4.deleteItem.bind(_this4));
 	                }
 	            });
 	        }
@@ -29711,8 +29832,8 @@
 	            var id = this.page.data.item._id;
 	
 	            this.ajax({
-	                method: this.ajaxOfDeleteOne.method,
-	                url: this.ajaxOfDeleteOne.url,
+	                method: this.ajaxOfDeleteOne.METHOD,
+	                url: this.ajaxOfDeleteOne.URL,
 	                data: { id: id },
 	                success: function success() {
 	                    _this5.pushBackWithRefresh();
@@ -29773,7 +29894,7 @@
 	        _this.selectorOfChangeItem = _this.selectorOfList + ' ons-list-item';
 	
 	        _this.ajaxOfGetAll = {
-	            url: _this.urlOfLabelMethods + '/',
+	            url: _this.URL_OF_LABEL_METHODS + '/',
 	            method: 'GET'
 	        };
 	
@@ -29787,6 +29908,11 @@
 	            this.showItems();
 	            this.initOfPushToForm();
 	        }
+	
+	        /**
+	         * @desc Define html each element
+	         */
+	
 	    }, {
 	        key: 'showItems',
 	        value: function showItems() {
@@ -29797,69 +29923,11 @@
 	                    var id = label._id;
 	                    var name = label.name;
 	
-	                    return _this2.createOnsElement('<ons-list-item data-id="' + id + '" tappable modifier="longdivider">\n                        <div class="center">' + name + '</div>\n                        <div class="right"><ons-icon icon="ion-edit"></ons-icon></div>\n                    </ons-list-item>');
+	                    return _this2.createOnsElement('<ons-list-item data-id="' + id + '" tappable modifier="longdivider">' + ('<div class="center">' + name + '</div>') + '<div class="right"><ons-icon icon="ion-edit"></ons-icon></div>' + '</ons-list-item>');
 	                },
 	                store: 'labels'
 	            });
 	        }
-	
-	        /*showLabels ()
-	        {
-	            this.downAndShow({
-	                url: this.ajaxOfGetAllLabels.url,
-	                showWhere: this.selectorOfLabelList,
-	                showableHtml: (label) =>
-	                {
-	                    const id = label._id;
-	                    const name = label.name;
-	                     return this.createOnsElement(
-	                        `<ons-list-item data-id="${id}" tappable>
-	                            <div class="center">${name}</div>
-	                            <div class="right"><ons-icon icon="ion-edit"></ons-icon></div>
-	                        </ons-list-item>`
-	                    );
-	                },
-	                store: 'labels',
-	                after: () =>
-	                {
-	                    let clickableItems = this.qAll(this.selectorOfChangeItem);
-	                    for (let clickableItem of clickableItems)
-	                    {
-	                        clickableItem.addEventListener('click', () =>
-	                        {
-	                            this.pushPage(this.changeLabelForm, {
-	                                title: this.titleOfEditLabelsForm,
-	                                item: window.labels.find((label) => label._id == clickableItem.dataset.id),
-	                            }, 'lift');
-	                        });
-	                    }
-	                }
-	            });
-	        }*/
-	
-	        /*initOfPushToForm ()
-	        {
-	            this.page.querySelector(this.plusLabelButton).addEventListener('click', () =>
-	            {
-	                this.pushPage(this.changeLabelForm, { title: this.titleOfNewLabelsForm });
-	            });
-	        }*/
-	
-	        /**
-	         * Send 'titleOfNewLabelsForm' and 'titleOfEditLabelsForm' arguments to next page automatically
-	         * as titleOfNew and titleOfEdit
-	         *
-	         * @param {string} where
-	         * @param {object} data
-	         * @param {string} animation
-	         */
-	        /*pushPage (where, data = {}, animation = '')
-	        {
-	            data.titleOfNew = this.titleOfNewLabelsForm;
-	            data.titleOfEdit = this.titleOfEditLabelsForm;
-	             super.pushPage(where, data, animation);
-	        }*/
-	
 	    }]);
 	
 	    return ListLabels;
@@ -29904,18 +29972,19 @@
 	
 	        var _this = _possibleConstructorReturn(this, (LabelsForm.__proto__ || Object.getPrototypeOf(LabelsForm)).call(this, page));
 	
-	        _this.selectorOfLabelInput = '#label';
+	        _this.SELECTOR_OF_LABEL_INPUT = '#label';
 	
+	        //CHECK @define in jsdoc
 	        _this.ajaxOfSaveOne = {
-	            url: _this.urlOfLabelMethods + '/',
+	            url: _this.URL_OF_LABEL_METHODS + '/',
 	            method: 'POST'
 	        };
 	        _this.ajaxOfEditOne = {
-	            url: _this.urlOfLabelMethods + '/',
+	            url: _this.URL_OF_LABEL_METHODS + '/',
 	            method: 'PUT'
 	        };
 	        _this.ajaxOfDeleteOne = {
-	            url: _this.urlOfLabelMethods + '/',
+	            url: _this.URL_OF_LABEL_METHODS + '/',
 	            method: 'DELETE'
 	        };
 	
@@ -29923,113 +29992,53 @@
 	        return _this;
 	    }
 	
+	    /**
+	     * @desc Call super function and pass default selectors
+	     *
+	     * @param {function} callback
+	     */
+	
+	
 	    _createClass(LabelsForm, [{
+	        key: 'validate',
+	        value: function validate(callback) {
+	            _get(LabelsForm.prototype.__proto__ || Object.getPrototypeOf(LabelsForm.prototype), 'validate', this).call(this, [this.SELECTOR_OF_LABEL_INPUT], callback);
+	        }
+	    }, {
 	        key: 'setNewItem',
 	        value: function setNewItem() {
-	            _get(LabelsForm.prototype.__proto__ || Object.getPrototypeOf(LabelsForm.prototype), 'setNewItem', this).call(this, {
-	                data: {
-	                    label: this.getLabelFromInput()
-	                }
+	            var _this2 = this;
+	
+	            this.validate(function () {
+	                _get(LabelsForm.prototype.__proto__ || Object.getPrototypeOf(LabelsForm.prototype), 'setNewItem', _this2).call(_this2, {
+	                    data: {
+	                        label: _this2.getLabelFromInput()
+	                    }
+	                });
 	            });
 	        }
 	    }, {
 	        key: 'setValues',
 	        value: function setValues() {
-	            this.q(this.selectorOfLabelInput).value = this.page.data.item.name;
+	            this.q(this.SELECTOR_OF_LABEL_INPUT).value = this.page.data.item.name;
 	        }
 	    }, {
 	        key: 'editItem',
 	        value: function editItem() {
-	            _get(LabelsForm.prototype.__proto__ || Object.getPrototypeOf(LabelsForm.prototype), 'editItem', this).call(this, {
-	                data: {
-	                    userId: this.page.data.item.userId,
-	                    oldLabel: this.page.data.item.name,
-	                    newLabel: this.getLabelFromInput()
-	                }
+	            var _this3 = this;
+	
+	            this.validate(function () {
+	                _get(LabelsForm.prototype.__proto__ || Object.getPrototypeOf(LabelsForm.prototype), 'editItem', _this3).call(_this3, {
+	                    userId: _this3.page.data.item.userId,
+	                    oldLabel: _this3.page.data.item.name,
+	                    newLabel: _this3.getLabelFromInput()
+	                });
 	            });
 	        }
-	
-	        /*init ()
-	        {
-	            this.q('ons-toolbar .center').innerHTML = this.page.data.title;
-	             let listenerOfSaveButtonClick = this.setNewLabel.bind(this); //this is default
-	            if (this.page.data.title === this.page.data.titleOfEdit && typeof this.page.data.item === 'object')
-	            {
-	                this.q(this.selectorOfLabelInput).value = this.page.data.item.name;
-	                listenerOfSaveButtonClick = this.editLabel.bind(this); //if wanna
-	                 this.setUpDeleteButton();
-	            }
-	             this.q(this.selectorOfSaveButton).addEventListener('click', () => listenerOfSaveButtonClick());
-	        }*/
-	
-	        /*setNewLabel ()
-	        {
-	            const label = this.getLabelFromInput();
-	             this.ajax({
-	                method: this.ajaxOfSaveOneLabel.method,
-	                url: this.ajaxOfSaveOneLabel.url,
-	                data: {label: label},
-	                success: (response) =>
-	                {
-	                    if (response)
-	                    {
-	                        this.pushBackWithRefresh();
-	                    }
-	                }
-	            });
-	        }*/
-	
-	        /*editLabel ()
-	        {
-	            const userId = this.page.data.item.userId;
-	            const oldLabel = this.page.data.item.name;
-	            const editedLabel = this.getLabelFromInput();
-	             this.ajax({
-	                method: this.ajaxOfEditOneLabel.method,
-	                url: this.ajaxOfEditOneLabel.url,
-	                data: {
-	                    userId: userId,
-	                    oldLabel: oldLabel,
-	                    newLabel: editedLabel
-	                },
-	                success: (response) =>
-	                {
-	                    if (response)
-	                    {
-	                        this.pushBackWithRefresh();
-	                    }
-	                }
-	            });
-	        }*/
-	
-	        /*setUpDeleteButton ()
-	        {
-	             this.setDomElement({
-	                where: '#delete-wrapper',
-	                html: '<ons-button modifier="large" id="delete" class="red">Delete</ons-button>',
-	                callback: () =>
-	                {
-	                    this.q(this.selectorOfDeleteButton).addEventListener('click', () =>
-	                    {
-	                        const id = this.page.data.item._id;
-	                         this.ajax({
-	                            method: this.ajaxOfDeleteOneLabel.method,
-	                            url: this.ajaxOfDeleteOneLabel.url,
-	                            data: {id: id},
-	                            success: () =>
-	                            {
-	                                this.pushBackWithRefresh();
-	                            }
-	                        });
-	                    });
-	                }
-	            });
-	        }*/
-	
 	    }, {
 	        key: 'getLabelFromInput',
 	        value: function getLabelFromInput() {
-	            return this.q(this.selectorOfLabelInput).value;
+	            return this.q(this.SELECTOR_OF_LABEL_INPUT).value;
 	        }
 	    }]);
 	
@@ -30082,11 +30091,36 @@
 	        _this.nextButton = '#go-learn';
 	        _this.changeForm = 'learn';
 	
-	        _this.selectorOfSort = '#sort';
-	        _this.selectorOfLabel = '#label';
-	        _this.selectorOfShowBoth = '#show-both';
-	        _this.selectorOfWhichShowFirst = '#show-first';
-	        _this.selectorOfLoop = '#loop';
+	        /**
+	         * @property SELECTOR_OF_SORT
+	         * @type {string}
+	         * @const
+	         */
+	        _this.SELECTOR_OF_SORT = '#sort';
+	        /**
+	         * @property SELECTOR_OF_LABEL
+	         * @type {string}
+	         * @const
+	         */
+	        _this.SELECTOR_OF_LABEL = '#label';
+	        /**
+	         * @property SELECTOR_OF_SHOW_BOTH
+	         * @type {string}
+	         * @const
+	         */
+	        _this.SELECTOR_OF_SHOW_BOTH = '#show-both';
+	        /**
+	         * @property SELECTOR_OF_WHICH_SHOW_FIRST
+	         * @type {string}
+	         * @const
+	         */
+	        _this.SELECTOR_OF_WHICH_SHOW_FIRST = '#show-first';
+	        /**
+	         * @property SELECTOR_OF_LOOP
+	         * @type {string}
+	         * @const
+	         */
+	        _this.SELECTOR_OF_LOOP = '#loop';
 	
 	        _this.init();
 	        return _this;
@@ -30101,11 +30135,11 @@
 	        key: 'getValue',
 	        value: function getValue(callback) {
 	            var data = {
-	                sort: this.q(this.selectorOfSort).value,
-	                label: this.q(this.selectorOfLabel).value,
-	                showBoth: this.q(this.selectorOfShowBoth).checked,
-	                showFirst: this.q(this.selectorOfWhichShowFirst).value,
-	                loop: this.q(this.selectorOfLoop).checked
+	                sort: this.q(this.SELECTOR_OF_SORT).value,
+	                label: this.q(this.SELECTOR_OF_LABEL).value,
+	                showBoth: this.q(this.SELECTOR_OF_SHOW_BOTH).checked,
+	                showFirst: this.q(this.SELECTOR_OF_WHICH_SHOW_FIRST).value,
+	                loop: this.q(this.SELECTOR_OF_LOOP).checked
 	            };
 	
 	            return callback(data);
@@ -30116,11 +30150,11 @@
 	            var data = Cookies.get('learn-settings');
 	            data = data ? JSON.parse(data) : {};
 	
-	            this.q(this.selectorOfSort).value = data.sort || 0;
-	            this.q(this.selectorOfShowBoth).checked = data.showBoth || false;
-	            this.q(this.selectorOfWhichShowFirst).value = data.showFirst || 0;
-	            this.q(this.selectorOfLabel).value = data.label || 0;
-	            this.q(this.selectorOfLoop).checked = data.loop == true || data.loop == false ? data.loop : true; //default value want to be true
+	            this.q(this.SELECTOR_OF_SORT).value = data.sort || 0;
+	            this.q(this.SELECTOR_OF_SHOW_BOTH).checked = data.showBoth || false;
+	            this.q(this.SELECTOR_OF_WHICH_SHOW_FIRST).value = data.showFirst || 0;
+	            this.q(this.SELECTOR_OF_LABEL).value = data.label || 0;
+	            this.q(this.SELECTOR_OF_LOOP).checked = data.loop == true || data.loop == false ? data.loop : true; //default value want to be true
 	        }
 	    }, {
 	        key: 'saveAsDefaultValues',
@@ -30167,19 +30201,34 @@
 	    function GameSettings(page) {
 	        _classCallCheck(this, GameSettings);
 	
+	        /**
+	         * @property nextButton
+	         * @type {String}
+	         * @protected
+	         */
 	        var _this = _possibleConstructorReturn(this, (GameSettings.__proto__ || Object.getPrototypeOf(GameSettings)).call(this, page));
 	
 	        _this.nextButton = String;
+	        /**
+	         * @property changeForm
+	         * @type {String}
+	         * @protected
+	         */
 	        _this.changeForm = String;
 	
-	        _this.selectorOfLabelInput = '#label';
+	        /**
+	         * @property SELECTOR_OF_LABEL_INPUT
+	         * @type {string}
+	         * @const
+	         */
+	        _this.SELECTOR_OF_LABEL_INPUT = '#label';
 	        return _this;
 	    }
 	
 	    _createClass(GameSettings, [{
 	        key: 'init',
 	        value: function init() {
-	            this.getLabelsForSelect(this.selectorOfLabelInput, this.setDefaultValue.bind(this));
+	            this.getLabelsForSelect(this.SELECTOR_OF_LABEL_INPUT, this.setDefaultValue.bind(this));
 	            this.initOfPushToGame();
 	        }
 	    }, {
@@ -30417,30 +30466,76 @@
 	    function Learn(page) {
 	        _classCallCheck(this, Learn);
 	
+	        /**
+	         * @property AJAX_OF_GET_WORDS_FOR_LEARN
+	         * @type {{URL: string, METHOD: string}}
+	         * @const
+	         */
 	        var _this = _possibleConstructorReturn(this, (Learn.__proto__ || Object.getPrototypeOf(Learn)).call(this, page));
 	
-	        _this.ajaxOfGetWordsForLearn = {
-	            url: _this.urlOfGameMethods + '/:label/:sort/:first',
-	            method: 'GET'
+	        _this.AJAX_OF_GET_WORDS_FOR_LEARN = {
+	            URL: _this.URL_OF_GAME_METHODS + '/:label/:sort/:first',
+	            METHOD: 'GET'
 	        };
 	
-	        _this.currentPageName = 'learn';
-	        _this.selectorOfProgressBar = '#progress';
-	        _this.selectorOfProgramArea = '#learn-area';
-	        _this.selectorOfBackButtonWhenNoResult = '#back-to-settings';
-	        _this.selectorOfNextButton = '#next';
-	        _this.learnable = {
-	            selector: '#learnable',
-	            spaceOfWord: '#learnable .card p',
-	            image: '#learnable img'
+	        /**
+	         * @property CURRENT_PAGE_NAME
+	         * @type {string}
+	         * @const
+	         */
+	        _this.CURRENT_PAGE_NAME = 'learn';
+	        /**
+	         * @property SELECTOR_OF_PROGRESS_BAR
+	         * @type {string}
+	         * @const
+	         */
+	        _this.SELECTOR_OF_PROGRESS_BAR = '#progress';
+	        /**
+	         * @property SELECTOR_OF_PROGRAM_AREA
+	         * @type {string}
+	         * @const
+	         */
+	        _this.SELECTOR_OF_PROGRAM_AREA = '#learn-area';
+	        /**
+	         * @property SELECTOR_OF_BACK_BUTTON_WHEN_NO_RESULT
+	         * @type {string}
+	         * @const
+	         */
+	        _this.SELECTOR_OF_BACK_BUTTON_WHEN_NO_RESULT = '#back-to-settings';
+	        /**
+	         * @property SELECTOR_OF_NEXT_BUTTON
+	         * @type {string}
+	         * @const
+	         */
+	        _this.SELECTOR_OF_NEXT_BUTTON = '#next';
+	        /**
+	         * @property LEARNABLE
+	         * @type {{SELECTOR: string, SPACE_OF_WORD: string, IMAGE: string}}
+	         * @const
+	         */
+	        _this.LEARNABLE = {
+	            SELECTOR: '#learnable',
+	            SPACE_OF_WORD: '#learnable .card p',
+	            IMAGE: '#learnable img'
 	        };
-	        _this.native = {
-	            selector: '#native',
-	            spaceOfWord: '#native .card p',
-	            image: '#native img'
+	        /**
+	         * @property NATIVE
+	         * @type {{SELECTOR: string, SPACE_OF_WORD: string, IMAGE: string}}
+	         * @const
+	         */
+	        _this.NATIVE = {
+	            SELECTOR: '#native',
+	            SPACE_OF_WORD: '#native .card p',
+	            IMAGE: '#native img'
 	        };
 	
-	        _this.animationDelay = 400; //millisecond
+	        /**
+	         * @property animationDelay
+	         * @desc In millisecond for setTimeout()
+	         * @type {number}
+	         * @default 400
+	         */
+	        _this.animationDelay = 400;
 	
 	        //from previous page
 	        var data = _this.page.data.data;
@@ -30466,8 +30561,8 @@
 	            var _this2 = this;
 	
 	            this.ajax({
-	                method: this.ajaxOfGetWordsForLearn.method,
-	                url: this.ajaxOfGetWordsForLearn.url + '/',
+	                method: this.AJAX_OF_GET_WORDS_FOR_LEARN.METHOD,
+	                url: this.AJAX_OF_GET_WORDS_FOR_LEARN.URL + '/',
 	                data: {
 	                    label: this.label,
 	                    sort: this.sort,
@@ -30511,7 +30606,7 @@
 	                _this3._setNextContent();
 	            });
 	
-	            this.q(this.selectorOfNextButton).addEventListener('click', this.next.bind(this));
+	            this.q(this.SELECTOR_OF_NEXT_BUTTON).addEventListener('click', this.next.bind(this));
 	        }
 	
 	        /**
@@ -30582,27 +30677,27 @@
 	        key: '_nextWord',
 	        value: function _nextWord() {
 	            var word = this.words[this.index];
-	            var native = word.native;
-	            var learnable = word.learnable;
+	            var native = word.NATIVE;
+	            var learnable = word.LEARNABLE;
 	            var photo = word.photo;
 	
 	            var currentContentSelector = this.getLearnContentSelector() + ' ';
 	
-	            this.q(currentContentSelector + this.native.spaceOfWord).innerText = native;
-	            this.q(currentContentSelector + this.learnable.spaceOfWord).innerText = learnable;
+	            this.q(currentContentSelector + this.NATIVE.SPACE_OF_WORD).innerText = native;
+	            this.q(currentContentSelector + this.LEARNABLE.SPACE_OF_WORD).innerText = learnable;
 	            if (photo) {
-	                var pathOfPhoto = this.directoryOfPhotos + '/' + photo;
+	                var pathOfPhoto = this.DIRECTORY_OF_PHOTOS + '/' + photo;
 	
 	                if (this.showBoth) {
 	                    if (Boolean(this.showFirst)) //true -> native
 	                        {
-	                            this.q(currentContentSelector + this.native.image).src = pathOfPhoto;
+	                            this.q(currentContentSelector + this.NATIVE.IMAGE).src = pathOfPhoto;
 	                        } else //false -> learnable
 	                        {
-	                            this.q(currentContentSelector + this.learnable.image).src = pathOfPhoto;
+	                            this.q(currentContentSelector + this.LEARNABLE.IMAGE).src = pathOfPhoto;
 	                        }
 	                } else {
-	                    this.q(currentContentSelector + this.native.image).src = this.q(currentContentSelector + this.learnable.image).src = pathOfPhoto;
+	                    this.q(currentContentSelector + this.NATIVE.IMAGE).src = this.q(currentContentSelector + this.LEARNABLE.IMAGE).src = pathOfPhoto;
 	                }
 	            }
 	        }
@@ -30615,12 +30710,12 @@
 	        key: '_setNoResult',
 	        value: function _setNoResult() {
 	            this.setDomElement({
-	                where: this.selectorOfProgramArea,
+	                where: this.SELECTOR_OF_PROGRAM_AREA,
 	                html: '<p>So sorry, but I didn\'t find any words with those settings...</p>' + '<p>' + '<ons-button id="back-to-settings">' + '<ons-icon icon="ion-arrow-left-c, material:md-arrow-left"></ons-icon>' + 'Back' + '</ons-button>' + '</p>',
 	                callback: this._setBackButtonListener.bind(this)
 	            });
 	
-	            this.q(this.selectorOfNextButton).className = 'hidden';
+	            this.q(this.SELECTOR_OF_NEXT_BUTTON).className = 'hidden';
 	        }
 	
 	        /**
@@ -30632,7 +30727,7 @@
 	        value: function _setBackButtonListener() {
 	            var _this5 = this;
 	
-	            this.q(this.selectorOfBackButtonWhenNoResult).addEventListener('click', function () {
+	            this.q(this.SELECTOR_OF_BACK_BUTTON_WHEN_NO_RESULT).addEventListener('click', function () {
 	                _this5.pushBack();
 	            });
 	        }
@@ -30717,7 +30812,7 @@
 	            }
 	
 	            this.setDomElement({
-	                where: this.selectorOfProgramArea,
+	                where: this.SELECTOR_OF_PROGRAM_AREA,
 	                html: html,
 	                callback: callback
 	            });
@@ -30743,7 +30838,7 @@
 	        value: function _setProgressValue() {
 	            var result = this.progressRate * (this.index + 1);
 	            //TODO this is not working in firefox at !showBoth
-	            this.q(this.selectorOfProgressBar).value = result;
+	            this.q(this.SELECTOR_OF_PROGRESS_BAR).value = result;
 	        }
 	
 	        /**
@@ -30753,17 +30848,17 @@
 	    }, {
 	        key: '_hideNextButton',
 	        value: function _hideNextButton() {
-	            this.q(this.selectorOfNextButton).className = 'hidden';
+	            this.q(this.SELECTOR_OF_NEXT_BUTTON).className = 'hidden';
 	        }
 	    }, {
 	        key: 'disableNextButton',
 	        value: function disableNextButton() {
-	            this.q(this.selectorOfNextButton).setAttribute('disabled', '');
+	            this.q(this.SELECTOR_OF_NEXT_BUTTON).setAttribute('disabled', '');
 	        }
 	    }, {
 	        key: 'enableNextButton',
 	        value: function enableNextButton() {
-	            this.q(this.selectorOfNextButton).removeAttribute('disabled');
+	            this.q(this.SELECTOR_OF_NEXT_BUTTON).removeAttribute('disabled');
 	        }
 	    }]);
 	
@@ -30803,9 +30898,14 @@
 	    function Game(page) {
 	        _classCallCheck(this, Game);
 	
+	        /**
+	         * @property URL_OF_GAME_METHODS
+	         * @type {string}
+	         * @const
+	         */
 	        var _this = _possibleConstructorReturn(this, (Game.__proto__ || Object.getPrototypeOf(Game)).call(this, page));
 	
-	        _this.urlOfGameMethods = _this.urlOfWordMethods + '/game';
+	        _this.URL_OF_GAME_METHODS = _this.URL_OF_WORD_METHODS + '/game';
 	        return _this;
 	    }
 	
@@ -30864,17 +30964,36 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	/**
+	 * @param {string} style - Can be: light (default), dark
+	 * @param {string} colour - Can be: red, orange, yellow, green, teal-blue, blue (default), purple, pink
+	 */
 	var Settings = function (_Global) {
 	    _inherits(Settings, _Global);
 	
 	    function Settings(page) {
 	        _classCallCheck(this, Settings);
 	
+	        /**
+	         * @property SELECTOR_OF_STYLE
+	         * @type {string}
+	         * @const
+	         */
 	        var _this = _possibleConstructorReturn(this, (Settings.__proto__ || Object.getPrototypeOf(Settings)).call(this, page));
 	
-	        _this.selectorOfStyle = '#style';
-	        _this.selectorOfColour = '#colour';
-	        _this.selectorOfSaveButton = '#save';
+	        _this.SELECTOR_OF_STYLE = '#style';
+	        /**
+	         * @property SELECTOR_OF_COLOUR
+	         * @type {string}
+	         * @const
+	         */
+	        _this.SELECTOR_OF_COLOUR = '#colour';
+	        /**
+	         * @property SELECTOR_OF_SAVE_BUTTON
+	         * @type {string}
+	         * @const
+	         */
+	        _this.SELECTOR_OF_SAVE_BUTTON = '#save';
 	
 	        _this.init();
 	        return _this;
@@ -30892,27 +31011,27 @@
 	    }, {
 	        key: 'setDefaultValues',
 	        value: function setDefaultValues() {
-	            this.q(this.selectorOfStyle).value = Cookies.get(this.cookieNameOfStyle);
-	            this.q(this.selectorOfColour).value = Cookies.get(this.cookieNameOfColour);
+	            this.q(this.SELECTOR_OF_STYLE).value = Cookies.get(this.COOKIE_NAME_OF_STYLE);
+	            this.q(this.SELECTOR_OF_COLOUR).value = Cookies.get(this.COOKIE_NAME_OF_COLOUR);
 	        }
 	    }, {
 	        key: 'styleChange',
 	        value: function styleChange() {
-	            this._addChangeListener(this.selectorOfStyle, 'style');
+	            this._addChangeListener(this.SELECTOR_OF_STYLE, 'style');
 	        }
 	    }, {
 	        key: 'colourChange',
 	        value: function colourChange() {
-	            this._addChangeListener(this.selectorOfColour, 'colour');
+	            this._addChangeListener(this.SELECTOR_OF_COLOUR, 'colour');
 	        }
 	    }, {
 	        key: 'save',
 	        value: function save() {
 	            var _this2 = this;
 	
-	            this.q(this.selectorOfSaveButton).addEventListener('click', function () {
-	                _this2.setCookie(_this2.cookieNameOfStyle, _this2.q(_this2.selectorOfStyle).value);
-	                _this2.setCookie(_this2.cookieNameOfColour, _this2.q(_this2.selectorOfColour).value);
+	            this.q(this.SELECTOR_OF_SAVE_BUTTON).addEventListener('click', function () {
+	                _this2.setCookie(_this2.COOKIE_NAME_OF_STYLE, _this2.q(_this2.SELECTOR_OF_STYLE).value);
+	                _this2.setCookie(_this2.COOKIE_NAME_OF_COLOUR, _this2.q(_this2.SELECTOR_OF_COLOUR).value);
 	            });
 	        }
 	    }, {
@@ -30920,7 +31039,7 @@
 	        value: function pushBack() {
 	            var _this3 = this;
 	
-	            this.q(this.backButton).addEventListener('click', function () {
+	            this.q(this.BACK_BUTTON).addEventListener('click', function () {
 	                _get(Settings.prototype.__proto__ || Object.getPrototypeOf(Settings.prototype), 'pushBackWithRefresh', _this3).call(_this3);
 	            });
 	        }

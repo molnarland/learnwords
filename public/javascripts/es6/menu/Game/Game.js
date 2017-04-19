@@ -6,6 +6,11 @@ export default class Game extends Global
     {
         super(page);
 
-        this.urlOfGameMethods = `${this.urlOfWordMethods}/game`;
+        /**
+         * @property URL_OF_GAME_METHODS
+         * @type {string}
+         * @const
+         */
+        this.URL_OF_GAME_METHODS = `${this.URL_OF_WORD_METHODS}/game`;
     }
 }

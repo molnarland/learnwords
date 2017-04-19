@@ -6,23 +6,75 @@ export default class Global
     {
         this.page = page;
 
-        this.selectorOfNavigator = '#navigator';
-        this.selectorOfTitle = 'ons-toolbar .center';
-        this.backButton = 'ons-back-button';
-        this.selectorOfCleaner = '.input-cleaner';
+        /**
+         * @property SELECTOR_OF_NAVIGATOR
+         * @type {string}
+         * @const
+         */
+        this.SELECTOR_OF_NAVIGATOR = '#navigator';
+        /**
+         * @property SELECTOR_OF_TITLE
+         * @type {string}
+         * @const
+         */
+        this.SELECTOR_OF_TITLE = 'ons-toolbar .center';
+        /**
+         * @property BACK_BUTTON
+         * @type {string}
+         * @const
+         */
+        this.BACK_BUTTON = 'ons-back-button';
+        /**
+         * @property SELECTOR_OF_CLEANER
+         * @type {string}
+         * @const
+         */
+        this.SELECTOR_OF_CLEANER = '.input-cleaner';
 
-        this.urlOfWordMethods = '/words';
-        this.urlOfLabelMethods = '/labels';
+        /**
+         * @property URL_OF_WORD_METHODS
+         * @type {string}
+         * @const
+         */
+        this.URL_OF_WORD_METHODS = '/words';
+        /**
+         * @property URL_OF_LABEL_METHODS
+         * @type {string}
+         * @const
+         */
+        this.URL_OF_LABEL_METHODS = '/labels';
 
-        this.directoryOfPhotos = '/photos';
+        /**
+         * @property DIRECTORY_OF_PHOTOS
+         * @type {string}
+         * @const
+         */
+        this.DIRECTORY_OF_PHOTOS = '/photos';
 
-        this.ajaxOfGetAllLabels = {
-            url: `${this.urlOfLabelMethods}/`,
-            method: 'GET'
+        /**
+         * @property AJAX_OF_GET_ALL_LABELS
+         * @type {{URL: string, METHOD: string}}
+         * @const
+         */
+        this.AJAX_OF_GET_ALL_LABELS = {
+            URL: `${this.URL_OF_LABEL_METHODS}/`,
+            METHOD: 'GET'
         };
 
-        this.cookieNameOfStyle = 'style';
-        this.cookieNameOfColour = 'colour';
+        /**
+         * @property COOKIE_NAME_OF_STYLE
+         * @type {string}
+         * @const
+         */
+        this.COOKIE_NAME_OF_STYLE = 'style';
+        /**
+         * @property COOKIE_NAME_OF_COLOUR
+         * @type {string}
+         * @const
+         */
+        this.COOKIE_NAME_OF_COLOUR = 'colour';
+
+
 
         this.initInputCleaners();
     }
@@ -32,7 +84,7 @@ export default class Global
      */
     initInputCleaners ()
     {
-        const cleaners = this.qAll(this.selectorOfCleaner);
+        const cleaners = this.qAll(this.SELECTOR_OF_CLEANER);
         for (const cleaner of cleaners)
         {
             cleaner.addEventListener('click', () =>
@@ -54,7 +106,7 @@ export default class Global
      */
     pushPage (where, data = {}, animation = '')
     {
-        document.querySelector(this.selectorOfNavigator).pushPage(where, {
+        document.querySelector(this.SELECTOR_OF_NAVIGATOR).pushPage(where, {
             data: data,
             animation: animation
         });
@@ -72,7 +124,7 @@ export default class Global
     {
         this.q(selectorOfButton).addEventListener('click', () =>
         {
-            document.querySelector(this.selectorOfNavigator).pushPage(where, data);
+            document.querySelector(this.SELECTOR_OF_NAVIGATOR).pushPage(where, data);
             callback();
         });
     }
@@ -280,6 +332,7 @@ export default class Global
      */
     createOnsElement (html)
     {
+        console.log(html, html.length);
         return ons._util.createElement(html);
     }
 
@@ -340,7 +393,7 @@ export default class Global
         });
     }
 
-    /**
+    /*/**
      * @desc Call downAndShow() after send data to server
      *
      * @param {string} upUrl
@@ -349,7 +402,7 @@ export default class Global
      * @param {string} showWhere
      * @param {function} showableHtml
      * @param {function} [after]
-     */
+     *!/
     upDownAndShow ({upUrl, upData, downUrl, showWhere, showableHtml, after})
     {
         this.postAjax(upUrl, upData, (response) =>
@@ -370,11 +423,11 @@ export default class Global
 
     /**
      * @param {string} hash
-     */
+     *!/
     changeHash (hash)
     {
         window.location.hash = hash;
-    }
+    }*/
 
 
     /**
@@ -388,8 +441,8 @@ export default class Global
         if (window.labels.length === 0)
         {
             this.ajax({
-                method: this.ajaxOfGetAllLabels.method,
-                url: this.ajaxOfGetAllLabels.url,
+                method: this.AJAX_OF_GET_ALL_LABELS.METHOD,
+                url: this.AJAX_OF_GET_ALL_LABELS.URL,
                 success: (result) =>
                 {
                     window.labels = result;
@@ -470,7 +523,7 @@ export default class Global
      */
     pushBack (options = {})
     {
-        document.querySelector(this.selectorOfNavigator).popPage(options);
+        document.querySelector(this.SELECTOR_OF_NAVIGATOR).popPage(options);
     }
 
     /**

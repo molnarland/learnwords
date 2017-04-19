@@ -6,20 +6,40 @@ export default class Form extends Global
     {
         super(page);
 
-        this.selectors = {
-            saveButton: '#save',
-            deleteButton: '#delete',
-            deleteWrapper: '#delete-wrapper'
+        /**
+         * @property SELECTORS
+         * @type {{SAVE_BUTTON: string, DELETE_BUTTON: string, DELETE_WRAPPER: string}}
+         * @const
+         */
+        this.SELECTORS = {
+            SAVE_BUTTON: '#save',
+            DELETE_BUTTON: '#delete',
+            DELETE_WRAPPER: '#delete-wrapper'
         };
 
+        /**
+         * @property ajaxOfSaveOne
+         * @type {{url: String, method: string}}
+         * @protected
+         */
         this.ajaxOfSaveOne = {
             url: String,
             method: 'POST'
         };
+        /**
+         * @property ajaxOfEditOne
+         * @type {{url: String, method: string}}
+         * @protected
+         */
         this.ajaxOfEditOne = {
             url: String,
             method: 'PUT'
         };
+        /**
+         * @property ajaxOfDeleteOne
+         * @type {{url: String, method: string}}
+         * @protected
+         */
         this.ajaxOfDeleteOne = {
             url: String,
             method: 'DELETE'
@@ -27,9 +47,12 @@ export default class Form extends Global
     }
 
 
+    /**
+     * @desc Mainly look and choose setNewItem or editItem
+     */
     init ()
     {
-        this.q(this.selectorOfTitle).innerHTML = this.page.data.title;
+        this.q(this.SELECTOR_OF_TITLE).innerHTML = this.page.data.title;
 
         let listenerOfSaveButtonClick = this.setNewItem.bind(this); //this is default
         if (this.page.data.title === this.page.data.titleOfEdit && typeof this.page.data.item === 'object')
@@ -41,7 +64,7 @@ export default class Form extends Global
         }
 
 
-        this.q(this.selectors.saveButton).addEventListener('click', () => listenerOfSaveButtonClick());
+        this.q(this.SELECTORS.SAVE_BUTTON).addEventListener('click', () => listenerOfSaveButtonClick());
     }
 
     /**
@@ -87,8 +110,8 @@ export default class Form extends Global
         before();
 
         this.ajax({
-            method: this.ajaxOfSaveOne.method,
-            url: this.ajaxOfSaveOne.url,
+            method: this.ajaxOfSaveOne.METHOD,
+            url: this.ajaxOfSaveOne.URL,
             data: data,
             success: (response) =>
             {
@@ -100,19 +123,19 @@ export default class Form extends Global
         });
     }
 
+    /**
+     * @desc Default values
+     */
     setValues () {}
 
     /**
-     * @param {function} [before]
      * @param {object} data
      */
-    editItem ({before = new Function(), data})
+    editItem (data)
     {
-        before();
-
         this.ajax({
-            method: this.ajaxOfEditOne.method,
-            url: this.ajaxOfEditOne.url,
+            method: this.ajaxOfEditOne.METHOD,
+            url: this.ajaxOfEditOne.URL,
             data: data,
             success: (response) =>
             {
@@ -127,11 +150,11 @@ export default class Form extends Global
     setUpDeleteButton ()
     {
         this.setDomElement({
-            where: this.selectors.deleteWrapper,
+            where: this.SELECTORS.DELETE_WRAPPER,
             html: '<ons-button modifier="large" id="delete" class="red">Delete</ons-button>',
             callback: () =>
             {
-                this.q(this.selectors.deleteButton).addEventListener('click', this.deleteItem.bind(this));
+                this.q(this.SELECTORS.DELETE_BUTTON).addEventListener('click', this.deleteItem.bind(this));
             }
         });
     }
@@ -141,8 +164,8 @@ export default class Form extends Global
         const id = this.page.data.item._id;
 
         this.ajax({
-            method: this.ajaxOfDeleteOne.method,
-            url: this.ajaxOfDeleteOne.url,
+            method: this.ajaxOfDeleteOne.METHOD,
+            url: this.ajaxOfDeleteOne.URL,
             data: {id: id},
             success: () =>
             {

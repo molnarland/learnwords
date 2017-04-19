@@ -6,15 +6,54 @@ export default class List extends Global
     {
         super(page);
 
+        /**
+         * @property plusButton
+         * @desc Push to newItem page when click it
+         * @type {String}
+         * @protected
+         */
         this.plusButton = String;
+        /**
+         * @property changeForm
+         * @desc newItem or editItem page,
+         *       next page can be: onsen/partials/change-labels-form.pug, onsen/partials/change-words-form.
+         *       value is an ID of template
+         * @type {String}
+         * @protected
+         */
         this.changeForm = String;
 
+        /**
+         * @property titleOfNewForm
+         * @type {String}
+         * @protected
+         */
         this.titleOfNewForm = String;
+        /**
+         * @property titleOfEditForm
+         * @type {String}
+         * @protected
+         */
         this.titleOfEditForm = String;
 
+        /**
+         * @property selectorOfList
+         * @type {String}
+         * @protected
+         */
         this.selectorOfList = String;
+        /**
+         * @property selectorOfChangeItem
+         * @type {String}
+         * @protected
+         */
         this.selectorOfChangeItem = String;
 
+        /**
+         * @property ajaxOfGetAll
+         * @type {{url: String, method: string}}
+         * @protected
+         */
         this.ajaxOfGetAll = {
             url: String,
             method: 'GET'
@@ -22,10 +61,17 @@ export default class List extends Global
     }
 
 
+    /**
+     * @desc Call Global.downAndShow() after that add click event
+     *       listener each showed element what'll pass to changeForm
+     *
+     * @param {function} showableHtml
+     * @param {string} store
+     */
     showItems ({showableHtml, store})
     {
         this.downAndShow({
-            url: this.ajaxOfGetAll.url,
+            url: this.ajaxOfGetAll.URL,
             showWhere: this.selectorOfList,
             showableHtml: showableHtml,
             store: store,
@@ -46,6 +92,10 @@ export default class List extends Global
         });
     }
 
+    /**
+     * @desc Add a click event listener to plusButton for push page to form
+     *       Not called basically
+     */
     initOfPushToForm ()
     {
         this.page.querySelector(this.plusButton).addEventListener('click', () =>
@@ -55,8 +105,8 @@ export default class List extends Global
     }
 
     /**
-     * Send 'titleOfNewForm' and 'titleOfEditForm' arguments to next page automatically
-     * as titleOfNew and titleOfEdit
+     * @desc Send 'titleOfNewForm' and 'titleOfEditForm' arguments to next page automatically
+     *       as titleOfNew and titleOfEdit
      *
      * @param {string} where
      * @param {object} data

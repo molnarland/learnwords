@@ -30,9 +30,10 @@ document.addEventListener('init', (event) =>
     }, ['learnable', 'native']);
 });
 
+
 /**
- * Call classes
- * If require here these objects, will be slow!
+ * @desc Call classes
+ * @summary If require here these objects, will be slow!
  *
  * @param {object} page
  * @param {object} routes
