@@ -4,10 +4,11 @@ const router = express.Router();
 let User = require('../database/User');
 User = new User();
 
+
 router.route('/')
     .get((req, res, next) =>
     {
-        res.render(global.onsenViewDirectory + 'index');
+        res.render(global.getCurrentView() + 'index');
     })
     .post((req, res, next) =>
     {
@@ -39,7 +40,7 @@ router.route('/')
 router.route('/start')
     .get((req, res, next) =>
     {
-        res.render(global.onsenViewDirectory + 'start', { name: req.session.user.name });
+        res.render(global.getCurrentView() + 'start', { name: req.session.user.name });
     })
     .post((req, res, next) =>
     {

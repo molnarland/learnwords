@@ -1,5 +1,3 @@
-// import ons from 'onsenui';
-
 import Menu from './Menu';
 import ListWords from './List/ListWords';
 import WordsForm from './Form/WordsForm';
@@ -33,7 +31,7 @@ document.addEventListener('init', (event) =>
 
 /**
  * @desc Call classes
- * @summary If require here these objects, will be slow!
+ * @summary If require here these objects than will be slow!
  *
  * @param {object} page
  * @param {object} routes

@@ -44,11 +44,38 @@ var detector = {
  */
 (function ()
 {
-    setCurrentStyleAndColour();
-    checkDeviceForStyle();
+    checkDeviceForUnique().then(function ()
+    {
+        setCurrentStyleAndColour();
+        checkDeviceForStyle();
+    });
 }());
 
 
+function checkDeviceForUnique ()
+{
+    if (!detector.isAndroid && !detector.isIOS)
+    {
+        var xobj = new XMLHttpRequest();
+        xobj.open('GET', `/ajax/1`, true);
+        xobj.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xobj.onreadystatechange = () =>
+        {
+            if (xobj.readyState == 4 && xobj.status == "200")
+            {
+                window.location.reload(true);
+            }
+        };
+        xobj.send(null);
+    }
+    else
+    {
+        return new Promise(function (resolve, reject)
+        {
+           resolve();
+        });
+    }
+}
 
 
 function checkDeviceForStyle ()

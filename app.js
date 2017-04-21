@@ -1,3 +1,4 @@
+//TODO check html, sql, json protection for node
 const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
@@ -7,17 +8,8 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const fs = require('fs');
 
-//load globals
-const globalDirectory = 'global';
-const globalFiles = fs.readdirSync(globalDirectory);
-for (const file of globalFiles)
-{
-    if (file !== '.' && file !== '..')
-    {
-        const fileNameWithoutExtension = file.split('.')[0];
-        global[fileNameWithoutExtension] = require(`./${globalDirectory}/${fileNameWithoutExtension}`);
-    }
-}
+
+loadGlobals();
 
 //load routes
 const index = require('./routes/index');
@@ -86,3 +78,20 @@ app.listen(3000, 'localhost', () =>
 });
 
 module.exports = app;
+
+
+
+
+function loadGlobals ()
+{
+    const globalDirectory = 'global';
+    const globalFiles = fs.readdirSync(globalDirectory);
+    for (const file of globalFiles)
+    {
+        if (file !== '.' && file !== '..')
+        {
+            const fileNameWithoutExtension = file.split('.')[0];
+            global[fileNameWithoutExtension] = require(`./${globalDirectory}/${fileNameWithoutExtension}`);
+        }
+    }
+}

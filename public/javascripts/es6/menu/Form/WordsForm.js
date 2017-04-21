@@ -108,8 +108,8 @@ export default class WordsForm extends Form
             if (file)
             {
                 return this.ajax({
-                    method: this.ajaxOfSavePhoto.METHOD,
-                    url: this.ajaxOfSavePhoto.URL,
+                    method: this.ajaxOfSavePhoto.method,
+                    url: this.ajaxOfSavePhoto.url,
                     data: file,
                     file: true,
                     success: (photo) =>
@@ -134,8 +134,8 @@ export default class WordsForm extends Form
     {
         const word = this.page.data.item;
 
-        this.q(this.SELECTOR_OF_NATIVE).value = word.NATIVE;
-        this.q(this.SELECTOR_OF_LEARNABLE).value = word.LEARNABLE;
+        this.q(this.SELECTOR_OF_NATIVE).value = word.native;
+        this.q(this.SELECTOR_OF_LEARNABLE).value = word.learnable;
         this.showPhoto(word.photo);
         this.q(this.SELECTOR_OF_LABEL).value = word.labelId;
     }
@@ -156,8 +156,8 @@ export default class WordsForm extends Form
             if (file)
             {
                 return this.ajax({
-                    method: this.ajaxOfEditPhoto.METHOD,
-                    url: this.ajaxOfEditPhoto.URL,
+                    method: this.ajaxOfEditPhoto.method,
+                    url: this.ajaxOfEditPhoto.url,
                     file: true,
                     data: file,
                     success: (photo) =>

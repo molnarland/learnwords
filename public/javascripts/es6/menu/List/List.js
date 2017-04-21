@@ -71,7 +71,8 @@ export default class List extends Global
     showItems ({showableHtml, store})
     {
         this.downAndShow({
-            url: this.ajaxOfGetAll.URL,
+            method: this.ajaxOfGetAll.method,
+            url: this.ajaxOfGetAll.url,
             showWhere: this.selectorOfList,
             showableHtml: showableHtml,
             store: store,

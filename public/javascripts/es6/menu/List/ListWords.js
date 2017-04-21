@@ -38,8 +38,8 @@ export default class ListWords extends List
             showableHtml: (word) =>
             {
                 const id = word._id;
-                const native = word.NATIVE;
-                const learnable = word.LEARNABLE;
+                const native = word.native;
+                const learnable = word.learnable;
 
                 return this.createOnsElement(
                     `<ons-list-item data-id=${id} tappable modifier="longdivider">` +

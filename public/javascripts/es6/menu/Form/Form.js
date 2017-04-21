@@ -110,8 +110,8 @@ export default class Form extends Global
         before();
 
         this.ajax({
-            method: this.ajaxOfSaveOne.METHOD,
-            url: this.ajaxOfSaveOne.URL,
+            method: this.ajaxOfSaveOne.method,
+            url: this.ajaxOfSaveOne.url,
             data: data,
             success: (response) =>
             {
@@ -134,8 +134,8 @@ export default class Form extends Global
     editItem (data)
     {
         this.ajax({
-            method: this.ajaxOfEditOne.METHOD,
-            url: this.ajaxOfEditOne.URL,
+            method: this.ajaxOfEditOne.method,
+            url: this.ajaxOfEditOne.url,
             data: data,
             success: (response) =>
             {
@@ -164,8 +164,8 @@ export default class Form extends Global
         const id = this.page.data.item._id;
 
         this.ajax({
-            method: this.ajaxOfDeleteOne.METHOD,
-            url: this.ajaxOfDeleteOne.URL,
+            method: this.ajaxOfDeleteOne.method,
+            url: this.ajaxOfDeleteOne.url,
             data: {id: id},
             success: () =>
             {

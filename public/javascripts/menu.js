@@ -87,8 +87,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	window.labels = []; // import ons from 'onsenui';
-	
+	window.labels = [];
 	window.posts = [];
 	
 	document.addEventListener('init', function (event) {
@@ -109,7 +108,7 @@
 	
 	/**
 	 * @desc Call classes
-	 * @summary If require here these objects, will be slow!
+	 * @summary If require here these objects than will be slow!
 	 *
 	 * @param {object} page
 	 * @param {object} routes
@@ -285,6 +284,8 @@
 	        _classCallCheck(this, Global);
 	
 	        this.page = page;
+	
+	        console.log(page);
 	
 	        /**
 	         * @property SELECTOR_OF_NAVIGATOR
@@ -11176,12 +11177,14 @@
 	*/
 	// Default implementation for global PageLoader.
 	function loadPage(_ref, done) {
+	    console.log(_ref);
 	  var page = _ref.page,
 	      parent = _ref.parent,
 	      _ref$params = _ref.params,
 	      params = _ref$params === undefined ? {} : _ref$params;
 	
 	  internal$1.getPageHTMLAsync(page).then(function (html) {
+	      console.log(html);
 	    var pageElement = util.createElement(html.trim());
 	    parent.appendChild(pageElement);
 	
@@ -29050,8 +29053,8 @@
 	            _get(ListWords.prototype.__proto__ || Object.getPrototypeOf(ListWords.prototype), 'showItems', this).call(this, {
 	                showableHtml: function showableHtml(word) {
 	                    var id = word._id;
-	                    var native = word.NATIVE;
-	                    var learnable = word.LEARNABLE;
+	                    var native = word.native;
+	                    var learnable = word.learnable;
 	
 	                    return _this2.createOnsElement('<ons-list-item data-id=' + id + ' tappable modifier="longdivider">' + ('<div class="left">' + native + '</div>') + '<div class="center"><ons-icon icon="arrows-h"></ons-icon></div>' + ('<div class="right">' + learnable + '</div>') + '</ons-list-item>');
 	                },
@@ -29175,7 +29178,8 @@
 	                store = _ref.store;
 	
 	            this.downAndShow({
-	                url: this.ajaxOfGetAll.URL,
+	                method: this.ajaxOfGetAll.method,
+	                url: this.ajaxOfGetAll.url,
 	                showWhere: this.selectorOfList,
 	                showableHtml: showableHtml,
 	                store: store,
@@ -29403,8 +29407,8 @@
 	
 	                if (file) {
 	                    return _this2.ajax({
-	                        method: _this2.ajaxOfSavePhoto.METHOD,
-	                        url: _this2.ajaxOfSavePhoto.URL,
+	                        method: _this2.ajaxOfSavePhoto.method,
+	                        url: _this2.ajaxOfSavePhoto.url,
 	                        data: file,
 	                        file: true,
 	                        success: function success(photo) {
@@ -29427,8 +29431,8 @@
 	        value: function setValues() {
 	            var word = this.page.data.item;
 	
-	            this.q(this.SELECTOR_OF_NATIVE).value = word.NATIVE;
-	            this.q(this.SELECTOR_OF_LEARNABLE).value = word.LEARNABLE;
+	            this.q(this.SELECTOR_OF_NATIVE).value = word.native;
+	            this.q(this.SELECTOR_OF_LEARNABLE).value = word.learnable;
 	            this.showPhoto(word.photo);
 	            this.q(this.SELECTOR_OF_LABEL).value = word.labelId;
 	        }
@@ -29449,8 +29453,8 @@
 	
 	                if (file) {
 	                    return _this3.ajax({
-	                        method: _this3.ajaxOfEditPhoto.METHOD,
-	                        url: _this3.ajaxOfEditPhoto.URL,
+	                        method: _this3.ajaxOfEditPhoto.method,
+	                        url: _this3.ajaxOfEditPhoto.url,
 	                        file: true,
 	                        data: file,
 	                        success: function success(photo) {
@@ -29772,8 +29776,8 @@
 	            before();
 	
 	            this.ajax({
-	                method: this.ajaxOfSaveOne.METHOD,
-	                url: this.ajaxOfSaveOne.URL,
+	                method: this.ajaxOfSaveOne.method,
+	                url: this.ajaxOfSaveOne.url,
 	                data: data,
 	                success: function success(response) {
 	                    if (response) {
@@ -29801,8 +29805,8 @@
 	            var _this3 = this;
 	
 	            this.ajax({
-	                method: this.ajaxOfEditOne.METHOD,
-	                url: this.ajaxOfEditOne.URL,
+	                method: this.ajaxOfEditOne.method,
+	                url: this.ajaxOfEditOne.url,
 	                data: data,
 	                success: function success(response) {
 	                    if (response) {
@@ -29832,8 +29836,8 @@
 	            var id = this.page.data.item._id;
 	
 	            this.ajax({
-	                method: this.ajaxOfDeleteOne.METHOD,
-	                url: this.ajaxOfDeleteOne.URL,
+	                method: this.ajaxOfDeleteOne.method,
+	                url: this.ajaxOfDeleteOne.url,
 	                data: { id: id },
 	                success: function success() {
 	                    _this5.pushBackWithRefresh();

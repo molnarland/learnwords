@@ -9,7 +9,7 @@ var uglify = require('webpack/lib/optimize/UglifyJsPlugin');
 function Paths ()
 {
     this.es6Root = './javascripts/es6/';
-    this.allJsFile = '/*.js';
+    this.allJsFile = '/**/*.js';
     this.output = 'javascripts';
 
     this.jsIndex = this.es6Root + 'index' + this.allJsFile;
