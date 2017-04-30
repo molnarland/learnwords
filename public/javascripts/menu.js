@@ -91,6 +91,7 @@
 	window.posts = [];
 	
 	document.addEventListener('init', function (event) {
+	    console.log(event);
 	    var page = event.target;
 	
 	    router(page, {
@@ -284,8 +285,6 @@
 	        _classCallCheck(this, Global);
 	
 	        this.page = page;
-	
-	        console.log(page);
 	
 	        /**
 	         * @property SELECTOR_OF_NAVIGATOR
@@ -688,7 +687,6 @@
 	    }, {
 	        key: 'createOnsElement',
 	        value: function createOnsElement(html) {
-	            console.log(html, html.length);
 	            return _onsenui2.default._util.createElement(html);
 	        }
 	
@@ -7216,7 +7214,6 @@
 	util.triggerElementEvent = function (target, eventName) {
 	  var detail = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 	
-	
 	  var event = new CustomEvent(eventName, {
 	    bubbles: true,
 	    cancelable: true,
@@ -11177,14 +11174,12 @@
 	*/
 	// Default implementation for global PageLoader.
 	function loadPage(_ref, done) {
-	    console.log(_ref);
 	  var page = _ref.page,
 	      parent = _ref.parent,
 	      _ref$params = _ref.params,
 	      params = _ref$params === undefined ? {} : _ref$params;
 	
 	  internal$1.getPageHTMLAsync(page).then(function (html) {
-	      console.log(html);
 	    var pageElement = util.createElement(html.trim());
 	    parent.appendChild(pageElement);
 	

@@ -6,4 +6,16 @@ block scriptsInHead
 
 
 block content
+    mr-navigator#navigator
+
+
     +template("menu")
+        p Sok sok blaaaaa
+        button#foo Foo
+
+    +template("foo")
+        p Foooooooo
+        button#back Back
+
+block scriptsInFoot
+    script(src="javascripts/unique.js")

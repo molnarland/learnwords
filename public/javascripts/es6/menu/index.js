@@ -13,6 +13,7 @@ window.posts = [];
 
 document.addEventListener('init', (event) =>
 {
+    console.log(event);
     const page = event.target;
 
     router(page, {

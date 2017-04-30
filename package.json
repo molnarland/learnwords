@@ -8,7 +8,9 @@
     "menu": "clear && cd public/ && gulp jsMenu",
     "wmenu": "clear && cd public/ && gulp watch-menu",
     "sass": "clear && cd public/ && gulp sass",
-    "wsass": "clear && cd public/ && gulp watch-sass"
+    "wsass": "clear && cd public/ && gulp watch-sass",
+    "unique": "clear && cd public/ && gulp jsUnique",
+    "wunique": "clear && cd public/ && gulp watch-unique"
   },
   "dependencies": {
     "body-parser": "^1.16.1",

@@ -332,7 +332,6 @@ export default class Global
      */
     createOnsElement (html)
     {
-        console.log(html, html.length);
         return ons._util.createElement(html);
     }
 

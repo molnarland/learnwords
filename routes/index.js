@@ -59,10 +59,6 @@ router.route('/start')
         });
     });
 
-router.get('/heart', (req, res, next) =>
-{
-    res.render('heart');
-});
 
 const uppercaseFirstCharAndLowerOthers = function (string)
 {

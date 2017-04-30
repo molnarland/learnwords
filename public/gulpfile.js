@@ -14,12 +14,18 @@ function Paths ()
 
     this.jsIndex = this.es6Root + 'index' + this.allJsFile;
     this.jsMenu = this.es6Root + 'menu' + this.allJsFile;
+    this.jsUnique = this.es6Root + 'unique' + this.allJsFile;
 
     this.sass = ['./stylesheets/*.sass'];
 
     this.changePathForWebpackEntry = function (which)
     {
-        return this[which].replace('*', 'index');
+        var which = this[which].split('/');
+        which[4] = which[5].replace('*', 'index');
+        delete which[5];
+        which = which.join('/');
+
+        return which;
     };
     this.getOutputFileName = function (which)
     {
@@ -32,9 +38,12 @@ var paths = new Paths();
 
 var webpackObjectMaker = function (task)
 {
+    var entry = paths.changePathForWebpackEntry(task);
+
     return {
-        // entry: paths.changePathForWebpackEntry(task),
-        entry: './javascripts/es6/menu/index.js',
+        // entry: entry,
+        entry: './javascripts/es6/unique/index.js',
+        // entry: './javascripts/es6/menu/index.js',
         output: {
             path: __dirname + '/javascripts',
             filename: paths.getOutputFileName(task),
@@ -78,6 +87,7 @@ var notifyObjectMaker = function (task)
 var taskNames = {
     index: 'jsIndex',
     menu: 'jsMenu',
+    unique: 'jsUnique',
     sass: 'sass'
 };
 
@@ -101,6 +111,14 @@ gulp.task(taskNames.menu, function ()
         .pipe(notify(notifyObjectMaker(taskNames.menu)));
 });
 
+gulp.task(taskNames.unique, function ()
+{
+    gulp.src(paths.jsUnique)
+        .pipe(webpack(webpackObjectMaker(taskNames.unique)))
+        .pipe(gulp.dest(paths.output))
+        .pipe(notify(notifyObjectMaker(taskNames.unique)));
+});
+
 gulp.task(taskNames.sass, function ()
 {
     gulp.src(paths.sass, {base: './'})
@@ -119,6 +137,11 @@ gulp.task('watch-index', ['jsIndex'], function ()
 gulp.task('watch-menu', ['jsMenu'], function ()
 {
     gulp.watch(paths.jsMenu, ['jsMenu']);
+});
+
+gulp.task('watch-unique', ['jsUnique'], function ()
+{
+    gulp.watch(paths.jsUnique, ['jsUnique']);
 });
 
 gulp.task('watch-sass', ['sass'], function ()
