@@ -56,8 +56,8 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var framework = new _index2.default({
-	    pushPage: function pushPage() {
-	        console.log('bla');
+	    pushPage: function pushPage(id, data) {
+	        console.log(id);
 	    }
 	});
 	
@@ -120,7 +120,7 @@
 	
 	        this.navigator = new _Navigator2.default({
 	            getTemplate: this.template.get.bind(this.template),
-	            pushPageCallback: pushPage
+	            pushPageCallback: this.pushPage
 	        });
 	    }
 	
@@ -209,7 +209,7 @@
 	
 	        /**
 	         * @param {string} id
-	         * @return {string|null}
+	         * @return {HTMLElement|null}
 	         */
 	
 	    }, {
@@ -222,7 +222,10 @@
 	                return null;
 	            }
 	
-	            return value;
+	            var helperDiv = document.createElement('div');
+	            helperDiv.innerHTML = value;
+	
+	            return helperDiv.firstChild;
 	        }
 	    }]);
 	
@@ -299,11 +302,7 @@
 	    value: function pushPage(id) {
 	      var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 	
-	      var helperDiv = document.createElement('div');
-	      helperDiv.innerHTML = this._getTemplate(id);
-	      var dom = helperDiv.firstChild;
-	
-	      this.navigator.appendChild(dom);
+	      this.navigator.appendChild(this._getTemplate(id));
 	
 	      this._pushPageCallback(id, data);
 	    }

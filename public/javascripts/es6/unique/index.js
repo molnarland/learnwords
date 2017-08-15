@@ -2,9 +2,9 @@ import Framework from './Framework/index';
 
 
 let framework = new Framework({
-    pushPage: () =>
+    pushPage: (id, data) =>
     {
-        console.log('bla');
+        console.log(id);
     }
 });
 

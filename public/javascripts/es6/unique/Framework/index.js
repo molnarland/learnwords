@@ -20,7 +20,7 @@ export default class Framework
 
         this.navigator = new Navigator({
             getTemplate: this.template.get.bind(this.template),
-            pushPageCallback: pushPage
+            pushPageCallback: this.pushPage
         });
     }
 

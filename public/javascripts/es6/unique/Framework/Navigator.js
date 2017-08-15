@@ -42,11 +42,7 @@ export default class Navigator
      */
     pushPage (id, data = {})
     {
-        let helperDiv = document.createElement('div');
-        helperDiv.innerHTML = this._getTemplate(id);
-        let dom = helperDiv.firstChild;
-
-        this.navigator.appendChild(dom);
+        this.navigator.appendChild(this._getTemplate(id));
 
         this._pushPageCallback(id, data);
     }

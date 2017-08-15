@@ -29,7 +29,7 @@ export default class Template
 
     /**
      * @param {string} id
-     * @return {string|null}
+     * @return {HTMLElement|null}
      */
     get (id)
     {
@@ -41,6 +41,10 @@ export default class Template
             return null;
         }
 
-        return value;
+
+        let helperDiv = document.createElement('div');
+        helperDiv.innerHTML = value;
+
+        return helperDiv.firstChild;
     }
 }
