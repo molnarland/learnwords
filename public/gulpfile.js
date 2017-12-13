@@ -7,9 +7,8 @@ var gulp = require('gulp'),
 	UglifyJsPlugin = require('uglifyjs-webpack-plugin'),
 	cssUglify = require('gulp-clean-css'),
     util = require('gulp-util'),
-	autoprefixer = require('gulp-autoprefixer');
-
-var uglify = require('webpack/lib/optimize/UglifyJsPlugin');
+	autoprefixer = require('gulp-autoprefixer'),
+	deleteFile = require('gulp-delete-file');
 
 function Paths ()
 {
@@ -150,9 +149,14 @@ gulp.task(taskNames.sass, function ()
 gulp.task('remove-maps', function ()
 {
 	gulp.src([
-		'./stylesheets/**/*.map',
-		'./javascripts/**/*.map'
+		'./stylesheets/*.map',
+		'./javascripts/*.map'
 	])
+		.pipe(deleteFile({
+			reg: /\w*(\-\w{8}\.js){1}$|\w*(\-\w{8}\.css){1}$/,
+			deleteMatch: false
+		}));
+
 });
 
 

@@ -1,6 +1,6 @@
 {
   "name": "learnword",
-  "version": "1",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "clear && node app.js",
@@ -11,9 +11,11 @@
     "wmenu": "clear && cd public/ && gulp watch-menu",
     "sass": "clear && cd public/ && gulp sass",
     "wsass": "clear && cd public/ && gulp watch-sass",
-    "postinstall": "clear cd public/ && npm install &&  cd ../ && npm run header && npm run index && npm run menu && npm run sass",
-    "prepublish": "clear && cd public/ && gulp --type=production jsHeader jsIndex jsMenu sass",
-    "postpublish": "cd public/ && gulp remove-maps"
+    "postinstall": "cd public/ && npm install &&  cd ../ && npm run header && npm run index && npm run menu && npm run sass",
+    "prod": "npm run production",
+    "preproduction": "cd public/ && gulp --type=production jsHeader jsIndex jsMenu sass",
+    "production": "clear",
+    "postproduction": "cd public/ && gulp remove-maps"
   },
   "dependencies": {
     "body-parser": "^1.16.1",
