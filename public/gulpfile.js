@@ -2,21 +2,26 @@ var gulp = require('gulp'),
     sass = require('gulp-sass'),
     webpack = require('gulp-webpack'),
     babel = require('gulp-babel'),
-    notify = require('gulp-notify');
+    notify = require('gulp-notify'),
+    sourcemaps = require('gulp-sourcemaps'),
+	UglifyJsPlugin = require('uglifyjs-webpack-plugin'),
+	cssUglify = require('gulp-clean-css'),
+    util = require('gulp-util'),
+	autoprefixer = require('gulp-autoprefixer');
 
 var uglify = require('webpack/lib/optimize/UglifyJsPlugin');
 
 function Paths ()
 {
-    this.es6Root = './javascripts/es6/';
+    this.es6Root = './assets/javascripts/';
     this.allJsFile = '/**/*.js';
     this.output = 'javascripts';
 
     this.jsIndex = this.es6Root + 'index' + this.allJsFile;
     this.jsMenu = this.es6Root + 'menu' + this.allJsFile;
-    this.jsUnique = this.es6Root + 'unique' + this.allJsFile;
+    this.jsHeader = this.es6Root + 'header' + this.allJsFile;
 
-    this.sass = ['./stylesheets/*.sass'];
+    this.sass = ['./assets/stylesheets/**/*.sass'];
 
     this.changePathForWebpackEntry = function (which)
     {
@@ -24,13 +29,14 @@ function Paths ()
         which[4] = which[5].replace('*', 'index');
         delete which[5];
         which = which.join('/');
+        which = which.substring(0, which.length - 1);
 
         return which;
     };
     this.getOutputFileName = function (which)
-    {
-        return this[which].split('/')[3] + '.js';
-    }
+	{
+		return this[which].split('/')[3] + '.js';
+	}
 }
 
 
@@ -41,8 +47,8 @@ var webpackObjectMaker = function (task)
     var entry = paths.changePathForWebpackEntry(task);
 
     return {
-        // entry: entry,
-        entry: './javascripts/es6/unique/index.js',
+        entry: entry,
+        // entry: './javascripts/es6/unique/index.js',
         // entry: './javascripts/es6/menu/index.js',
         output: {
             path: __dirname + '/javascripts',
@@ -62,7 +68,7 @@ var webpackObjectMaker = function (task)
             ]
         },
         plugins: [
-
+			(util.env.type === 'production') ? new UglifyJsPlugin() : function(){}
         ],
         devtool: 'source-map',
         debug: false
@@ -87,44 +93,66 @@ var notifyObjectMaker = function (task)
 var taskNames = {
     index: 'jsIndex',
     menu: 'jsMenu',
-    unique: 'jsUnique',
+    header: 'jsHeader',
     sass: 'sass'
 };
 
 //running one time
 gulp.task(taskNames.index, function ()
 {
-    gulp.src(paths.jsIndex)
-        .pipe(webpack(webpackObjectMaker(taskNames.index)))
-        .pipe(gulp.dest(paths.output))
-        .pipe(notify(notifyObjectMaker(taskNames.index)));
+	gulp.src(paths.jsIndex)
+		.pipe(webpack(webpackObjectMaker(taskNames.index)))
+		.pipe(gulp.dest(paths.output));
+
+	// .pipe(notify(notifyObjectMaker(taskNames.index)));
 });
 
 gulp.task(taskNames.menu, function ()
 {
-    gulp.src(paths.jsMenu)
-        .pipe(webpack(webpackObjectMaker(taskNames.menu)/*, null, function(err, stats) {
-            console.log(stats.compilation.errors.toString());
-            console.log(stats.compilation.warnings.toString());
-        }*/))
-        .pipe(gulp.dest(paths.output))
-        .pipe(notify(notifyObjectMaker(taskNames.menu)));
+	gulp.src(paths.jsMenu)
+		.pipe(webpack(webpackObjectMaker(taskNames.menu)))
+		.pipe(gulp.dest(paths.output));
+
 });
 
-gulp.task(taskNames.unique, function ()
+gulp.task(taskNames.header, function ()
 {
-    gulp.src(paths.jsUnique)
-        .pipe(webpack(webpackObjectMaker(taskNames.unique)))
-        .pipe(gulp.dest(paths.output))
-        .pipe(notify(notifyObjectMaker(taskNames.unique)));
+	gulp.src(paths.jsHeader)
+		.pipe(webpack(webpackObjectMaker(taskNames.header)))
+		.pipe(gulp.dest(paths.output))
+
 });
 
 gulp.task(taskNames.sass, function ()
 {
-    gulp.src(paths.sass, {base: './'})
-        .pipe(sass({indentedSyntax: true})).on('error', sass.logError)
-        .pipe(gulp.dest('./'))
-        .pipe(notify(notifyObjectMaker(taskNames.sass)));
+	if (util.env.type === 'production')
+	{
+		gulp.src(paths.sass/*, {base: './'}*/)
+			.pipe(sourcemaps.init({ loadMaps: true }))
+			.pipe(sass({ indentedSyntax: true })).on('error', sass.logError)
+			.pipe(autoprefixer({ browsers: 'since 2000' }))
+			.pipe(cssUglify({ compatibility: 'ie6' }))
+			.pipe(sourcemaps.write('./'))
+			.pipe(gulp.dest('./stylesheets'));
+		// .pipe(notify(notifyObjectMaker(taskNames.sass)));
+	}
+	else
+	{
+		gulp.src(paths.sass/*, {base: './'}*/)
+			.pipe(sourcemaps.init({ loadMaps: true }))
+			.pipe(sass({ indentedSyntax: true })).on('error', sass.logError)
+			.pipe(autoprefixer({ browsers: 'since 2000' }))
+			.pipe(sourcemaps.write('./'))
+			.pipe(gulp.dest('./stylesheets'));
+	}
+});
+
+gulp.task('remove-maps', function ()
+{
+	gulp.src([
+		'./stylesheets/**/*.map',
+		'./javascripts/**/*.map'
+	])
 });
 
 
@@ -139,14 +167,9 @@ gulp.task('watch-menu', ['jsMenu'], function ()
     gulp.watch(paths.jsMenu, ['jsMenu']);
 });
 
-gulp.task('watch-unique', ['jsUnique'], function ()
-{
-    gulp.watch(paths.jsUnique, ['jsUnique']);
-});
-
 gulp.task('watch-sass', ['sass'], function ()
 {
-    gulp.watch('./stylesheets/**/*.sass', ['sass']);
+    gulp.watch('./assets/stylesheets/**/*.sass', ['sass']);
 });
 
 //mixed watches

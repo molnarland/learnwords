@@ -5,5 +5,6 @@ module.exports = (object) =>
         i;
         j = parseInt(Math.random() * i), x = object[--i], object[i] = object[j], object[j] = x
     );
+
     return object;
 };

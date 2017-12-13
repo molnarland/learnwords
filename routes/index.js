@@ -8,7 +8,7 @@ User = new User();
 router.route('/')
     .get((req, res, next) =>
     {
-        res.render(global.getCurrentView() + 'index');
+        res.render('index');
     })
     .post((req, res, next) =>
     {
@@ -40,7 +40,7 @@ router.route('/')
 router.route('/start')
     .get((req, res, next) =>
     {
-        res.render(global.getCurrentView() + 'start', { name: req.session.user.name });
+        res.render('start', { name: req.session.user.name });
     })
     .post((req, res, next) =>
     {
