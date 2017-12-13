@@ -17,14 +17,20 @@
     "babel-preset-es2016": "^6.22.0",
     "babel-preset-es2017": "^6.22.0",
     "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^4.0.0",
     "gulp-babel": "^6.1.2",
+    "gulp-clean-css": "^3.9.0",
     "gulp-sass": "^3.1.0",
-    "gulp-webpack": "^1.5.0"
+    "gulp-sourcemaps": "^2.6.1",
+    "gulp-util": "^3.0.8",
+    "gulp-webpack": "^1.5.0",
+    "uglifyjs-webpack-plugin": "^1.1.2"
   },
   "optionalDependencies": {
     "gulp-notify": "^3.0.0"
   },
   "dependencies": {
+    "gulp-delete-file": "^1.0.2",
     "js-cookie": "^2.1.3",
     "onsenui": "^2.1.0"
   }
