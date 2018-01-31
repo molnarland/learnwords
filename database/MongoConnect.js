@@ -9,19 +9,29 @@ class MongoConnect
         this.url = 'mongodb://localhost:27017/learnwords';
     }
 
-    connect (callback)
+	/**
+	 * @return {Promise<Db, function>}
+	 */
+	connect ()
     {
-        this.MongoClient.connect(this.url, (err, db) =>
-        {
-            if (err) throw err;
-            this.assert.equal(null, err);
+        return new Promise((resolve, reject) =>
+		{
+			return this.MongoClient.connect(this.url, (err, db) =>
+			{
+				if (err)
+				{
+				    reject(err);
+					throw err;
+				}
 
+				this.assert.equal(null, err);
 
-            callback(db, () =>
-            {
-                db.close();
-            });
-        });
+				resolve(db, () =>
+				{
+					db.close();
+				});
+			});
+		});
     };
 
     /**

@@ -7,24 +7,31 @@ class DB extends MongoConnect
         super();
     }
 
-    /**
-     * @param {string} table
-     * @param {function} callback
-     * @param {object} object
-     */
+	/**
+	 * @param {string} table
+	 * @param {User|Word|Label} object
+     * @return {Promise<object>}
+	 */
     getAll (table, callback, object = {})
-    {
-        this.connect((db, programCallback) =>
-        {
-            db.collection(table).find(object).toArray((err, docs) =>
-            {
-                if (err) {throw err;}
+	{
+		return new Promise(async (resolve, reject) =>
+		{
+			const { db, programCallback } = await this.connect();
+			const { err, docs } = await db.collection(table)
+										  .find(object)
+										  .toArray();
 
-                programCallback();
-                return callback(docs);
-            });
-        });
-    }
+			if (err)
+			{
+				reject(err);
+				throw err;
+			}
+
+			programCallback();
+
+			resolve(docs);
+		});
+	}
 
     /**
      * @param {string} table
