@@ -3,8 +3,11 @@ extends layout
 block content
     ons-page
         form#form(method="post")
+            p(if=error).error= error
             p
                 ons-input(name="name" modifier="underbar" placeholder="Username" float)#name
+            p
+                ons-input(name="password" modifier="underbar" placeholder="Password" float type="password")#password
             p
                 button(type="submit").button Log in
 

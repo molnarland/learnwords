@@ -28,7 +28,7 @@ class DB extends MongoConnect
 
     /**
      * @param {string} table
-     * @param {object} object
+     * @param {User|Label|Words} object
      * @param {function} callback
      */
     insertOne (table, object, callback)

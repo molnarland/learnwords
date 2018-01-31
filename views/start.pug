@@ -6,6 +6,7 @@ block scriptsInHead
 block content
     ons-page
         form(method="post")
+            input(name="password" type="hidden" value=password)
             p
                 ons-input(name="name" placeholder="name" modifier="underbar" float value=name)
             p

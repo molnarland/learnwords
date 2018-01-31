@@ -10,16 +10,16 @@ class User extends DB
         this.table = 'names';
     }
 
-    findNameMaybeInsert (name, callback)
+    findUserMaybeInsert (name, password, callback)
     {
-        this.getOne(name, (result) =>
+        this.getOne(name, password, (result) =>
         {
             if (result)
             {
                 return callback(result)
             }
 
-            this.insertOnlyName(name, () =>
+            this.insertOnlyNameAndPassword(name, password, () =>
             {
                 this.getOne(name, (result) =>
                 {
@@ -50,16 +50,24 @@ class User extends DB
         super.getOne(this.table, user, callback)
     };
 
-    insertOne (name, native, learnable, callback)
+    getOneWithPassword (name, password, callback)
     {
-        const user = new Model(name, native, learnable);
+        const user = new Model(name, password);
 
+        super.getOne(this.table, user, callback);
+    }
+
+    insertOne (name, password, native, learnable, callback)
+    {
+        const user = new Model(name, password, native, learnable);
+
+        console.log(user);
         super.insertOne(this.table, user, callback);
     };
 
-    insertOnlyName (name, callback)
+    insertOnlyNameAndPassword (name, password, callback)
     {
-        const user = new Model(name);
+        const user = new Model(name, password);
 
         super.insertOne(this.table, user, callback);
     }

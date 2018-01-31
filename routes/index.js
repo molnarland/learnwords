@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const crypto = require('crypto');
 
 let User = require('../database/User');
 User = new User();
@@ -11,44 +12,55 @@ router.route('/')
         res.render('index');
     })
     .post((req, res, next) =>
-    {
-        const name = req.body.name;
+	{
+		const name = req.body.name;
+		const password = crypto.createHash('sha256').update(req.body.password).digest('hex');
 
-        User.getOne(name, (result) =>
-        {
-            if (result)
-            {
-                User.findNameMaybeInsert(name, (result) =>
-                {
-                    result.native = uppercaseFirstCharAndLowerOthers(result.native);
-                    result.learnable = uppercaseFirstCharAndLowerOthers(result.learnable);
+		console.log(password);
 
-                    req.session.user = result;
+		User.getOne(name, (resultJustWithName) =>
+		{
+				User.getOneWithPassword(name, password, (resultWithNameAndPassword) =>
+				{
+					if (resultWithNameAndPassword)
+					{
+						User.findUserMaybeInsert(name, (result) =>
+						{
+							result.native = uppercaseFirstCharAndLowerOthers(result.native);
+							result.learnable = uppercaseFirstCharAndLowerOthers(result.learnable);
 
-                    res.redirect('/menu');
-                });
-            }
-            else
-            {
-                req.session.user = { name: name };
+							req.session.user = result;
 
-                res.redirect('/start');
-            }
-        });
-    });
+							res.redirect('/menu');
+						});
+					}
+					else if (resultJustWithName && !resultWithNameAndPassword)
+					{
+						res.render('index', { error: 'User found but password is not correct' });
+					}
+					else
+					{
+						req.session.user = { name, password };
+
+						res.redirect('/start');
+					}
+				});
+		});
+	});
 
 router.route('/start')
     .get((req, res, next) =>
     {
-        res.render('start', { name: req.session.user.name });
+        res.render('start', { name: req.session.user.name, password: req.session.user.password });
     })
     .post((req, res, next) =>
     {
-        const name = req.body.name,
-            native = req.body.native,
-            learnable = req.body.learnable;
+        const name = req.body.name;
+        const password = req.body.password;
+        const native = req.body.native;
+        const learnable = req.body.learnable;
 
-        User.insertOne(name, native, learnable, () =>
+        User.insertOne(name, password, native, learnable, () =>
         {
             User.getOne(name, (result) =>
             {
