@@ -12,7 +12,7 @@ class DB extends MongoConnect
 	 * @param {User|Word|Label} object
      * @return {Promise<object>}
 	 */
-    getAll (table, callback, object = {})
+    getAll (table, object = {})
 	{
 		return new Promise(async (resolve, reject) =>
 		{
@@ -35,111 +35,146 @@ class DB extends MongoConnect
 
     /**
      * @param {string} table
-     * @param {object} object
-     * @param {function} callback
+     * @param {User|Word|Label} object
+	 * @return {Promise<insertOneWriteOpResult>}
      */
-    insertOne (table, object, callback)
-    {
-        this.connect((db, programCallback) =>
-        {
-            db.collection(table).insertOne(object, (err, result) =>
-            {
-                if (err) {throw err;}
+    insertOne (table, object)
+	{
+		return new Promise(async (resolve, reject) =>
+		{
+			const { db, programCallback } = await this.connect();
+			const { err, result } = await db.collection(table)
+											.insertOne(object);
 
-                programCallback();
-                return callback(result);
-            })
-        });
-    }
+			if (err)
+			{
+				reject(err);
+				throw err;
+			}
+
+			programCallback();
+
+			resolve(result);
+		});
+	}
 
     /**
      *
      * @param {string} table
-     * @param {object} object
-     * @param {function} callback
+     * @param {User|Word|Label} object
+	 * @return {Promise<object>}
      */
-    getOne (table, object, callback)
-    {
-        this.connect((db, programCallback) =>
-        {
-            db.collection(table).findOne(object, (err, result) =>
-            {
-                if (err) {throw err;}
+    getOne (table, object)
+	{
+		return new Promise(async (resolve, reject) =>
+		{
+			const { db, programCallback } = await this.connect();
+			const { err, result } = await db.collection(table)
+											.findOne(object);
 
-                programCallback();
-                return callback(result);
-            });
-        });
-    }
+			if (err)
+			{
+				reject(err);
+				throw err;
+			}
+
+			programCallback();
+
+			resolve(result);
+		});
+	}
 
     /**
      * @param {string} table
      * @param {string} id
-     * @param {function} callback
+	 * @return {Promise<object>}
      */
-    getById (table, id, callback)
-    {
-        this.getOne(table, {_id: this.objectId(id)}, callback);
-    }
+    getById (table, id)
+	{
+		return new Promise(async (resolve) =>
+		{
+			resolve(await this.getOne(table, { _id: this.objectId(id) }));
+		});
+	}
 
     /**
      * @param {string} table
      * @param {object} filter
      * @param {object} update
-     * @param {function} callback
+	 * @return {Promise<updateWriteOpResult>}
      */
-    updateOne (table, filter, update, callback)
-    {
-        this.connect((db, programCallback) =>
-        {
-            db.collection(table).updateOne(filter, update, (err, result) =>
-            {
-                if (err) {throw err;}
+    updateOne (table, filter, update)
+	{
+		return new Promise(async (resolve, reject) =>
+		{
+			const { db, programCallback } = await this.connect();
+			const { err, result } = await db.collection(table)
+											.updateOne(filter, update);
 
-                programCallback();
-                return callback(result);
-            });
-        })
-    }
+			if (err)
+			{
+				reject(err);
+				throw err;
+			}
+
+			programCallback();
+
+			resolve(result);
+		});
+	}
 
     /**
      * @param {string} table
      * @param {string} id
-     * @param {function} callback
+	 * @return {Promise<deleteWriteOpResult>}
      */
-    deleteById (table, id, callback)
-    {
-        this.connect((db, programCallback) =>
-        {
-            db.collection(table).deleteOne({_id: this.objectId(id)}, (err, result) =>
-            {
-                if (err) {throw err;}
+    deleteById (table, id)
+	{
+		return new Promise(async (resolve, reject) =>
+		{
+			const { db, programCallback } = await this.connect();
+			const { err, result } = await db.collection(table)
+											.deleteOne({ _id: this.objectId(id) });
 
-                programCallback();
-                return callback(result);
-            })
-        })
-    }
+			if (err)
+			{
+				reject(err);
+				throw err;
+			}
+
+			programCallback();
+
+			return resolve(result);
+		});
+	}
 
     /**
      * @param {string} table
      * @param {object} criteria
      * @param {object} sort
-     * @param {function} callback
+	 * @return {Promise<object>}
      */
-    getWithShort (table, criteria, sort, callback)
-    {
-        this.connect((db, programCallback) =>
-        {
-            db.collection(table).find(criteria).sort(sort).toArray((err, docs) =>
-            {
-                if (err) {throw err;}
+    getWithShort (table, criteria, sort)
+	{
+		return new Promise(async (resolve, reject) =>
+		{
+			const { db, programCallback } = await this.connect();
+			const { err, docs } = db.collection(table)
+									.find(criteria)
+									.sort(sort)
+									.toArray();
 
-                programCallback();
-                return callback(docs);
-            });
-        })
-    }
+			if (err)
+			{
+				reject(err);
+				throw err;
+			}
+
+			programCallback();
+
+			return resolve(docs);
+		});
+	}
 }
 
 module.exports = DB;

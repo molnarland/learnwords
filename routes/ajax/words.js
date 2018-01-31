@@ -6,12 +6,9 @@ const Words = require('../../database/Word');
 const words = new Words();
 
 router.route('/')
-    .get((req, res, next) =>
+    .get(async (req, res, next) =>
     {
-        words.getAll(global.getUserId(req), (result) =>
-        {
-            res.send(result);
-        });
+		return res.send(await words.getAll(global.getUserId(req)));
     })
     .post((req, res, next) =>
     {

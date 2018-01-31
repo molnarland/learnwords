@@ -10,24 +10,28 @@ class User extends DB
         this.table = 'names';
     }
 
-    findNameMaybeInsert (name, callback)
-    {
-        this.getOne(name, (result) =>
-        {
-            if (result)
-            {
-                return callback(result)
-            }
+	/**
+	 * @param {string} name
+     * @return {Promise<object>}
+	 */
+	findNameMaybeInsert (name)
+	{
+		return new Promise(async (resolve) =>
+		{
+			let result = await this.getOne(name);
 
-            this.insertOnlyName(name, () =>
-            {
-                this.getOne(name, (result) =>
-                {
-                    return callback(result);
-                });
-            });
-        });
-    };
+			if (result)
+			{
+				return resolve(result)
+			}
+
+			await this.insertOnlyName(name);
+
+			result = await    this.getOne(name);
+
+			return resolve(result);
+		});
+	}
 
     /*deleteAllNames (callback)
     {

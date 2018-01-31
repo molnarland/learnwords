@@ -10,12 +10,12 @@ class Word extends DB
         this.table = 'words';
     }
 
-    getAll (userId, callback)
-    {
-        const word = new Model(userId);
+    getAll (userId)
+	{
+		const word = new Model(userId);
 
-        super.getAll(this.table, callback, word.getUserId());
-    }
+		return new Promise(async (resolve) => resolve(await super.getAll(this.table, word.getUserId())));
+	}
 
     getById (_id, callback)
     {

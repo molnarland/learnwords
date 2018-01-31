@@ -10,30 +10,60 @@ class Label extends DB
         this.table = 'labels';
     }
 
-    insertOne (userId, name, callback)
-    {
-        const label = new Model(userId, name);
+	/**
+     *
+	 * @param {string} userId
+	 * @param {string} name
+	 * @return {Promise<insertOneWriteOpResult>}
+	 */
+	insertOne (userId, name)
+	{
+		return new Promise(async (resolve) =>
+		{
+			const label = new Model(userId, name);
 
-        super.insertOne(this.table, label, callback);
+			resolve(await super.insertOne(this.table, label));
+		});
+	}
+
+	/**
+	 * @param {string} userId
+	 * @return {Promise<object>}
+	 */
+    getAll (userId)
+    {
+        return new Promise(async (resolve) => resolve(await super.getAll(this.table, {userId: userId})));
     }
 
-    getAll (userId, callback)
-    {
-        super.getAll(this.table, callback, {userId: userId});
-    }
+	/**
+     *
+	 * @param {string} userId
+	 * @param {string} oldName
+	 * @param {string} newName
+	 * @return {Promise<updateWriteOpResult>}
+	 */
+    updateOne (userId, oldName, newName)
+	{
+		return new Promise(async (resolve) =>
+		{
+			const oldLabel = new Model(userId, oldName);
+			const newLabel = new Model(userId, newName);
 
-    updateOne (userId, oldName, newName, callback)
-    {
-        const oldLabel = new Model(userId, oldName);
-        const newLabel = new Model(userId, newName);
+			resolve(await super.updateOne(this.table, oldLabel, { $set: newLabel }));
+		});
+	}
 
-        super.updateOne(this.table, oldLabel, { $set: newLabel }, callback);
-    }
-
-    deleteById (id, callback)
-    {
-        super.deleteById(this.table, id, callback);
-    }
+	/**
+	 * @param {string} id
+	 * @return {Promise<deleteWriteOpResult>}
+	 */
+    deleteById (id)
+	{
+		return new Promise(async (resolve) =>
+		{
+			super.deleteById(this.table, id);
+		});
+	}
 }
 
 module.exports = Label;
