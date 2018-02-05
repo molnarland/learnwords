@@ -144,9 +144,7 @@ export default class Form extends Global
 			{
 				if (response)
 				{
-					console.log(window[store], data);
-					const index = window[store].find(item => item._id === data.id);
-					console.log(index);
+					const index = window[store].findIndex(item => item._id === data.id);
 					if (index)
 					{
 						data._id = data.id;

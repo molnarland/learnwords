@@ -34115,11 +34115,9 @@
 	                data: data,
 	                success: function success(response) {
 	                    if (response) {
-	                        console.log(window[store], data);
-	                        var index = window[store].find(function (item) {
+	                        var index = window[store].findIndex(function (item) {
 	                            return item._id === data.id;
 	                        });
-	                        console.log(index);
 	                        if (index) {
 	                            data._id = data.id;
 	
