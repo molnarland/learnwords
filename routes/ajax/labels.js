@@ -33,11 +33,11 @@ router.route('/')
 	})
     .delete(async (req, res, next) =>
     {
-        const id = req.body.id;
+			const id = req.body.id;
 
-        await labels.deleteById(id);
+			await labels.deleteById(id);
 
-        res.send(true);
+			res.send(true);
     });
 
 module.exports = router;

@@ -61,7 +61,8 @@ class Label extends DB
 	{
 		return new Promise(async (resolve) =>
 		{
-			super.deleteById(this.table, id);
+			super.deleteById(this.table, id)
+				 .then(resolve);
 		});
 	}
 }
