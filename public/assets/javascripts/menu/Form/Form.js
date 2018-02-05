@@ -44,6 +44,11 @@ export default class Form extends Global
             url: String,
             method: 'DELETE'
         };
+		/**
+		 * @type {String}
+		 * @protected
+		 */
+		this.store = String;
     }
 
 
@@ -103,9 +108,8 @@ export default class Form extends Global
 
     /**
      * @param {object} data
-     * @param {string} store
      */
-    setNewItem ({data, store})
+    setNewItem (data)
     {
         this.ajax({
             method: this.ajaxOfSaveOne.method,
@@ -117,7 +121,7 @@ export default class Form extends Global
 				{
 					data._id = response.insertedId;
 					data.userId = response.userId;
-					window[store].push(data);
+					window[this.store].push(data);
 
 					this.pushBack({refresh: true, data: { event: this.EVENT_ADD_NEW_ITEM, newItem: data } });
 				}
@@ -132,9 +136,8 @@ export default class Form extends Global
 
     /**
      * @param {object} data
-     * @param {string} store
      */
-    editItem (data, store)
+    editItem (data)
 	{
 		this.ajax({
 			method: this.ajaxOfEditOne.method,
@@ -144,12 +147,12 @@ export default class Form extends Global
 			{
 				if (response)
 				{
-					const index = window[store].findIndex(item => item._id === data.id);
-					if (index)
+					const index = window[this.store].findIndex(item => item._id === data.id);
+					if (index > -1)
 					{
 						data._id = data.id;
 
-						window[store][index] = data;
+						window[this.store][index] = data;
 					}
 
 					this.pushBack({ data: { event: this.EVENT_EDIT_AN_ITEM, editedItem: data } });
@@ -180,6 +183,13 @@ export default class Form extends Global
             data: {id: id},
             success: () =>
 			{
+				const index = window[this.store].findIndex(item => {console.log(item, id);return item._id === id});
+				console.log(index);
+				if (index > -1)
+				{
+					window[this.store].splice(index, 1);
+				}
+
 				this.pushBack({ data: { event: this.EVENT_REMOVE_AN_ITEM, removedId: id } });
 			}
         });

@@ -22,6 +22,7 @@ export default class LabelsForm extends Form
             url: `${this.URL_OF_LABEL_METHODS}/`,
             method: 'DELETE'
         };
+        this.store = this.WINDOW_NAME_OF_LABELS;
 
 
         this.init();
@@ -38,16 +39,12 @@ export default class LabelsForm extends Form
     }
 
     setNewItem ()
-    {
-        this.validate(() =>
-        {
-            super.setNewItem({
-                data:{
-                    label: this.getLabelFromInput()
-                }
-            });
-        });
-    }
+	{
+		this.validate(() =>
+		{
+			super.setNewItem({ label: this.getLabelFromInput() });
+		});
+	}
 
     setValues ()
     {

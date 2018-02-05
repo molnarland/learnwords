@@ -33670,6 +33670,7 @@
 	            url: '/files/photo/',
 	            method: 'PUT'
 	        };
+	        _this.store = _this.WINDOW_NAME_OF_WORDS;
 	
 	        _this.init();
 	        return _this;
@@ -33716,12 +33717,12 @@
 	                        file: true,
 	                        success: function success(photo) {
 	                            data.photo = photo;
-	                            _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'setNewItem', _this2).call(_this2, { data: data });
+	                            _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'setNewItem', _this2).call(_this2, data);
 	                        }
 	                    });
 	                }
 	
-	                return _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'setNewItem', _this2).call(_this2, { data: data });
+	                return _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'setNewItem', _this2).call(_this2, data);
 	            });
 	        }
 	    }, {
@@ -33762,12 +33763,12 @@
 	                        data: file,
 	                        success: function success(photo) {
 	                            data.photo = photo;
-	                            _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'editItem', _this3).call(_this3, data, _this3.WINDOW_NAME_OF_WORDS);
+	                            _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'editItem', _this3).call(_this3, data);
 	                        }
 	                    });
 	                }
 	
-	                _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'editItem', _this3).call(_this3, data, _this3.WINDOW_NAME_OF_WORDS);
+	                _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'editItem', _this3).call(_this3, data);
 	            });
 	        }
 	
@@ -33984,6 +33985,11 @@
 	            url: String,
 	            method: 'DELETE'
 	        };
+	        /**
+	         * @type {String}
+	         * @protected
+	         */
+	        _this.store = String;
 	        return _this;
 	    }
 	
@@ -34064,16 +34070,12 @@
 	
 	        /**
 	         * @param {object} data
-	         * @param {string} store
 	         */
 	
 	    }, {
 	        key: 'setNewItem',
-	        value: function setNewItem(_ref) {
+	        value: function setNewItem(data) {
 	            var _this2 = this;
-	
-	            var data = _ref.data,
-	                store = _ref.store;
 	
 	            this.ajax({
 	                method: this.ajaxOfSaveOne.method,
@@ -34083,7 +34085,7 @@
 	                    if (response && response.success && response.insertedId && response.userId) {
 	                        data._id = response.insertedId;
 	                        data.userId = response.userId;
-	                        window[store].push(data);
+	                        window[_this2.store].push(data);
 	
 	                        _this2.pushBack({ refresh: true, data: { event: _this2.EVENT_ADD_NEW_ITEM, newItem: data } });
 	                    }
@@ -34101,12 +34103,11 @@
 	
 	        /**
 	         * @param {object} data
-	         * @param {string} store
 	         */
 	
 	    }, {
 	        key: 'editItem',
-	        value: function editItem(data, store) {
+	        value: function editItem(data) {
 	            var _this3 = this;
 	
 	            this.ajax({
@@ -34115,13 +34116,13 @@
 	                data: data,
 	                success: function success(response) {
 	                    if (response) {
-	                        var index = window[store].findIndex(function (item) {
+	                        var index = window[_this3.store].findIndex(function (item) {
 	                            return item._id === data.id;
 	                        });
-	                        if (index) {
+	                        if (index > -1) {
 	                            data._id = data.id;
 	
-	                            window[store][index] = data;
+	                            window[_this3.store][index] = data;
 	                        }
 	
 	                        _this3.pushBack({ data: { event: _this3.EVENT_EDIT_AN_ITEM, editedItem: data } });
@@ -34154,6 +34155,14 @@
 	                url: this.ajaxOfDeleteOne.url,
 	                data: { id: id },
 	                success: function success() {
+	                    var index = window[_this5.store].findIndex(function (item) {
+	                        console.log(item, id);return item._id === id;
+	                    });
+	                    console.log(index);
+	                    if (index > -1) {
+	                        window[_this5.store].splice(index, 1);
+	                    }
+	
 	                    _this5.pushBack({ data: { event: _this5.EVENT_REMOVE_AN_ITEM, removedId: id } });
 	                }
 	            });
@@ -34305,6 +34314,7 @@
 	            url: _this.URL_OF_LABEL_METHODS + '/',
 	            method: 'DELETE'
 	        };
+	        _this.store = _this.WINDOW_NAME_OF_LABELS;
 	
 	        _this.init();
 	        return _this;
@@ -34328,11 +34338,7 @@
 	            var _this2 = this;
 	
 	            this.validate(function () {
-	                _get(LabelsForm.prototype.__proto__ || Object.getPrototypeOf(LabelsForm.prototype), 'setNewItem', _this2).call(_this2, {
-	                    data: {
-	                        label: _this2.getLabelFromInput()
-	                    }
-	                });
+	                _get(LabelsForm.prototype.__proto__ || Object.getPrototypeOf(LabelsForm.prototype), 'setNewItem', _this2).call(_this2, { label: _this2.getLabelFromInput() });
 	            });
 	        }
 	    }, {
