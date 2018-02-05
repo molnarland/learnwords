@@ -117,7 +117,7 @@ export default class Form extends Global
 				{
 					data._id = response.insertedId;
 					data.userId = response.userId;
-					window[this.WINDOW_NAME_OF_WORDS].push(data);
+					window[store].push(data);
 
 					this.pushBack({refresh: true, data: { event: this.EVENT_ADD_NEW_ITEM, newItem: data } });
 				}
@@ -132,22 +132,33 @@ export default class Form extends Global
 
     /**
      * @param {object} data
+     * @param {string} store
      */
-    editItem (data)
-    {
-        this.ajax({
-            method: this.ajaxOfEditOne.method,
-            url: this.ajaxOfEditOne.url,
-            data: data,
-            success: (response) =>
-            {
-                if (response)
-                {
-                    this.pushBackWithRefresh();
-                }
-            }
-        });
-    }
+    editItem (data, store)
+	{
+		this.ajax({
+			method: this.ajaxOfEditOne.method,
+			url: this.ajaxOfEditOne.url,
+			data: data,
+			success: (response) =>
+			{
+				if (response)
+				{
+					console.log(window[store], data);
+					const index = window[store].find(item => item._id === data.id);
+					console.log(index);
+					if (index)
+					{
+						data._id = data.id;
+
+						window[store][index] = data;
+					}
+
+					this.pushBack({ data: { event: this.EVENT_EDIT_AN_ITEM, editedItem: data } });
+				}
+			}
+		});
+	}
 
     setUpDeleteButton ()
     {

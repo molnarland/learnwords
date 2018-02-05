@@ -163,12 +163,12 @@ export default class WordsForm extends Form
                     success: (photo) =>
                     {
                         data.photo = photo;
-                        super.editItem(data);
+                        super.editItem(data, this.WINDOW_NAME_OF_WORDS);
                     }
                 });
             }
 
-            super.editItem(data);
+            super.editItem(data, this.WINDOW_NAME_OF_WORDS);
         });
     }
 

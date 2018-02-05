@@ -376,6 +376,11 @@
 	               * @const
 	         */
 	        this.EVENT_REMOVE_AN_ITEM = 'remove-item';
+	        /**
+	         * @type {string}
+	               * @const
+	         */
+	        this.EVENT_EDIT_AN_ITEM = 'edit-item';
 	
 	        this.initInputCleaners();
 	    }
@@ -33524,6 +33529,22 @@
 							this.q(this.selectorOfChangeItem + '[data-id="' + data.removedId + '"]').remove();
 							break;
 						}
+					case this.EVENT_EDIT_AN_ITEM:
+						{
+							var _data$editedItem = data.editedItem,
+							    _id = _data$editedItem.id,
+							    _native = _data$editedItem.native,
+							    _learnable = _data$editedItem.learnable,
+							    labelId = _data$editedItem.labelId,
+							    photo = _data$editedItem.photo;
+	
+	
+							var edited = this.q(this.selectorOfChangeItem + '[data-id="' + _id + '"]');
+							edited.querySelector('.left').innerHTML = _native;
+							edited.querySelector('.right').innerHTML = _learnable;
+	
+							break;
+						}
 					default:
 						break;
 	
@@ -33741,12 +33762,12 @@
 	                        data: file,
 	                        success: function success(photo) {
 	                            data.photo = photo;
-	                            _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'editItem', _this3).call(_this3, data);
+	                            _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'editItem', _this3).call(_this3, data, _this3.WINDOW_NAME_OF_WORDS);
 	                        }
 	                    });
 	                }
 	
-	                _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'editItem', _this3).call(_this3, data);
+	                _get(WordsForm.prototype.__proto__ || Object.getPrototypeOf(WordsForm.prototype), 'editItem', _this3).call(_this3, data, _this3.WINDOW_NAME_OF_WORDS);
 	            });
 	        }
 	
@@ -34062,7 +34083,7 @@
 	                    if (response && response.success && response.insertedId && response.userId) {
 	                        data._id = response.insertedId;
 	                        data.userId = response.userId;
-	                        window[_this2.WINDOW_NAME_OF_WORDS].push(data);
+	                        window[store].push(data);
 	
 	                        _this2.pushBack({ refresh: true, data: { event: _this2.EVENT_ADD_NEW_ITEM, newItem: data } });
 	                    }
@@ -34080,11 +34101,12 @@
 	
 	        /**
 	         * @param {object} data
+	         * @param {string} store
 	         */
 	
 	    }, {
 	        key: 'editItem',
-	        value: function editItem(data) {
+	        value: function editItem(data, store) {
 	            var _this3 = this;
 	
 	            this.ajax({
@@ -34093,7 +34115,18 @@
 	                data: data,
 	                success: function success(response) {
 	                    if (response) {
-	                        _this3.pushBackWithRefresh();
+	                        console.log(window[store], data);
+	                        var index = window[store].find(function (item) {
+	                            return item._id === data.id;
+	                        });
+	                        console.log(index);
+	                        if (index) {
+	                            data._id = data.id;
+	
+	                            window[store][index] = data;
+	                        }
+	
+	                        _this3.pushBack({ data: { event: _this3.EVENT_EDIT_AN_ITEM, editedItem: data } });
 	                    }
 	                }
 	            });
@@ -34319,7 +34352,7 @@
 	                    userId: _this3.page.data.item.userId,
 	                    oldLabel: _this3.page.data.item.name,
 	                    newLabel: _this3.getLabelFromInput()
-	                });
+	                }, tihs.WINDOW_NAME_OF_WORDS);
 	            });
 	        }
 	    }, {

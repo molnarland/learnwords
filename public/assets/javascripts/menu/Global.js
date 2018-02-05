@@ -93,6 +93,12 @@ export default class Global
          * @const
 		 */
 		this.EVENT_REMOVE_AN_ITEM = 'remove-item';
+		/**
+		 * @type {string}
+         * @const
+		 */
+		this.EVENT_EDIT_AN_ITEM = 'edit-item';
+
 
 
 

@@ -62,7 +62,7 @@ export default class LabelsForm extends Form
                 userId: this.page.data.item.userId,
                 oldLabel: this.page.data.item.name,
                 newLabel: this.getLabelFromInput()
-            });
+            }, tihs.WINDOW_NAME_OF_WORDS);
         });
     }
 

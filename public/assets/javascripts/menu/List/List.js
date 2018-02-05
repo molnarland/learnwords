@@ -142,6 +142,16 @@ export default class List extends Global
 				this.q(`${this.selectorOfChangeItem}[data-id="${data.removedId}"]`).remove();
 				break;
 			}
+			case this.EVENT_EDIT_AN_ITEM:
+			{
+				const {id,native,learnable,labelId,photo} = data.editedItem;
+
+				const edited = this.q(`${this.selectorOfChangeItem}[data-id="${id}"]`);
+				edited.querySelector('.left').innerHTML = native;
+				edited.querySelector('.right').innerHTML = learnable;
+
+				break;
+			}
 			default:
 				break;
 
