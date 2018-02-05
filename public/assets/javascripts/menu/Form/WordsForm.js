@@ -115,7 +115,7 @@ export default class WordsForm extends Form
                     success: (photo) =>
                     {
                         data.photo = photo;
-                        super.setNewItem({data: data})
+                        super.setNewItem({data: data});
                     }
                 });
             }

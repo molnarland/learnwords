@@ -41,15 +41,9 @@ export default class ListWords extends List
                 const native = word.native;
                 const learnable = word.learnable;
 
-                return this.createOnsElement(
-                    `<ons-list-item data-id=${id} tappable modifier="longdivider">` +
-                        `<div class="left">${native}</div>` +
-                        `<div class="center"><ons-icon icon="arrows-h"></ons-icon></div>` +
-                        `<div class="right">${learnable}</div>` +
-                    `</ons-list-item>`
-                );
+                return this.createOnsElement(id, native, learnable);
             },
-            store: 'words'
+            store: this.WINDOW_NAME_OF_WORDS
         });
     }
 }

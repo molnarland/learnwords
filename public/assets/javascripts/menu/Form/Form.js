@@ -102,23 +102,25 @@ export default class Form extends Global
     }
 
     /**
-     * @param {function} [before]
      * @param {object} data
+     * @param {string} store
      */
-    setNewItem ({before = new Function(), data})
+    setNewItem ({data, store})
     {
-        before();
-
         this.ajax({
             method: this.ajaxOfSaveOne.method,
             url: this.ajaxOfSaveOne.url,
             data: data,
             success: (response) =>
             {
-                if (response)
-                {
-                    this.pushBackWithRefresh();
-                }
+                if (response && response.success && response.insertedId && response.userId)
+				{
+					data._id = response.insertedId;
+					data.userId = response.userId;
+					window[this.WINDOW_NAME_OF_WORDS].push(data);
+
+					this.pushBack({refresh: true, data: { event: this.EVENT_ADD_NEW_ITEM, newItem: data } });
+				}
             }
         });
     }
@@ -168,9 +170,9 @@ export default class Form extends Global
             url: this.ajaxOfDeleteOne.url,
             data: {id: id},
             success: () =>
-            {
-                this.pushBackWithRefresh();
-            }
+			{
+				this.pushBack({ data: { event: this.EVENT_REMOVE_AN_ITEM, removedId: id } });
+			}
         });
     }
 }

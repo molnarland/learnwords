@@ -73,6 +73,27 @@ export default class Global
          * @const
          */
         this.COOKIE_NAME_OF_COLOUR = 'colour';
+		/**
+		 * @type {string}
+         * @const
+		 */
+		this.WINDOW_NAME_OF_WORDS = 'words';
+		/**
+		 * @type {string}
+         * @const
+		 */
+		this.WINDOW_NAME_OF_LABELS = 'labels';
+		/**
+		 * @type {string}
+         * @const
+		 */
+		this.EVENT_ADD_NEW_ITEM = 'add-new-item';
+		/**
+		 * @type {string}
+         * @const
+		 */
+		this.EVENT_REMOVE_AN_ITEM = 'remove-item';
+
 
 
 
@@ -519,10 +540,16 @@ export default class Global
      * @desc It push back to previous page from current, back buttons automatically from ONS
      *
      * @param {object} [options]
+     * @return Promise<HTMLElement>
      */
     pushBack (options = {})
     {
-        document.querySelector(this.SELECTOR_OF_NAVIGATOR).popPage(options);
+        return new Promise((resolve) =>
+		{
+			document.querySelector(this.SELECTOR_OF_NAVIGATOR)
+					.popPage(options)
+					.then(resolve);
+		});
     }
 
     /**
@@ -534,5 +561,15 @@ export default class Global
     setCookie (name, value)
     {
         Cookies.set(name, value, { expires: 1000000 });
+    }
+
+	/**
+     * @desc Refresh the this.page object after pop event
+     *
+	 * @param {object} page
+	 */
+	postPushBack (page)
+    {
+        this.page = page;
     }
 }

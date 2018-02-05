@@ -18,9 +18,9 @@ router.route('/')
 		const labelId = req.body.label;
 		const photo = req.body.photo;
 
-        /*const result = */await words.insertOne(userId, native, learnable, photo, labelId);
+		const result = await words.insertOne(userId, native, learnable, photo, labelId);
 
-		res.send(true);
+		res.send({ success: true, insertedId: result.insertedId, userId });
 	})
     .put(async (req, res, next) =>
     {

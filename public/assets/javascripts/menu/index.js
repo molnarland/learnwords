@@ -28,6 +28,11 @@ document.addEventListener('init', (event) =>
     }, ['learnable', 'native']);
 });
 
+document.addEventListener('postpop', (event) =>
+{
+    window[event.enterPage.id].postPushBack(event.enterPage);
+});
+
 
 /**
  * @desc Call classes
@@ -51,7 +56,7 @@ function router(page, routes, ignore)
 
         if (typeof currentRoute === 'function')
         {
-            new currentRoute(page);
+            window[id] = new currentRoute(page);
         }
     }
 }
