@@ -13,26 +13,28 @@ class MongoConnect
 	 * @return {Promise<Db, function>}
 	 */
 	connect ()
-    {
-        return new Promise((resolve, reject) =>
+	{
+		return new Promise((resolve) =>
 		{
-			return this.MongoClient.connect(this.url, (err, db) =>
+			this.MongoClient.connect(this.url, (err, db) =>
 			{
 				if (err)
 				{
-				    reject(err);
 					throw err;
 				}
 
 				this.assert.equal(null, err);
 
-				resolve(db, () =>
-				{
-					db.close();
+				resolve({
+					db,
+					programCallback: () =>
+					{
+						db.close();
+					}
 				});
 			});
 		});
-    };
+	};
 
     /**
      * @param {string} id

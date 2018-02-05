@@ -72,11 +72,6 @@ app.use((err, req, res, next) =>
 
 
 
-app.listen(3000, 'localhost', () =>
-{
-    console.log('localhost:3000');
-});
-
 module.exports = app;
 
 

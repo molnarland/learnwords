@@ -10,54 +10,48 @@ router.route('/')
     {
         res.render('index');
     })
-    .post((req, res, next) =>
-    {
-        const name = req.body.name;
+    .post(async (req, res, next) =>
+	{
+		const name = req.body.name;
 
-        User.getOne(name, (result) =>
-        {
-            if (result)
-            {
-                User.findNameMaybeInsert(name, (result) =>
-                {
-                    result.native = uppercaseFirstCharAndLowerOthers(result.native);
-                    result.learnable = uppercaseFirstCharAndLowerOthers(result.learnable);
+		let result = await User.getOne(name);
 
-                    req.session.user = result;
+		if (result)
+		{
+			result = await User.findNameMaybeInsert(name);
 
-                    res.redirect('/menu');
-                });
-            }
-            else
-            {
-                req.session.user = { name: name };
+			result.native = uppercaseFirstCharAndLowerOthers(result.native);
+			result.learnable = uppercaseFirstCharAndLowerOthers(result.learnable);
 
-                res.redirect('/start');
-            }
-        });
-    });
+			req.session.user = result;
+
+			res.redirect('/menu');
+		}
+		else
+		{
+			req.session.user = { name: name };
+
+			res.redirect('/start');
+		}
+	});
 
 router.route('/start')
     .get((req, res, next) =>
     {
         res.render('start', { name: req.session.user.name });
     })
-    .post((req, res, next) =>
-    {
-        const name = req.body.name,
-            native = req.body.native,
-            learnable = req.body.learnable;
+    .post(async (req, res, next) =>
+	{
+		const name = req.body.name;
+		const native = req.body.native;
+		const learnable = req.body.learnable;
 
-        User.insertOne(name, native, learnable, () =>
-        {
-            User.getOne(name, (result) =>
-            {
-                req.session.user = result;
+		await User.insertOne(name, native, learnable);
 
-                res.redirect('/menu');
-            });
-        });
-    });
+		req.session.user = await User.getOne(name);
+
+		res.redirect('/menu');
+	});
 
 
 const uppercaseFirstCharAndLowerOthers = function (string)

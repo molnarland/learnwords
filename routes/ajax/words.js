@@ -10,20 +10,19 @@ router.route('/')
     {
 		return res.send(await words.getAll(global.getUserId(req)));
     })
-    .post((req, res, next) =>
-    {
-        const userId = global.getUserId(req);
-        const native = req.body.native;
-        const learnable = req.body.learnable;
-        const labelId = req.body.label;
-        const photo = req.body.photo;
+    .post(async (req, res, next) =>
+	{
+		const userId = global.getUserId(req);
+		const native = req.body.native;
+		const learnable = req.body.learnable;
+		const labelId = req.body.label;
+		const photo = req.body.photo;
 
-        words.insertOne(userId, native, learnable, photo, labelId, (/*result*/) =>
-        {
-            res.send(true);
-        });
-    })
-    .put((req, res, next) =>
+        /*const result = */await words.insertOne(userId, native, learnable, photo, labelId);
+
+		res.send(true);
+	})
+    .put(async (req, res, next) =>
     {
         const body = req.body;
 
@@ -38,61 +37,65 @@ router.route('/')
             deletePhoto(id);
         }
 
-        words.updateOne(id, native, learnable, photo, labelId, (/*result*/) =>
-        {
-            res.send(true);
-        });
+        /*const result = */await words.updateOne(id, native, learnable, photo, labelId);
+
+        res.send(true);
     })
-    .delete((req, res, next) =>
+    .delete(async (req, res, next) =>
     {
         const id = req.body.id;
 
         deletePhoto(id);
 
-        words.deleteById(id, (/*result*/) =>
-        {
-            res.send(true);
-        });
+        /*const result = */await words.deleteById(id);
+
+        res.send(true);
     });
 
 
-router.get('/game/:labelId/:sort/:first', (req, res, next) =>
+router.get('/game/:labelId/:sort/:first', async (req, res, next) =>
 {
     const userId = global.getUserId(req);
     const labelId = req.params.labelId;
     const sort = Number(req.params.sort);
     const showFirst = Boolean(req.params.first);
 
-    words.getWithSort(userId, labelId, sort, showFirst, (results) =>
-    {
-        res.send(results);
-    });
+	res.send(await words.getWithSort(userId, labelId, sort, showFirst));
 });
 
 
 module.exports = router;
 
 
-
-function deletePhoto (id, callback = new Function())
+/**
+ *
+ * @param id
+ * @return {Promise<boolean>}
+ */
+function deletePhoto (id)
 {
-    words.getById(id, (result) =>
-    {
-        if (result)
-        {
-            const photo = global.photoDirectory + result.photo;
-            fs.exists(photo, (exists) =>
-            {
-                if (exists)
-                {
-                    fs.unlink(photo, () =>
-                    {
-                        return callback(true);
-                    });
-                }
+    return new Promise((resolve) =>
+	{
+		 words.getById(id).then((result) =>
+		 {
+			 if (result)
+			 {
+				 const photo = global.photoDirectory + result.photo;
+				 fs.exists(photo, (exists) =>
+				 {
+					 if (exists)
+					 {
+						 fs.unlink(photo, () =>
+						 {
+							 return resolve(true);
+						 });
+					 }
 
-                return callback(false);
-            });
-        }
-    });
+					 return resolve(false);
+				 });
+			 }
+		 });
+
+		 return resolve(false);
+	});
 }

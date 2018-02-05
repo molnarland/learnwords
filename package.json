@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "clear && node app.js",
+    "start": "clear && node ./bin/www",
     "test": "clear && mocha",
     "header": "clear && cd public/ && gulp jsHeader",
     "index": "clear && cd public/ && gulp jsIndex",

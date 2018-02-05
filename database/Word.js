@@ -17,29 +17,69 @@ class Word extends DB
 		return new Promise(async (resolve) => resolve(await super.getAll(this.table, word.getUserId())));
 	}
 
-    getById (_id, callback)
+	/**
+	 * @param {string} _id
+	 * @return {Promise<object>}
+	 */
+    getById (_id)
     {
-        super.getById(this.table, _id, callback);
+        return new Promise((resolve) =>
+		{
+			super.getById(this.table, _id)
+				 .then(resolve);
+		});
     }
 
-    insertOne (userId, native, learnable, photo, labelId, callback)
+	/**
+	 * @param {string} userId
+	 * @param {string} native
+	 * @param {string} learnable
+	 * @param {string} photo
+	 * @param {string} labelId
+	 * @return {Promise<insertOneWriteOpResult>}
+	 */
+    insertOne (userId, native, learnable, photo, labelId)
     {
-        const word = new Model(userId, native, learnable, labelId, photo);
+		return new Promise((resolve) =>
+		{
+			const word = new Model(userId, native, learnable, labelId, photo);
 
-        super.insertOne(this.table, word, callback);
+			super.insertOne(this.table, word)
+				 .then(resolve);
+		});
     }
 
-    updateOne (_id, native, learnable, photo, labelId, callback)
-    {
-        const word = new Model(null, native, learnable, labelId, photo);
+	/**
+	 * @param {string} _id
+	 * @param {string} native
+	 * @param {string} learnable
+	 * @param {string} photo
+	 * @param {string} labelId
+	 * @return {Promise<updateWriteOpResult>}
+	 */
+    updateOne (_id, native, learnable, photo, labelId)
+	{
+		return new Promise((resolve) =>
+		{
+			const word = new Model(null, native, learnable, labelId, photo);
 
-        super.updateOne(this.table, { _id: this.objectId(_id) }, { $set: word }, callback);
-    }
+			super.updateOne(this.table, { _id: this.objectId(_id) }, { $set: word })
+				 .then(resolve);
+		});
+	}
 
-    deleteById (_id, callback)
-    {
-        super.deleteById(this.table, _id, callback);
-    }
+	/**
+	 * @param _id
+	 * @return {Promise<deleteWriteOpResult>}
+	 */
+    deleteById (_id)
+	{
+		return new Promise((resolve) =>
+		{
+			super.deleteById(this.table, _id)
+				 .then(resolve);
+		});
+	}
 
     /**
      * @param {string} userId
@@ -53,23 +93,24 @@ class Word extends DB
      * @param {boolean} showFirst
      *      false - native
      *      true - learnable
-     * @param {function} callback
+	 * @return {Promise<object>}
      */
-    getWithSort (userId, labelId, sort, showFirst, callback)
-    {
-        const criteria = this._makeUserAndLabelObject(userId, labelId);
-        const sorting = this._makeSortObject(sort, showFirst);
+    getWithSort (userId, labelId, sort, showFirst)
+	{
+		return new Promise(async (resolve) =>
+		{
+			const criteria = this._makeUserAndLabelObject(userId, labelId);
+			const sorting = this._makeSortObject(sort, showFirst);
 
-        super.getWithShort(this.table, criteria, sorting, (results) =>
-        {
-            if (sort === 4)
-            {
-                results = global.shuffleArray(results);
-            }
+			let results = await super.getWithShort(this.table, criteria, sorting);
+			if (sort === 4)
+			{
+				results = global.shuffleArray(results);
+			}
 
-            return callback(results);
-        });
-    }
+			return resolve(results);
+		});
+	}
 
     /**
      * @param {string} user
