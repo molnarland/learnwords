@@ -46,4 +46,33 @@ export default class ListWords extends List
             store: this.WINDOW_NAME_OF_WORDS
         });
     }
+
+
+	/**
+	 * @param {string} id
+	 * @param {string} native
+	 * @param {string} learnable
+	 */
+	createOnsElement(id, native, learnable)
+	{
+		return super.createOnsElement(
+			`<ons-list-item data-id=${id} tappable modifier="longdivider">
+                <div class="left">${native}</div>
+                <div class="center"><ons-icon icon="arrows-h"></ons-icon></div>
+                <div class="right">${learnable}</div>
+			</ons-list-item>`
+		);
+	}
+
+	postPushBack(page)
+	{
+		super.postPushBack(page, (editedItem) =>
+		{
+			const { id, native, learnable, labelId, photo } = editedItem;
+
+			const editedElem = this.q(`${this.selectorOfChangeItem}[data-id="${id}"]`);
+			editedElem.querySelector('.left').innerHTML = native;
+			editedElem.querySelector('.right').innerHTML = learnable;
+		})
+	}
 }

@@ -33307,6 +33307,36 @@
 	                store: this.WINDOW_NAME_OF_WORDS
 	            });
 	        }
+	
+	        /**
+	         * @param {string} id
+	         * @param {string} native
+	         * @param {string} learnable
+	         */
+	
+	    }, {
+	        key: 'createOnsElement',
+	        value: function createOnsElement(id, native, learnable) {
+	            return _get(ListWords.prototype.__proto__ || Object.getPrototypeOf(ListWords.prototype), 'createOnsElement', this).call(this, '<ons-list-item data-id=' + id + ' tappable modifier="longdivider">\n                <div class="left">' + native + '</div>\n                <div class="center"><ons-icon icon="arrows-h"></ons-icon></div>\n                <div class="right">' + learnable + '</div>\n\t\t\t</ons-list-item>');
+	        }
+	    }, {
+	        key: 'postPushBack',
+	        value: function postPushBack(page) {
+	            var _this3 = this;
+	
+	            _get(ListWords.prototype.__proto__ || Object.getPrototypeOf(ListWords.prototype), 'postPushBack', this).call(this, page, function (editedItem) {
+	                var id = editedItem.id,
+	                    native = editedItem.native,
+	                    learnable = editedItem.learnable,
+	                    labelId = editedItem.labelId,
+	                    photo = editedItem.photo;
+	
+	
+	                var editedElem = _this3.q(_this3.selectorOfChangeItem + '[data-id="' + id + '"]');
+	                editedElem.querySelector('.left').innerHTML = native;
+	                editedElem.querySelector('.right').innerHTML = learnable;
+	            });
+	        }
 	    }]);
 	
 	    return ListWords;
@@ -33505,9 +33535,15 @@
 	
 				_get(List.prototype.__proto__ || Object.getPrototypeOf(List.prototype), 'pushPage', this).call(this, where, data, animation);
 			}
+	
+			/**
+	   * @param {object} page
+	   * @param {function} editCallback
+	   */
+	
 		}, {
 			key: 'postPushBack',
-			value: function postPushBack(page) {
+			value: function postPushBack(page, editCallback) {
 				_get(List.prototype.__proto__ || Object.getPrototypeOf(List.prototype), 'postPushBack', this).call(this, page);
 	
 				var data = page.data;
@@ -33531,36 +33567,15 @@
 						}
 					case this.EVENT_EDIT_AN_ITEM:
 						{
-							var _data$editedItem = data.editedItem,
-							    _id = _data$editedItem.id,
-							    _native = _data$editedItem.native,
-							    _learnable = _data$editedItem.learnable,
-							    labelId = _data$editedItem.labelId,
-							    photo = _data$editedItem.photo;
-	
-	
-							var edited = this.q(this.selectorOfChangeItem + '[data-id="' + _id + '"]');
-							edited.querySelector('.left').innerHTML = _native;
-							edited.querySelector('.right').innerHTML = _learnable;
-	
+							editCallback(data.editedItem);
 							break;
 						}
 					default:
 						break;
 	
 				}
-			}
 	
-			/**
-	   * @param {string} id
-	   * @param {string} native
-	   * @param {string} learnable
-	   */
-	
-		}, {
-			key: 'createOnsElement',
-			value: function createOnsElement(id, native, learnable) {
-				return _get(List.prototype.__proto__ || Object.getPrototypeOf(List.prototype), 'createOnsElement', this).call(this, '<ons-list-item data-id=' + id + ' tappable modifier="longdivider">\n                <div class="left">' + native + '</div>\n                <div class="center"><ons-icon icon="arrows-h"></ons-icon></div>\n                <div class="right">' + learnable + '</div>\n\t\t\t</ons-list-item>');
+				delete page.data.event;
 			}
 		}]);
 	
@@ -34158,7 +34173,6 @@
 	                    var index = window[_this5.store].findIndex(function (item) {
 	                        console.log(item, id);return item._id === id;
 	                    });
-	                    console.log(index);
 	                    if (index > -1) {
 	                        window[_this5.store].splice(index, 1);
 	                    }
@@ -34255,6 +34269,21 @@
 	                store: 'labels'
 	            });
 	        }
+	    }, {
+	        key: 'postPushBack',
+	        value: function postPushBack(page) {
+	            var _this3 = this;
+	
+	            _get(ListLabels.prototype.__proto__ || Object.getPrototypeOf(ListLabels.prototype), 'postPushBack', this).call(this, page, function (editedItem) {
+	                var id = editedItem.id,
+	                    name = editedItem.name,
+	                    userId = editedItem.userId;
+	
+	
+	                var editedElem = _this3.q(_this3.selectorOfChangeItem + '[data-id="' + id + '"');
+	                editedElem.querySelector('.center').innerHTML = name;
+	            });
+	        }
 	    }]);
 	
 	    return ListLabels;
@@ -34344,6 +34373,7 @@
 	    }, {
 	        key: 'setValues',
 	        value: function setValues() {
+	            console.log(this.page.data.item);
 	            this.q(this.SELECTOR_OF_LABEL_INPUT).value = this.page.data.item.name;
 	        }
 	    }, {
@@ -34353,10 +34383,10 @@
 	
 	            this.validate(function () {
 	                _get(LabelsForm.prototype.__proto__ || Object.getPrototypeOf(LabelsForm.prototype), 'editItem', _this3).call(_this3, {
+	                    id: _this3.page.data.item._id,
 	                    userId: _this3.page.data.item.userId,
-	                    oldLabel: _this3.page.data.item.name,
-	                    newLabel: _this3.getLabelFromInput()
-	                }, tihs.WINDOW_NAME_OF_WORDS);
+	                    name: _this3.getLabelFromInput()
+	                });
 	            });
 	        }
 	    }, {

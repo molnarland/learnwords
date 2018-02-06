@@ -48,6 +48,7 @@ export default class LabelsForm extends Form
 
     setValues ()
     {
+        console.log(this.page.data.item);
         this.q(this.SELECTOR_OF_LABEL_INPUT).value = this.page.data.item.name;
     }
 
@@ -56,10 +57,10 @@ export default class LabelsForm extends Form
         this.validate(() =>
         {
             super.editItem({
+                id: this.page.data.item._id,
                 userId: this.page.data.item.userId,
-                oldLabel: this.page.data.item.name,
-                newLabel: this.getLabelFromInput()
-            }, tihs.WINDOW_NAME_OF_WORDS);
+                name: this.getLabelFromInput()
+            });
         });
     }
 

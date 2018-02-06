@@ -23,10 +23,10 @@ router.route('/')
     .put(async (req, res, next) =>
 	{
 		const userId = req.body.userId; //TODO user id and label name
-		const newLabel = req.body.newLabel;
-		const oldLabel = req.body.oldLabel;
+		const newLabel = req.body.name;
+		const id = req.body.id;
 
-		await labels.updateOne(userId, oldLabel, newLabel);
+		await labels.updateOne(id, userId, newLabel);
 
 		res.send(true);
 

@@ -36,17 +36,16 @@ class Label extends DB
     }
 
 	/**
-     *
+	 * @param {string} id
 	 * @param {string} userId
-	 * @param {string} oldName
 	 * @param {string} newName
 	 * @return {Promise<updateWriteOpResult>}
 	 */
-    updateOne (userId, oldName, newName)
+    updateOne (id, userId, newName)
 	{
 		return new Promise(async (resolve) =>
 		{
-			const oldLabel = new Model(userId, oldName);
+			const oldLabel = new Model(userId, id);
 			const newLabel = new Model(userId, newName);
 
 			resolve(await super.updateOne(this.table, oldLabel, { $set: newLabel }));

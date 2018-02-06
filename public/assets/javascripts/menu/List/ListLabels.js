@@ -50,4 +50,15 @@ export default class ListLabels extends List
             store: 'labels'
         });
     }
+
+    postPushBack(page)
+    {
+        super.postPushBack(page, (editedItem) =>
+        {
+            const {id, name, userId} = editedItem;
+
+            const editedElem = this.q(`${this.selectorOfChangeItem}[data-id="${id}"`);
+            editedElem.querySelector('.center').innerHTML = name;
+        });
+    }
 }

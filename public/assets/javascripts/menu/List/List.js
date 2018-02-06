@@ -122,7 +122,11 @@ export default class List extends Global
 		super.pushPage(where, data, animation);
 	}
 
-	postPushBack (page)
+	/**
+	 * @param {object} page
+	 * @param {function} editCallback
+	 */
+	postPushBack (page, editCallback)
 	{
 		super.postPushBack(page);
 
@@ -144,34 +148,14 @@ export default class List extends Global
 			}
 			case this.EVENT_EDIT_AN_ITEM:
 			{
-				const {id,native,learnable,labelId,photo} = data.editedItem;
-
-				const edited = this.q(`${this.selectorOfChangeItem}[data-id="${id}"]`);
-				edited.querySelector('.left').innerHTML = native;
-				edited.querySelector('.right').innerHTML = learnable;
-
+				editCallback(data.editedItem);
 				break;
 			}
 			default:
 				break;
 
 		}
-	}
 
-
-	/**
-	 * @param {string} id
-	 * @param {string} native
-	 * @param {string} learnable
-	 */
-	createOnsElement(id, native, learnable)
-	{
-		return super.createOnsElement(
-		    `<ons-list-item data-id=${id} tappable modifier="longdivider">
-                <div class="left">${native}</div>
-                <div class="center"><ons-icon icon="arrows-h"></ons-icon></div>
-                <div class="right">${learnable}</div>
-			</ons-list-item>`
-        );
+		delete page.data.event;
 	}
 }
