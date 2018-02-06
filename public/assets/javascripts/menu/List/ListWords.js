@@ -33,19 +33,17 @@ export default class ListWords extends List
      * @desc Define html each element
      */
     showItems ()
-    {
-        super.showItems({
-            showableHtml: (word) =>
-            {
-                const id = word._id;
-                const native = word.native;
-                const learnable = word.learnable;
+	{
+		super.showItems({
+			showableHtml: (word) =>
+			{
+				const { _id: id, native, learnable } = word;
 
-                return this.createOnsElement(id, native, learnable);
-            },
-            store: this.WINDOW_NAME_OF_WORDS
-        });
-    }
+				return this.createOnsElement({ id, native, learnable });
+			},
+			store: this.WINDOW_NAME_OF_WORDS
+		});
+	}
 
 
 	/**
@@ -53,7 +51,7 @@ export default class ListWords extends List
 	 * @param {string} native
 	 * @param {string} learnable
 	 */
-	createOnsElement(id, native, learnable)
+	createOnsElement({ id, native, learnable })
 	{
 		return super.createOnsElement(
 			`<ons-list-item data-id=${id} tappable modifier="longdivider">

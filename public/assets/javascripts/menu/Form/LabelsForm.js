@@ -42,13 +42,12 @@ export default class LabelsForm extends Form
 	{
 		this.validate(() =>
 		{
-			super.setNewItem({ label: this.getLabelFromInput() });
+			super.setNewItem({ name: this.getLabelFromInput() });
 		});
 	}
 
     setValues ()
     {
-        console.log(this.page.data.item);
         this.q(this.SELECTOR_OF_LABEL_INPUT).value = this.page.data.item.name;
     }
 

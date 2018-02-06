@@ -136,8 +136,7 @@ export default class List extends Global
 		{
 			case this.EVENT_ADD_NEW_ITEM:
 			{
-				const { id, native, learnable } = data.newItem;
-				this.setDomElement({ where: this.selectorOfList, html: this.createOnsElement(id, native, learnable) });
+				this.setDomElement({ where: this.selectorOfList, html: this.createOnsElement(data.newItem) });
 
 				break;
 			}

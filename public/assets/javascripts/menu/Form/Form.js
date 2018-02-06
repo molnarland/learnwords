@@ -183,7 +183,7 @@ export default class Form extends Global
             data: {id: id},
             success: () =>
 			{
-				const index = window[this.store].findIndex(item => {console.log(item, id);return item._id === id});
+				const index = window[this.store].findIndex(item => item._id === id);
 				if (index > -1)
 				{
 					window[this.store].splice(index, 1);

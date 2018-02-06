@@ -33235,7 +33235,7 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+		value: true
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -33255,91 +33255,96 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	var ListWords = function (_List) {
-	    _inherits(ListWords, _List);
+		_inherits(ListWords, _List);
 	
-	    function ListWords(page) {
-	        _classCallCheck(this, ListWords);
+		function ListWords(page) {
+			_classCallCheck(this, ListWords);
 	
-	        var _this = _possibleConstructorReturn(this, (ListWords.__proto__ || Object.getPrototypeOf(ListWords)).call(this, page));
+			var _this = _possibleConstructorReturn(this, (ListWords.__proto__ || Object.getPrototypeOf(ListWords)).call(this, page));
 	
-	        _this.plusButton = '#plus-word';
-	        _this.changeForm = 'change-words-form';
+			_this.plusButton = '#plus-word';
+			_this.changeForm = 'change-words-form';
 	
-	        _this.titleOfNewForm = 'New word';
-	        _this.titleOfEditForm = 'Edit word';
+			_this.titleOfNewForm = 'New word';
+			_this.titleOfEditForm = 'Edit word';
 	
-	        _this.selectorOfList = '#change-words-items';
-	        _this.selectorOfChangeItem = _this.selectorOfList + ' ons-list-item';
+			_this.selectorOfList = '#change-words-items';
+			_this.selectorOfChangeItem = _this.selectorOfList + ' ons-list-item';
 	
-	        _this.ajaxOfGetAll = {
-	            url: _this.URL_OF_WORD_METHODS + '/',
-	            method: 'GET'
-	        };
+			_this.ajaxOfGetAll = {
+				url: _this.URL_OF_WORD_METHODS + '/',
+				method: 'GET'
+			};
 	
-	        _this.init();
-	        return _this;
-	    }
+			_this.init();
+			return _this;
+		}
 	
-	    _createClass(ListWords, [{
-	        key: 'init',
-	        value: function init() {
-	            this.initOfPushToForm();
-	            this.showItems();
-	        }
+		_createClass(ListWords, [{
+			key: 'init',
+			value: function init() {
+				this.initOfPushToForm();
+				this.showItems();
+			}
 	
-	        /**
-	         * @desc Define html each element
-	         */
+			/**
+	   * @desc Define html each element
+	   */
 	
-	    }, {
-	        key: 'showItems',
-	        value: function showItems() {
-	            var _this2 = this;
+		}, {
+			key: 'showItems',
+			value: function showItems() {
+				var _this2 = this;
 	
-	            _get(ListWords.prototype.__proto__ || Object.getPrototypeOf(ListWords.prototype), 'showItems', this).call(this, {
-	                showableHtml: function showableHtml(word) {
-	                    var id = word._id;
-	                    var native = word.native;
-	                    var learnable = word.learnable;
-	
-	                    return _this2.createOnsElement(id, native, learnable);
-	                },
-	                store: this.WINDOW_NAME_OF_WORDS
-	            });
-	        }
-	
-	        /**
-	         * @param {string} id
-	         * @param {string} native
-	         * @param {string} learnable
-	         */
-	
-	    }, {
-	        key: 'createOnsElement',
-	        value: function createOnsElement(id, native, learnable) {
-	            return _get(ListWords.prototype.__proto__ || Object.getPrototypeOf(ListWords.prototype), 'createOnsElement', this).call(this, '<ons-list-item data-id=' + id + ' tappable modifier="longdivider">\n                <div class="left">' + native + '</div>\n                <div class="center"><ons-icon icon="arrows-h"></ons-icon></div>\n                <div class="right">' + learnable + '</div>\n\t\t\t</ons-list-item>');
-	        }
-	    }, {
-	        key: 'postPushBack',
-	        value: function postPushBack(page) {
-	            var _this3 = this;
-	
-	            _get(ListWords.prototype.__proto__ || Object.getPrototypeOf(ListWords.prototype), 'postPushBack', this).call(this, page, function (editedItem) {
-	                var id = editedItem.id,
-	                    native = editedItem.native,
-	                    learnable = editedItem.learnable,
-	                    labelId = editedItem.labelId,
-	                    photo = editedItem.photo;
+				_get(ListWords.prototype.__proto__ || Object.getPrototypeOf(ListWords.prototype), 'showItems', this).call(this, {
+					showableHtml: function showableHtml(word) {
+						var id = word._id,
+						    native = word.native,
+						    learnable = word.learnable;
 	
 	
-	                var editedElem = _this3.q(_this3.selectorOfChangeItem + '[data-id="' + id + '"]');
-	                editedElem.querySelector('.left').innerHTML = native;
-	                editedElem.querySelector('.right').innerHTML = learnable;
-	            });
-	        }
-	    }]);
+						return _this2.createOnsElement({ id: id, native: native, learnable: learnable });
+					},
+					store: this.WINDOW_NAME_OF_WORDS
+				});
+			}
 	
-	    return ListWords;
+			/**
+	   * @param {string} id
+	   * @param {string} native
+	   * @param {string} learnable
+	   */
+	
+		}, {
+			key: 'createOnsElement',
+			value: function createOnsElement(_ref) {
+				var id = _ref.id,
+				    native = _ref.native,
+				    learnable = _ref.learnable;
+	
+				return _get(ListWords.prototype.__proto__ || Object.getPrototypeOf(ListWords.prototype), 'createOnsElement', this).call(this, '<ons-list-item data-id=' + id + ' tappable modifier="longdivider">\n                <div class="left">' + native + '</div>\n                <div class="center"><ons-icon icon="arrows-h"></ons-icon></div>\n                <div class="right">' + learnable + '</div>\n\t\t\t</ons-list-item>');
+			}
+		}, {
+			key: 'postPushBack',
+			value: function postPushBack(page) {
+				var _this3 = this;
+	
+				_get(ListWords.prototype.__proto__ || Object.getPrototypeOf(ListWords.prototype), 'postPushBack', this).call(this, page, function (editedItem) {
+					var id = editedItem.id,
+					    native = editedItem.native,
+					    learnable = editedItem.learnable,
+					    labelId = editedItem.labelId,
+					    photo = editedItem.photo;
+	
+	
+					var editedElem = _this3.q(_this3.selectorOfChangeItem + '[data-id="' + id + '"]');
+					editedElem.querySelector('.left').innerHTML = native;
+					editedElem.querySelector('.right').innerHTML = learnable;
+				});
+			}
+		}]);
+	
+		return ListWords;
 	}(_List3.default);
 	
 	exports.default = ListWords;
@@ -33551,12 +33556,7 @@
 				switch (data.event) {
 					case this.EVENT_ADD_NEW_ITEM:
 						{
-							var _data$newItem = data.newItem,
-							    id = _data$newItem.id,
-							    native = _data$newItem.native,
-							    learnable = _data$newItem.learnable;
-	
-							this.setDomElement({ where: this.selectorOfList, html: this.createOnsElement(id, native, learnable) });
+							this.setDomElement({ where: this.selectorOfList, html: this.createOnsElement(data.newItem) });
 	
 							break;
 						}
@@ -34171,7 +34171,7 @@
 	                data: { id: id },
 	                success: function success() {
 	                    var index = window[_this5.store].findIndex(function (item) {
-	                        console.log(item, id);return item._id === id;
+	                        return item._id === id;
 	                    });
 	                    if (index > -1) {
 	                        window[_this5.store].splice(index, 1);
@@ -34198,7 +34198,7 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+		value: true
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -34218,75 +34218,91 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	var ListLabels = function (_List) {
-	    _inherits(ListLabels, _List);
+		_inherits(ListLabels, _List);
 	
-	    function ListLabels(page) {
-	        _classCallCheck(this, ListLabels);
+		function ListLabels(page) {
+			_classCallCheck(this, ListLabels);
 	
-	        var _this = _possibleConstructorReturn(this, (ListLabels.__proto__ || Object.getPrototypeOf(ListLabels)).call(this, page));
+			var _this = _possibleConstructorReturn(this, (ListLabels.__proto__ || Object.getPrototypeOf(ListLabels)).call(this, page));
 	
-	        _this.plusButton = '#plus-label';
-	        _this.changeForm = 'change-label-form';
+			_this.plusButton = '#plus-label';
+			_this.changeForm = 'change-label-form';
 	
-	        _this.titleOfNewForm = 'New label';
-	        _this.titleOfEditForm = 'Edit label';
+			_this.titleOfNewForm = 'New label';
+			_this.titleOfEditForm = 'Edit label';
 	
-	        _this.selectorOfList = '#change-labels-items';
-	        _this.selectorOfChangeItem = _this.selectorOfList + ' ons-list-item';
+			_this.selectorOfList = '#change-labels-items';
+			_this.selectorOfChangeItem = _this.selectorOfList + ' ons-list-item';
 	
-	        _this.ajaxOfGetAll = {
-	            url: _this.URL_OF_LABEL_METHODS + '/',
-	            method: 'GET'
-	        };
+			_this.ajaxOfGetAll = {
+				url: _this.URL_OF_LABEL_METHODS + '/',
+				method: 'GET'
+			};
 	
-	        _this.init();
-	        return _this;
-	    }
+			_this.init();
+			return _this;
+		}
 	
-	    _createClass(ListLabels, [{
-	        key: 'init',
-	        value: function init() {
-	            this.showItems();
-	            this.initOfPushToForm();
-	        }
+		_createClass(ListLabels, [{
+			key: 'init',
+			value: function init() {
+				this.showItems();
+				this.initOfPushToForm();
+			}
 	
-	        /**
-	         * @desc Define html each element
-	         */
+			/**
+	   * @desc Define html each element
+	   */
 	
-	    }, {
-	        key: 'showItems',
-	        value: function showItems() {
-	            var _this2 = this;
+		}, {
+			key: 'showItems',
+			value: function showItems() {
+				var _this2 = this;
 	
-	            _get(ListLabels.prototype.__proto__ || Object.getPrototypeOf(ListLabels.prototype), 'showItems', this).call(this, {
-	                showableHtml: function showableHtml(label) {
-	                    var id = label._id;
-	                    var name = label.name;
-	
-	                    return _this2.createOnsElement('<ons-list-item data-id="' + id + '" tappable modifier="longdivider">' + ('<div class="center">' + name + '</div>') + '<div class="right"><ons-icon icon="ion-edit"></ons-icon></div>' + '</ons-list-item>');
-	                },
-	                store: 'labels'
-	            });
-	        }
-	    }, {
-	        key: 'postPushBack',
-	        value: function postPushBack(page) {
-	            var _this3 = this;
-	
-	            _get(ListLabels.prototype.__proto__ || Object.getPrototypeOf(ListLabels.prototype), 'postPushBack', this).call(this, page, function (editedItem) {
-	                var id = editedItem.id,
-	                    name = editedItem.name,
-	                    userId = editedItem.userId;
+				_get(ListLabels.prototype.__proto__ || Object.getPrototypeOf(ListLabels.prototype), 'showItems', this).call(this, {
+					showableHtml: function showableHtml(label) {
+						var id = label._id,
+						    name = label.name;
 	
 	
-	                var editedElem = _this3.q(_this3.selectorOfChangeItem + '[data-id="' + id + '"');
-	                editedElem.querySelector('.center').innerHTML = name;
-	            });
-	        }
-	    }]);
+						return _this2.createOnsElement({ id: id, name: name });
+					},
+					store: 'labels'
+				});
+			}
 	
-	    return ListLabels;
+			/**
+	   * @param {string} id
+	   * @param {string} name Obviously new name of label
+	   */
+	
+		}, {
+			key: 'createOnsElement',
+			value: function createOnsElement(_ref) {
+				var id = _ref.id,
+				    name = _ref.name;
+	
+				console.log(id, name);
+				return _get(ListLabels.prototype.__proto__ || Object.getPrototypeOf(ListLabels.prototype), 'createOnsElement', this).call(this, '<ons-list-item data-id="' + id + '" tappable modifier="longdivider">' + ('<div class="center">' + name + '</div>') + '<div class="right"><ons-icon icon="ion-edit"></ons-icon></div>' + '</ons-list-item>');
+			}
+		}, {
+			key: 'postPushBack',
+			value: function postPushBack(page) {
+				var _this3 = this;
+	
+				_get(ListLabels.prototype.__proto__ || Object.getPrototypeOf(ListLabels.prototype), 'postPushBack', this).call(this, page, function (editedItem) {
+					var id = editedItem.id,
+					    name = editedItem.name,
+					    userId = editedItem.userId;
+	
+	
+					var editedElem = _this3.q(_this3.selectorOfChangeItem + '[data-id="' + id + '"');
+					editedElem.querySelector('.center').innerHTML = name;
+				});
+			}
+		}]);
+	
+		return ListLabels;
 	}(_List3.default);
 	
 	exports.default = ListLabels;
@@ -34367,13 +34383,12 @@
 	            var _this2 = this;
 	
 	            this.validate(function () {
-	                _get(LabelsForm.prototype.__proto__ || Object.getPrototypeOf(LabelsForm.prototype), 'setNewItem', _this2).call(_this2, { label: _this2.getLabelFromInput() });
+	                _get(LabelsForm.prototype.__proto__ || Object.getPrototypeOf(LabelsForm.prototype), 'setNewItem', _this2).call(_this2, { name: _this2.getLabelFromInput() });
 	            });
 	        }
 	    }, {
 	        key: 'setValues',
 	        value: function setValues() {
-	            console.log(this.page.data.item);
 	            this.q(this.SELECTOR_OF_LABEL_INPUT).value = this.page.data.item.name;
 	        }
 	    }, {

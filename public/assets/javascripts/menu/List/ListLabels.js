@@ -33,32 +33,41 @@ export default class ListLabels extends List
      * @desc Define html each element
      */
     showItems ()
-    {
-        super.showItems({
-            showableHtml: (label) =>
-            {
-                const id = label._id;
-                const name = label.name;
+	{
+		super.showItems({
+			showableHtml: (label) =>
+			{
+				const { _id: id, name } = label;
 
-                return this.createOnsElement(
-                    `<ons-list-item data-id="${id}" tappable modifier="longdivider">` +
-                        `<div class="center">${name}</div>` +
-                        `<div class="right"><ons-icon icon="ion-edit"></ons-icon></div>` +
-                    `</ons-list-item>`
-                );
-            },
-            store: 'labels'
-        });
-    }
+				return this.createOnsElement({ id, name });
+			},
+			store: 'labels'
+		});
+	}
+
+	/**
+	 * @param {string} id
+	 * @param {string} name Obviously new name of label
+	 */
+	createOnsElement ({ id, name })
+	{
+		console.log(id, name);
+		return super.createOnsElement(
+			`<ons-list-item data-id="${id}" tappable modifier="longdivider">` +
+				`<div class="center">${name}</div>` +
+				`<div class="right"><ons-icon icon="ion-edit"></ons-icon></div>` +
+			`</ons-list-item>`
+		);
+	}
 
     postPushBack(page)
-    {
-        super.postPushBack(page, (editedItem) =>
-        {
-            const {id, name, userId} = editedItem;
+	{
+		super.postPushBack(page, (editedItem) =>
+		{
+			const { id, name, userId } = editedItem;
 
-            const editedElem = this.q(`${this.selectorOfChangeItem}[data-id="${id}"`);
-            editedElem.querySelector('.center').innerHTML = name;
-        });
-    }
+			const editedElem = this.q(`${this.selectorOfChangeItem}[data-id="${id}"`);
+			editedElem.querySelector('.center').innerHTML = name;
+		});
+	}
 }
