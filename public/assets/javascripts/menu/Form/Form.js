@@ -76,10 +76,9 @@ export default class Form extends Global
      * @desc Show error and return false in callback if now valid otherwise return true
      *
      * @param {array} selectors
-     * @param {function} callback
-     * @return {boolean|function}
+	 * @return {Promise<boolean>}
      */
-    validate (selectors, callback)
+    async validate (selectors)
     {
         let valid = true;
 
@@ -100,7 +99,7 @@ export default class Form extends Global
 
         if (valid)
         {
-            return callback(valid);
+            return valid;
         }
 
         return false;
@@ -110,24 +109,23 @@ export default class Form extends Global
      * @param {object} data
      */
     setNewItem (data)
-    {
-        this.ajax({
-            method: this.ajaxOfSaveOne.method,
-            url: this.ajaxOfSaveOne.url,
-            data: data,
-            success: (response) =>
-            {
-                if (response && response.success && response.insertedId && response.userId)
-				{
-					data._id = response.insertedId;
-					data.userId = response.userId;
-					window[this.store].push(data);
+	{
+		this.ajax({
+			method: this.ajaxOfSaveOne.method,
+			url: this.ajaxOfSaveOne.url,
+			data: data
+		}).then((response) =>
+		{
+			if (response && response.success && response.insertedId && response.userId)
+			{
+				data._id = response.insertedId;
+				data.userId = response.userId;
+				window[this.store].push(data);
 
-					this.pushBack({refresh: true, data: { event: this.EVENT_ADD_NEW_ITEM, newItem: data } });
-				}
-            }
-        });
-    }
+				this.pushBack({ refresh: true, data: { event: this.EVENT_ADD_NEW_ITEM, newItem: data } });
+			}
+		})
+	}
 
     /**
      * @desc Default values
@@ -142,21 +140,20 @@ export default class Form extends Global
 		this.ajax({
 			method: this.ajaxOfEditOne.method,
 			url: this.ajaxOfEditOne.url,
-			data: data,
-			success: (response) =>
+			data: data
+		}).then((response) =>
+		{
+			if (response)
 			{
-				if (response)
+				const index = window[this.store].findIndex(item => item._id === data.id);
+				if (index > -1)
 				{
-					const index = window[this.store].findIndex(item => item._id === data.id);
-					if (index > -1)
-					{
-						data._id = data.id;
+					data._id = data.id;
 
-						window[this.store][index] = data;
-					}
-
-					this.pushBack({ data: { event: this.EVENT_EDIT_AN_ITEM, editedItem: data } });
+					window[this.store][index] = data;
 				}
+
+				this.pushBack({ data: { event: this.EVENT_EDIT_AN_ITEM, editedItem: data } });
 			}
 		});
 	}
@@ -174,23 +171,22 @@ export default class Form extends Global
     }
 
     deleteItem ()
-    {
-        const id = this.page.data.item._id;
+	{
+		const id = this.page.data.item._id;
 
-        this.ajax({
-            method: this.ajaxOfDeleteOne.method,
-            url: this.ajaxOfDeleteOne.url,
-            data: {id: id},
-            success: () =>
+		this.ajax({
+			method: this.ajaxOfDeleteOne.method,
+			url: this.ajaxOfDeleteOne.url,
+			data: { id: id }
+		}).then(() =>
+		{
+			const index = window[this.store].findIndex(item => item._id === id);
+			if (index > -1)
 			{
-				const index = window[this.store].findIndex(item => item._id === id);
-				if (index > -1)
-				{
-					window[this.store].splice(index, 1);
-				}
-
-				this.pushBack({ data: { event: this.EVENT_REMOVE_AN_ITEM, removedId: id } });
+				window[this.store].splice(index, 1);
 			}
-        });
-    }
+
+			this.pushBack({ data: { event: this.EVENT_REMOVE_AN_ITEM, removedId: id } });
+		});
+	}
 }

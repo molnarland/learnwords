@@ -30,20 +30,16 @@ export default class LabelsForm extends Form
 
     /**
      * @desc Call super function and pass default selectors
-     *
-     * @param {function} callback
+     * @return {Promise<boolean>}
      */
-    validate (callback)
+    async validate ()
     {
-        super.validate([this.SELECTOR_OF_LABEL_INPUT], callback);
+        return super.validate([this.SELECTOR_OF_LABEL_INPUT]);
     }
 
     setNewItem ()
 	{
-		this.validate(() =>
-		{
-			super.setNewItem({ name: this.getLabelFromInput() });
-		});
+		this.validate().then(() => super.setNewItem({ name: this.getLabelFromInput() }));
 	}
 
     setValues ()
@@ -53,7 +49,7 @@ export default class LabelsForm extends Form
 
     editItem ()
     {
-        this.validate(() =>
+        this.validate().then(() =>
         {
             super.editItem({
                 id: this.page.data.item._id,

@@ -75,20 +75,19 @@ export default class List extends Global
 			url: this.ajaxOfGetAll.url,
 			showWhere: this.selectorOfList,
 			showableHtml: showableHtml,
-			store: store,
-			after: () =>
+			store: store
+		}).then(() =>
+		{
+			let clickableItems = this.qAll(this.selectorOfChangeItem);
+			for (let clickableItem of clickableItems)
 			{
-				let clickableItems = this.qAll(this.selectorOfChangeItem);
-				for (let clickableItem of clickableItems)
+				clickableItem.addEventListener('click', () =>
 				{
-					clickableItem.addEventListener('click', () =>
-					{
-						this.pushPage(this.changeForm, {
-							title: this.titleOfEditForm,
-							item: window[store].find((item) => item._id == clickableItem.dataset.id),
-						}, 'lift');
-					});
-				}
+					this.pushPage(this.changeForm, {
+						title: this.titleOfEditForm,
+						item: window[store].find((item) => item._id == clickableItem.dataset.id),
+					}, 'lift');
+				});
 			}
 		});
 	}

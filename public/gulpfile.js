@@ -43,7 +43,7 @@ var paths = new Paths();
 
 var webpackObjectMaker = function (task)
 {
-    var entry = paths.changePathForWebpackEntry(task);
+    var entry = ['babel-polyfill', paths.changePathForWebpackEntry(task)];
 
     return {
         entry: entry,

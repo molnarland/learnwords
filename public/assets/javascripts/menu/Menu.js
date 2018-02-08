@@ -50,16 +50,14 @@ export default class Menu extends Global
      * @desc Add click event listener for each button what will push to correct page
      */
     goToPageByButtonClick ()
-    {
-        for (let index in this.INFO_OF_MAIN_PAGES)
-        {
-            const infoOfPage = this.INFO_OF_MAIN_PAGES[index];
-            this.initByClickPushPage(infoOfPage.button, infoOfPage.onsPage, null, () =>
-            {
-                window.location.hash = infoOfPage.urlHash;
-            });
-        }
-    }
+	{
+		for (let index in this.INFO_OF_MAIN_PAGES)
+		{
+			const infoOfPage = this.INFO_OF_MAIN_PAGES[index];
+			this.initByClickPushPage(infoOfPage.button, infoOfPage.onsPage, null)
+				.then(() => window.location.hash = infoOfPage.urlHash);
+		}
+	}
 
     /**
      * @desc At loading check hash in url and pass to there

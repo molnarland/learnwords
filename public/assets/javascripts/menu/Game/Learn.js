@@ -96,30 +96,29 @@ export default class Learn extends Game
 
 
     getWords ()
-    {
-        this.ajax({
-            method: this.AJAX_OF_GET_WORDS_FOR_LEARN.METHOD,
-            url: `${this.AJAX_OF_GET_WORDS_FOR_LEARN.URL}/`,
-            data: {
-                label: this.label,
-                sort: this.sort,
-                first: this.showFirst
-            },
-            success: (response) =>
-            {
-                if (response && response.length > 0)
-                {
-                    this.words = response;
-                    this.progressRate = this._getProgressRate();
-                    this._startTheLearn();
-                }
-                else
-                {
-                    this._setNoResult();
-                }
-            }
-        })
-    }
+	{
+		this.ajax({
+			method: this.AJAX_OF_GET_WORDS_FOR_LEARN.METHOD,
+			url: `${this.AJAX_OF_GET_WORDS_FOR_LEARN.URL}/`,
+			data: {
+				label: this.label,
+				sort: this.sort,
+				first: this.showFirst
+			}
+		}).then((response) =>
+		{
+			if (response && response.length > 0)
+			{
+				this.words = response;
+				this.progressRate = this._getProgressRate();
+				this._startTheLearn();
+			}
+			else
+			{
+				this._setNoResult();
+			}
+		})
+	}
 
     /**
      * @return {*}

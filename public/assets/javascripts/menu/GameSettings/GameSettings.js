@@ -30,7 +30,9 @@ export default class GameSettings extends Global
 
     init ()
     {
-        this.getLabelsForSelect(this.SELECTOR_OF_LABEL_INPUT, this.setDefaultValue.bind(this));
+        this.getLabelsForSelect(this.SELECTOR_OF_LABEL_INPUT)
+            .then(this.setDefaultValue.bind(this))
+            .catch(this.pushBack.bind(this));
         this.initOfPushToGame();
 
     }

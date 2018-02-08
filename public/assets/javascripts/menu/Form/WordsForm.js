@@ -86,44 +86,41 @@ export default class WordsForm extends Form
 
     /**
      * @desc Call super function and pass default selectors
-     *
-     * @param {function} callback
+	 * @return {Promise<boolean>}
      */
-    validate (callback)
+    async validate ()
     {
-        super.validate([this.SELECTOR_OF_NATIVE, this.SELECTOR_OF_LEARNABLE], callback);
+        return super.validate([this.SELECTOR_OF_NATIVE, this.SELECTOR_OF_LEARNABLE]);
     }
 
     setNewItem ()
-    {
-        this.validate(() =>
-        {
-            const file = this.getFile();
-            let data = {
-                native: this.getNative(),
-                learnable: this.getLearnable(),
-                label: this.getLabel()
-            };
+	{
+		this.validate().then(() =>
+		{
+			const file = this.getFile();
+			let data = {
+				native: this.getNative(),
+				learnable: this.getLearnable(),
+				label: this.getLabel()
+			};
 
+			if (file)
+			{
+				return this.ajax({
+					method: this.ajaxOfSavePhoto.method,
+					url: this.ajaxOfSavePhoto.url,
+					data: file,
+					file: true
+				}).then((photo) =>
+				{
+					data.photo = photo;
+					return super.setNewItem(data);
+				});
+			}
 
-            if (file)
-            {
-                return this.ajax({
-                    method: this.ajaxOfSavePhoto.method,
-                    url: this.ajaxOfSavePhoto.url,
-                    data: file,
-                    file: true,
-                    success: (photo) =>
-                    {
-                        data.photo = photo;
-                        super.setNewItem(data);
-                    }
-                });
-            }
-
-            return super.setNewItem(data);
-        });
-    }
+			return super.setNewItem(data);
+		});
+	}
 
 
     showLabelsInInput ()
@@ -143,7 +140,7 @@ export default class WordsForm extends Form
 
     editItem ()
     {
-        this.validate(() =>
+        this.validate().then(() =>
         {
             const file = this.getFile();
             const oldPhoto = this.page.data.item.photo;
@@ -155,19 +152,18 @@ export default class WordsForm extends Form
             };
 
             if (file)
-            {
-                return this.ajax({
-                    method: this.ajaxOfEditPhoto.method,
-                    url: this.ajaxOfEditPhoto.url,
-                    file: true,
-                    data: file,
-                    success: (photo) =>
-                    {
-                        data.photo = photo;
-                        super.editItem(data);
-                    }
-                });
-            }
+			{
+				return this.ajax({
+					method: this.ajaxOfEditPhoto.method,
+					url: this.ajaxOfEditPhoto.url,
+					file: true,
+					data: file
+				}).then((photo) =>
+				{
+					data.photo = photo;
+					return super.editItem(data);
+				});
+			}
 
             super.editItem(data);
         });

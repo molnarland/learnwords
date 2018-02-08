@@ -139,47 +139,53 @@ export default class Global
         });
     }
 
-    /**
-     * @desc Add click eventListener for an element what will push next page
+	/**
      *
-     * @param {string} selectorOfButton
-     * @param {string} where - Next page
-     * @param {object} [data]
-     * @param {object} [callback]
-     */
-    initByClickPushPage (selectorOfButton, where, data = {}, callback = new Function())
-    {
-        this.q(selectorOfButton).addEventListener('click', () =>
-        {
-            document.querySelector(this.SELECTOR_OF_NAVIGATOR).pushPage(where, data);
-            callback();
-        });
-    }
+	 /**
+	 * @desc Add click eventListener for an element what will push next page
+	 *
+	 * @param {string} selectorOfButton
+	 * @param {string} where - Next page
+	 * @param {object} [data]
+	 * @return {Promise<void>}
+	 */
+    initByClickPushPage (selectorOfButton, where, data = {})
+	{
+		return new Promise ((resolve) =>
+		{
+			this.q(selectorOfButton).addEventListener('click', () =>
+			{
+				document.querySelector(this.SELECTOR_OF_NAVIGATOR).pushPage(where, data);
+				resolve();
+			});
+		});
+	}
+
 
     /**
      * @desc Replace ':variable' part in url with data.variable
      *
      * @param {string} url
      * @param {object} data
-     * @param {function} callback
+     * @return {Promise<{url: string, data: object}>}
      */
-    replacePartsOfUrlWithData (url, data, callback)
-    {
-        if (data && !this.isEmptyObject(data) && url)
-        {
-            for (let index in data)
-            {
-                const argumentInUrl = `:${index}`;
-                if (url.search(argumentInUrl) > -1)
-                {
-                    url = url.replace(argumentInUrl, data[index]);
-                    delete data[index];
-                }
-            }
-        }
+    async replacePartsOfUrlWithData (url, data)
+	{
+		if (data && !this.isEmptyObject(data) && url)
+		{
+			for (let index in data)
+			{
+				const argumentInUrl = `:${index}`;
+				if (url.search(argumentInUrl) > -1)
+				{
+					url = url.replace(argumentInUrl, data[index]);
+					delete data[index];
+				}
+			}
+		}
 
-        callback(url, data);
-    }
+		return { url, data };
+	}
 
     /**
      * @param {object} object
@@ -196,56 +202,61 @@ export default class Global
      * @param {string} [method]
      * @param {string} url
      * @param {object} [data]
-     * @param {function} success
      * @param {boolean} [file]
      */
-    ajax ({method = 'POST', url, data = {}, success, file = false})
-    {
-        this.replacePartsOfUrlWithData(url, data, (url, data) =>
-        {
-            if (!file)
-            {
-                if (method === 'GET' || method === 'get')
-                {
-                    data = (this.isEmptyObject(data)) ? null : data;
-                    this.ajaxGet(url, success, data);
-                }
-                else
-                {
-                    this.ajaxPostBased(method, url, data, success);
-                }
-            }
-            else
-            {
-                if (method === 'GET' || method === 'get')
-                {
-                    throw new Error('Cannot run ajax with GET method');
-                }
+    ajax ({method = 'POST', url, data = {}, file = false})
+	{
+	    return new Promise((resolve) =>
+		{
+			 this.replacePartsOfUrlWithData(url, data).then(({url, data}) =>
+			 {
+			 	console.log(url, data);
+				 if (!file)
+				 {
+					 if (method === 'GET' || method === 'get')
+					 {
+						 data = (this.isEmptyObject(data)) ? null : data;
+						 this.ajaxGet(url, data).then(resolve);
+					 }
+					 else
+					 {
+						 this.ajaxPostBased(method, url, data).then(resolve);
+					 }
+				 }
+				 else
+				 {
+					 if (method === 'GET' || method === 'get')
+					 {
+						 throw new Error('Cannot run ajax with GET method');
+					 }
 
-                this.ajaxFileUpload(method, url, data, success);
-            }
-        });
-    }
+					 this.ajaxFileUpload(method, url, data).then(resolve);
+				 }
+			 });
+		});
+	}
 
 
     /**
      * @desc Try return json in callback, if cannot return with official variable
      *
      * @param {string} response
-     * @param {function} callback
-     * @return {json|*}
+     * @return {Promise<json|*>}
      */
-    checkJson (response, callback)
+    checkJson (response)
     {
-        try
-        {
-            callback(JSON.parse(response));
-        }
-        catch (e)
-        {
-            console.error(e.message);
-            callback(response);
-        }
+    	return new Promise((resolve) =>
+		{
+			try
+			{
+				resolve(JSON.parse(response));
+			}
+			catch (e)
+			{
+				console.error(e.message);
+				resolve(response);
+			}
+		});
     }
 
     /**
@@ -254,57 +265,62 @@ export default class Global
      * @param {string} method
      * @param {string} url
      * @param {file}  file
-     * @param {function} success
+     * @return {Promise<any>}
      */
-    ajaxFileUpload (method, url, file, success)
+    ajaxFileUpload (method, url, file)
     {
-        const formData = new FormData();
-        formData.append('file', file);
+        return new Promise(resolve =>
+		{
+			const formData = new FormData();
+			formData.append('file', file);
 
-        let xobj = new XMLHttpRequest();
-        xobj.open(method, `/ajax${url}`, true);
-        xobj.onreadystatechange = () =>
-        {
-            if (xobj.readyState == 4 && xobj.status == "200")
-            {
-                return this.checkJson(xobj.responseText, success)
-            }
-        };
-        xobj.send(formData);
+			let xobj = new XMLHttpRequest();
+			xobj.open(method, `/ajax${url}`, true);
+			xobj.onreadystatechange = () =>
+			{
+				if (xobj.readyState == 4 && xobj.status == "200")
+				{
+					this.checkJson(xobj.responseText).then(resolve);
+				}
+			};
+			xobj.send(formData);
+		});
     }
 
     /**
      * @desc For GET ajax calls
      *
      * @param {string} url
-     * @param {function(object)} callback
      * @param {object|null} [data]
      */
-    ajaxGet (url, callback, data = null)
+    ajaxGet (url, data = null)
     {
-        let urlParams = '';
-        /*if (data)
-        {
-            urlParams = '?';
-            for (let index in data)
-            {
-                urlParams += `${index}=${data[index]}&`
-            }
+        return new Promise((resolve) =>
+		{
+			let urlParams = '';
+            /*if (data)
+             {
+             urlParams = '?';
+             for (let index in data)
+             {
+             urlParams += `${index}=${data[index]}&`
+             }
 
-            urlParams = urlParams.slice(0, urlParams.length - 1);
-        }*/
+             urlParams = urlParams.slice(0, urlParams.length - 1);
+             }*/
 
-        let xobj = new XMLHttpRequest();
-        xobj.open('GET', `/ajax${url}${urlParams}`, true);
-        xobj.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xobj.onreadystatechange = () =>
-        {
-            if (xobj.readyState == 4 && xobj.status == "200")
-            {
-                return this.checkJson(xobj.responseText, callback)
-            }
-        };
-        xobj.send(null);
+			let xobj = new XMLHttpRequest();
+			xobj.open('GET', `/ajax${url}${urlParams}`, true);
+			xobj.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+			xobj.onreadystatechange = () =>
+			{
+				if (xobj.readyState == 4 && xobj.status == "200")
+				{
+					this.checkJson(xobj.responseText).then(resolve);
+				}
+			};
+			xobj.send(null);
+		});
     }
 
     /**
@@ -313,21 +329,24 @@ export default class Global
      * @param {string} method
      * @param {string} url
      * @param {object} data
-     * @param{function(object)}  callback
+     * @return {Promise<*>}
      */
-    ajaxPostBased(method, url, data, callback)
+    ajaxPostBased(method, url, data)
     {
-        let xobj = new XMLHttpRequest();
-        xobj.open(method, `/ajax${url}`, true);
-        xobj.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xobj.onreadystatechange = () =>
-        {
-            if (xobj.readyState == 4 && xobj.status == "200")
-            {
-                return this.checkJson(xobj.responseText, callback)
-            }
-        };
-        xobj.send(JSON.stringify(data));
+        return new Promise((resolve) =>
+		{
+			let xobj = new XMLHttpRequest();
+			xobj.open(method, `/ajax${url}`, true);
+			xobj.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+			xobj.onreadystatechange = () =>
+			{
+				if (xobj.readyState == 4 && xobj.status == "200")
+				{
+					this.checkJson(xobj.responseText).then(resolve);
+				}
+			};
+			xobj.send(JSON.stringify(data));
+		});
     }
 
     /**
@@ -336,21 +355,24 @@ export default class Global
      * @param {Element|string} where
      * @param {object} datas
      * @param {function} returnHtml
-     * @param {function} [after]
+	 * @return {Promise<void>}
      */
-    showEveryDatas ({where, datas, returnHtml, after = new Function()})
+    showEveryDatas ({where, datas, returnHtml})
     {
-        for (let data of datas)
-        {
-            const html = returnHtml(data);
+    	return new Promise((resolve) =>
+		{
+			for (let data of datas)
+			{
+				const html = returnHtml(data);
 
-            this.setDomElement({
-                where: where,
-                html: html
-            });
-        }
+				this.setDomElement({
+					where: where,
+					html: html
+				});
+			}
 
-        return after();
+			resolve();
+		});
     }
 
     /**
@@ -399,24 +421,26 @@ export default class Global
      * @param {string} showWhere
      * @param {function} showableHtml
      * @param {string} [store] - Name of variable on window object, data will save here
-     * @param {function} [after]
+	 * @return {Promise<void>}
      */
-    downAndShow ({url, showWhere, showableHtml, store = null, after})
+    downAndShow ({url, showWhere, showableHtml, store = null})
     {
-        this.ajaxGet(url, (response) =>
-        {
-            if (store)
-            {
-                window[store] = response;
-            }
+    	return new Promise((resolve) =>
+		{
+			this.ajaxGet(url).then((response) =>
+			{
+				if (store)
+				{
+					window[store] = response;
+				}
 
-            return this.showEveryDatas({
-                where: showWhere,
-                datas: response,
-                returnHtml: showableHtml,
-                after: after
-            });
-        });
+				this.showEveryDatas({
+					where: showWhere,
+					datas: response,
+					returnHtml: showableHtml
+				}).then(resolve);
+			});
+		});
     }
 
     /*/**
@@ -460,48 +484,41 @@ export default class Global
      * @desc Call the showLabelsInInput() after got labels from backend
      *
      * @param {string} selectorOfLabel
-     * @param {function} [callback]
      */
-    getLabelsForSelect (selectorOfLabel, callback = new Function())
-    {
-        if (window.labels.length === 0)
-        {
-            this.ajax({
-                method: this.AJAX_OF_GET_ALL_LABELS.METHOD,
-                url: this.AJAX_OF_GET_ALL_LABELS.URL,
-                success: (result) =>
-                {
-                    window.labels = result;
+    getLabelsForSelect (selectorOfLabel)
+	{
+		if (window.labels.length === 0)
+		{
+			return this.ajax({
+				method: this.AJAX_OF_GET_ALL_LABELS.METHOD,
+				url: this.AJAX_OF_GET_ALL_LABELS.URL
+			}).then((result) =>
+			{
+				window.labels = result;
 
-                    return this.showLabelsInInput(selectorOfLabel, callback);
-                }
-            });
-        }
-
-        return this.showLabelsInInput(selectorOfLabel, callback);
-    }
+				return this.showLabelsInInput(selectorOfLabel);
+			});
+		}
+	}
 
     /**
      * @desc Put labels from window.labels to select input
      *
      * @param {string} selectorOfLabel
-     * @param {function} [callback]
      */
-    showLabelsInInput (selectorOfLabel, callback = new Function())
-    {
-        const labelInput = this.q(selectorOfLabel);
+    showLabelsInInput (selectorOfLabel)
+	{
+		const labelInput = this.q(selectorOfLabel);
 
-        for (const label of window.labels)
-        {
-            const option = document.createElement('option');
-            option.value = label._id;
-            option.text = label.name;
+		for (const label of window.labels)
+		{
+			const option = document.createElement('option');
+			option.value = label._id;
+			option.text = label.name;
 
-            labelInput.add(option);
-        }
-
-        return callback();
-    }
+			labelInput.add(option);
+		}
+	}
 
     /**
      * @desc Make sorter the querySelector
@@ -510,18 +527,17 @@ export default class Global
      * @return {Element}
      */
     q (selector)
-    {
-        const length = selector.split(' ').length;
-        const firstCharOfSelector = selector.charAt(0);
+	{
+		const length = selector.split(' ').length;
+		const firstCharOfSelector = selector.charAt(0);
 
+		if (length <= 1 && firstCharOfSelector === '#')
+		{
+			return document.getElementById(selector.substring(1));
+		}
 
-        if (length <= 1 && firstCharOfSelector === '#')
-        {
-            return document.getElementById(selector.substring(1));
-        }
-
-        return this.page.querySelector(selector);
-    }
+		return this.page.querySelector(selector);
+	}
 
     /**
      * @desc Make sorter the querySelectorAll
