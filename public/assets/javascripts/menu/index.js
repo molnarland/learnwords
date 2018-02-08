@@ -1,8 +1,8 @@
 import Menu from './Menu';
 import ListWords from './List/ListWords';
-import WordsForm from './Form/WordsForm';
+import FormWords from './Form/FormWords';
 import ListLabels from './List/ListLabels';
-import LabelsForm from './Form/LabelsForm';
+import FormLabels from './Form/FormLabels';
 import SettingsLearn from './GameSettings/SettingsLearn';
 import Learn from './Game/Learn';
 import Quiz from './Game/Quiz';
@@ -18,9 +18,9 @@ document.addEventListener('init', (event) =>
     router(page, {
         'menu': Menu,
         'change-words': ListWords,
-        'change-words-form': WordsForm,
+        'change-words-form': FormWords,
         'change-labels': ListLabels,
-        'change-label-form': LabelsForm,
+        'change-label-form': FormLabels,
         'settings-learn': SettingsLearn,
         'learn': Learn,
         'quiz': Quiz,

@@ -1,6 +1,6 @@
 import Form from './Form';
 
-export default class WordsForm extends Form
+export default class FormWords extends Form
 {
     constructor(page)
     {
