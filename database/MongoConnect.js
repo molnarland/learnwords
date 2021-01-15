@@ -1,11 +1,11 @@
+const mongo = require('mongodb');
+const assert = require('assert');
+
 class MongoConnect
 {
     constructor ()
     {
-        this.mongo = require('mongodb');
-        this.MongoClient = this.mongo.MongoClient;
-        this.assert = require('assert');
-
+        this.MongoClient = mongo.MongoClient;
         this.url = 'mongodb://localhost:27017/learnwords';
     }
 
@@ -23,10 +23,10 @@ class MongoConnect
 					throw err;
 				}
 
-				this.assert.equal(null, err);
+				assert.equal(null, err);
 
 				resolve({
-					db,
+					db: db.db(),
 					programCallback: () =>
 					{
 						db.close();
@@ -34,7 +34,7 @@ class MongoConnect
 				});
 			});
 		});
-	};
+	}
 
     /**
      * @param {string} id
@@ -42,7 +42,7 @@ class MongoConnect
      */
     objectId (id)
     {
-        return this.mongo.ObjectID(id);
+        return mongo.ObjectID(id);
     }
 }
 

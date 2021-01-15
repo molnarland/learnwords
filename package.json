@@ -5,17 +5,15 @@
   "scripts": {
     "start": "clear && node ./bin/www",
     "test": "clear && mocha",
-    "header": "clear && cd public/ && gulp jsHeader",
-    "index": "clear && cd public/ && gulp jsIndex",
-    "menu": "clear && cd public/ && gulp jsMenu",
-    "wmenu": "clear && cd public/ && gulp watch-menu",
-    "sass": "clear && cd public/ && gulp sass",
-    "wsass": "clear && cd public/ && gulp watch-sass",
-    "postinstall": "cd public/ && npm install &&  cd ../ && npm run header && npm run index && npm run menu && npm run sass",
+    "header": "clear && cd public/ && node_modules/.bin/gulp jsHeader",
+    "index": "clear && cd public/ && node_modules/.bin/gulp jsIndex",
+    "menu": "clear && cd public/ && node_modules/.bin/gulp jsMenu",
+    "wmenu": "clear && cd public/ && node_modules/.bin/gulp watch-menu",
+    "sass": "clear && cd public/ && node_modules/.bin/gulp sass",
+    "wsass": "clear && cd public/ && node_modules/.bin/gulp watch-sass",
+    "postinstall": "cd public/ && npm install",
     "prod": "npm run production",
-    "preproduction": "cd public/ && gulp --type=production jsHeader jsIndex jsMenu sass",
-    "production": "clear",
-    "postproduction": "cd public/ && gulp remove-maps"
+    "production": "cd public/ && node_modules/.bin/gulp --type=production js:header js:index js:menu sass remove:maps"
   },
   "dependencies": {
     "body-parser": "^1.16.1",
@@ -23,11 +21,10 @@
     "debug": "~2.6.0",
     "express": "^4.14.1",
     "express-session": "^1.15.1",
-    "mongodb": "^2.2.34",
+    "mongodb": "^3.6.3",
     "morgan": "^1.7.0",
     "multer": "^1.3.0",
-    "node-sass-middleware": "^0.9.8",
-    "pug": "^2.0.0-beta11",
+    "pug": "^3.0.0",
     "serve-favicon": "^2.3.2"
   }
 }

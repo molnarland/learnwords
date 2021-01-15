@@ -1,57 +1,20 @@
-var gulp = require('gulp'),
-    sass = require('gulp-sass'),
-    webpack = require('gulp-webpack'),
-    babel = require('gulp-babel'),
-    notify = require('gulp-notify'),
-    sourcemaps = require('gulp-sourcemaps'),
-	UglifyJsPlugin = require('uglifyjs-webpack-plugin'),
-	cssUglify = require('gulp-clean-css'),
-    util = require('gulp-util'),
-	autoprefixer = require('gulp-autoprefixer'),
-	deleteFile = require('gulp-delete-file');
+const {src, dest, watch} = require('gulp');
+const sass = require('gulp-sass');
+const webpack = require('gulp-webpack');
+const notify = require('gulp-notify');
+const sourcemaps = require('gulp-sourcemaps');
+	const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+	const cssUglify = require('gulp-clean-css');
+	const util = require('gulp-util');
+	const autoprefixer = require('gulp-autoprefixer');
+	const deleteFile = require('gulp-delete-file');
 
-function Paths ()
-{
-    this.es6Root = './assets/javascripts/';
-    this.allJsFile = '/**/*.js';
-    this.output = 'javascripts';
-
-    this.jsIndex = this.es6Root + 'index' + this.allJsFile;
-    this.jsMenu = this.es6Root + 'menu' + this.allJsFile;
-    this.jsHeader = this.es6Root + 'header' + this.allJsFile;
-
-    this.sass = ['./assets/stylesheets/**/*.sass'];
-
-    this.changePathForWebpackEntry = function (which)
-    {
-        var which = this[which].split('/');
-        which[4] = which[5].replace('*', 'index');
-        delete which[5];
-        which = which.join('/');
-        which = which.substring(0, which.length - 1);
-
-        return which;
-    };
-    this.getOutputFileName = function (which)
-	{
-		return this[which].split('/')[3] + '.js';
-	}
-}
-
-
-var paths = new Paths();
-
-var webpackObjectMaker = function (task)
-{
-    var entry = ['babel-polyfill', paths.changePathForWebpackEntry(task)];
-
+const webpackObjectMaker = function (entry, outputFileName) {
     return {
-        entry: entry,
-        // entry: './javascripts/es6/unique/index.js',
-        // entry: './javascripts/es6/menu/index.js',
+        entry,
         output: {
             path: __dirname + '/javascripts',
-            filename: paths.getOutputFileName(task),
+            filename: outputFileName,
             pathinfo: true
         },
         module: {
@@ -67,118 +30,84 @@ var webpackObjectMaker = function (task)
             ]
         },
         plugins: [
-			(util.env.type === 'production') ? new UglifyJsPlugin() : function(){}
+            (util.env.type === 'production') ? new UglifyJsPlugin() : function () {
+            }
         ],
         devtool: 'source-map',
         debug: false
     };
 };
 
-var notifyObjectMaker = function (task)
+function getNotifyObject (task)
 {
     return {
         title: task,
         message: [
             'Compiled at',
-            new Date(),
+            new Date().toLocaleTimeString(),
             '!'
         ].join(' '),
         onLast: true,
         emitError: true
     }
 
-};
+}
 
-var taskNames = {
-    index: 'jsIndex',
-    menu: 'jsMenu',
-    header: 'jsHeader',
-    sass: 'sass'
-};
+async function jsIndex () {
+    src('./assets/javascripts/index/**/*.js')
+    .pipe(webpack(webpackObjectMaker('./assets/javascripts/index/index.js', 'index.js')))
+    .pipe(dest('javascripts'))
+    .pipe(notify(getNotifyObject('js:index')));
+}
 
-//running one time
-gulp.task(taskNames.index, function ()
-{
-	gulp.src(paths.jsIndex)
-		.pipe(webpack(webpackObjectMaker(taskNames.index)))
-		.pipe(gulp.dest(paths.output));
+async function jsMenu () {
+    src('./assets/javascripts/menu/**/*.js')
+    .pipe(webpack(webpackObjectMaker('./assets/javascripts/menu/index.js', 'menu.js')))
+    .pipe(dest('javascripts'))
+    .pipe(notify(getNotifyObject('js:menu')));
+}
 
-	// .pipe(notify(notifyObjectMaker(taskNames.index)));
-});
+async function jsHeader () {
+    src('./assets/javascripts/header/**/*.js')
+    .pipe(webpack(webpackObjectMaker('./assets/javascripts/header/index.js', 'header.js')))
+    .pipe(dest('javascripts'))
+    .pipe(notify(getNotifyObject('js:header')));
+}
 
-gulp.task(taskNames.menu, function ()
-{
-	gulp.src(paths.jsMenu)
-		.pipe(webpack(webpackObjectMaker(taskNames.menu)))
-		.pipe(gulp.dest(paths.output));
+async function sassTask () {
+    const task = src('./assets/stylesheets/**/*.sass'/*, {base: './'}*/)
+    .pipe(sourcemaps.init({ loadMaps: true }))
+    .pipe(sass({ indentedSyntax: true })).on('error', sass.logError)
+    .pipe(autoprefixer({ browsers: 'since 2000' }))
 
-});
+    if (util.env.type === 'production') {
+        task
+        .pipe(cssUglify({compatibility: 'ie6'}))
+    }
 
-gulp.task(taskNames.header, function ()
-{
-	gulp.src(paths.jsHeader)
-		.pipe(webpack(webpackObjectMaker(taskNames.header)))
-		.pipe(gulp.dest(paths.output))
-
-});
-
-gulp.task(taskNames.sass, function ()
-{
-	if (util.env.type === 'production')
-	{
-		gulp.src(paths.sass/*, {base: './'}*/)
-			.pipe(sourcemaps.init({ loadMaps: true }))
-			.pipe(sass({ indentedSyntax: true })).on('error', sass.logError)
-			.pipe(autoprefixer({ browsers: 'since 2000' }))
-			.pipe(cssUglify({ compatibility: 'ie6' }))
+      task
 			.pipe(sourcemaps.write('./'))
-			.pipe(gulp.dest('./stylesheets'));
-		// .pipe(notify(notifyObjectMaker(taskNames.sass)));
-	}
-	else
-	{
-		gulp.src(paths.sass/*, {base: './'}*/)
-			.pipe(sourcemaps.init({ loadMaps: true }))
-			.pipe(sass({ indentedSyntax: true })).on('error', sass.logError)
-			.pipe(autoprefixer({ browsers: 'since 2000' }))
-			.pipe(sourcemaps.write('./'))
-			.pipe(gulp.dest('./stylesheets'));
-	}
-});
+			.pipe(dest('./stylesheets'))
+        .pipe(notify(getNotifyObject('sass')));
+}
 
-gulp.task('remove-maps', function ()
-{
-	gulp.src([
-		'./stylesheets/*.map',
-		'./javascripts/*.map'
-	])
-		.pipe(deleteFile({
-			reg: /\w*(\-\w{8}\.js){1}$|\w*(\-\w{8}\.css){1}$/,
+async function removeMaps () {
+    src(['./stylesheets/*.map', './javascripts/*.map']).pipe(deleteFile({
+			reg: /\w*(-\w{8}\.js)$|\w*(-\w{8}\.css)$/,
 			deleteMatch: false
-		}));
+    }))
+}
 
-});
+async function watchTasks () {
+    watch('./assets/javascripts/index/**/*.js',{ignoreInitial: false}, jsIndex);
+    watch('./assets/javascripts/menu/**/*.js',{ignoreInitial: false}, jsMenu);
+    watch('./assets/javascripts/header/**/*.js',{ignoreInitial: false}, jsHeader);
+    watch('./assets/stylesheets/**/*.sass',{ignoreInitial: false}, sassTask);
+}
 
-
-//watchers
-gulp.task('watch-index', ['jsIndex'], function ()
-{
-    gulp.watch(paths.jsIndex, ['jsIndex']);
-});
-
-gulp.task('watch-menu', ['jsMenu'], function ()
-{
-    gulp.watch(paths.jsMenu, ['jsMenu']);
-});
-
-gulp.task('watch-sass', ['sass'], function ()
-{
-    gulp.watch('./assets/stylesheets/**/*.sass', ['sass']);
-});
-
-//mixed watches
-gulp.task('wis', ['watch-index', 'watch-sass']);
-gulp.task('wms', ['watch-menu', 'watch-sass']);
-
-
-gulp.task('default', ['watch-index', 'watch-menu', 'watch-sass']);
+exports['js:index'] = jsIndex;
+exports['js:menu'] = jsMenu;
+exports['js:header'] = jsHeader;
+exports.sass = sassTask;
+exports['remove:maps'] = removeMaps;
+exports.default = watchTasks;
