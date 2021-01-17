@@ -31,6 +31,7 @@ html.ios
       .card
         border-color: $color
 
+
       .button, .progress-bar__primary
         background-color: $color
 
@@ -108,6 +109,9 @@ html.ios
         $lighten: lighten($fontColor, $ios-tabbarInactivePercent)
         $darken: darken($fontColor, $ios-tabbarInactivePercent)
         +colorIfDark($name, $darken, $lighten)
+
+      .card
+        background-color: $backgroundColor
     //end of data-styles
 
 

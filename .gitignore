@@ -13,3 +13,6 @@ npm-debug.log
 
 .idea
 learnwords.iml
+
+public/javascripts/*
+public/stylesheets/*

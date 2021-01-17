@@ -1,9 +1,9 @@
 const {src, dest, watch} = require('gulp');
 const sass = require('gulp-sass');
-const webpack = require('gulp-webpack');
+const webpack = require('webpack-stream');
 const notify = require('gulp-notify');
 const sourcemaps = require('gulp-sourcemaps');
-	const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+// const TerserWebpackPlugin = require('terser-webpack-plugin');
 	const cssUglify = require('gulp-clean-css');
 	const util = require('gulp-util');
 	const autoprefixer = require('gulp-autoprefixer');
@@ -18,23 +18,24 @@ const webpackObjectMaker = function (entry, outputFileName) {
             pathinfo: true
         },
         module: {
-            loaders: [
+            rules: [
                 {
                     test: /\.js$/,
                     exclude: /node_modules/,
                     loader: 'babel-loader',
                     query: {
-                        presets: ['es2017', 'es2016', 'es2015']
-                    }
+                        presets: ['@babel/preset-env'],
+                      plugins: ['@babel/plugin-transform-runtime']
+                    },
                 }
             ]
         },
-        plugins: [
-            (util.env.type === 'production') ? new UglifyJsPlugin() : function () {
-            }
-        ],
+        // plugins: [
+        //     (util.env.type === 'production') ? new UglifyJsPlugin() : function () {
+        //     }
+        // ],
         devtool: 'source-map',
-        debug: false
+        mode: 'development',
     };
 };
 

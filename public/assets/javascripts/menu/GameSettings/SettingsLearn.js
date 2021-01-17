@@ -1,5 +1,5 @@
 import GameSettings from './GameSettings';
-import * as Cookies from 'js-cookie';
+import Cookies from 'js-cookie';
 
 export default class SettingsLearn extends GameSettings
 {

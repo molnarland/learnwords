@@ -1,5 +1,5 @@
-import ons from 'onsenui';
-import * as Cookies from 'js-cookie';
+import 'onsenui';
+import Cookies from 'js-cookie';
 
 
 window.location.hash = '';
