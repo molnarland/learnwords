@@ -1,13 +1,14 @@
-extends layout
-
-block content
-    ons-page
-        form#form(method="post")
-            p
-                ons-input(name="name" modifier="underbar" placeholder="Username" float)#name
-            p
-                button(type="submit").button Log in
-
-
-block scriptsInFoot
-    script(src="/javascripts/index.js")
+doctype html
+html
+    head
+        meta(charset="utf-8")
+        title Public
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        link(rel="icon" type="image/x-icon" href="favicon.ico")
+        link(rel="stylesheet" href="/dist/public/styles.css")
+    body
+        app-root
+        script(src="/dist/public/runtime.js" defer)
+        script(src="/dist/public/polyfills.js" defer)
+        script(src="/dist/public/vendor.js" defer)
+        script(src="/dist/public/main.js" defer)
