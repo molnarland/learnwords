@@ -13,8 +13,6 @@ loadGlobals();
 
 //load routes
 const index = require('./routes/index');
-const menu = require('./routes/menu');
-const ajax = require('./routes/ajax');
 
 //load middlewares
 const chechAuth = require('./middleware/checkAuth');
@@ -46,9 +44,9 @@ app.use(session({
 }));*/
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/menu', [chechAuth], menu);
-app.use('/ajax', ajax);
+app.use('/', (req, res) => {
+  res.sendFile(path.join(`${__dirname}/public/src/index.html`));
+});
 
 // catch 404 and forward to error handler
 app.use((req, res, next) =>

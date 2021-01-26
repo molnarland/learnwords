@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "cli": {
-    "analytics": "21e5b36b-31c2-4730-a941-e177fa01f528"
+    "analytics": "27c5cd8d-40d5-4eba-a7fb-c7afed12b23a"
   },
   "version": 1,
   "newProjectRoot": "projects",
@@ -11,6 +11,9 @@
       "schematics": {
         "@schematics/angular:component": {
           "style": "sass"
+        },
+        "@schematics/angular:application": {
+          "strict": true
         }
       },
       "root": "",
@@ -31,6 +34,8 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/onsenui/css/onsenui.css",
+              "node_modules/onsenui/css/onsen-css-components.css",
               "src/styles.sass"
             ],
             "scripts": []
@@ -53,13 +58,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
                 }
               ]
             }
