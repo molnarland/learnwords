@@ -14,11 +14,11 @@ class User extends DB
 	 * @param {string} name
 	 * @return {Promise<object>}
 	 */
-	findNameMaybeInsert (name)
+	find	NameMaybeInsert (name)
 	{
 		return new Promise(async (resolve) =>
 		{
-			let result = await this.getOne(name);
+			let result = await this.get(name);
 
 			if (result)
 			{
@@ -26,7 +26,7 @@ class User extends DB
 			}
 
 			await this.insertOnlyName(name);
-			result = await this.getOne(name);
+			result = await this.get(name);
 
 			return resolve(result);
 		});
@@ -50,15 +50,11 @@ class User extends DB
 	 * @param {string} name
 	 * @return {Promise<object>}
 	 */
-	getOne (name)
+	async get (name)
 	{
-		return new Promise((resolve) =>
-		{
-			const user = new Model(name);
+		const user = new Model(name);
 
-			super.getOne(this.table, user)
-				 .then(resolve);
-		});
+		return await super.getOne(this.table, user);
 	};
 
 	/**

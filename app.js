@@ -12,7 +12,8 @@ const fs = require('fs');
 loadGlobals();
 
 //load routes
-const index = require('./routes/index');
+const appRouter = require('./routes/app');
+const apiRouter = require('./routes/api');
 
 //load middlewares
 const chechAuth = require('./middleware/checkAuth');
@@ -44,9 +45,8 @@ app.use(session({
 }));*/
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', (req, res) => {
-  res.sendFile(path.join(`${__dirname}/public/src/index.html`));
-});
+app.use('/app', appRouter);
+app.use('/api/v1', apiRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) =>

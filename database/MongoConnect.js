@@ -16,7 +16,7 @@ class MongoConnect
 	{
 		return new Promise((resolve) =>
 		{
-			this.MongoClient.connect(this.url, (err, db) =>
+			this.MongoClient.connect(this.url, { useUnifiedTopology: true }, (err, db) =>
 			{
 				if (err)
 				{
