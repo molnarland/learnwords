@@ -1,3 +1,3 @@
 export class LoginForm {
-	constructor(public userName: string) {}
+  constructor(public userName: string) {}
 }

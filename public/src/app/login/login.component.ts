@@ -15,12 +15,9 @@ export class LoginComponent {
 
   constructor(private loginService: LoginService, private router: Router) { }
 
-  onLoginClick() {
-  	this.loginService.login(this.model)
-  		.subscribe(response => {
-         this.router.navigate(['/app/signup']);
-      });
+  onLoginClick(): void {
+    this.loginService.login(this.model).subscribe(response => {
+      this.router.navigate(['/app/signup']);
+    });
   }
-
-
 }
