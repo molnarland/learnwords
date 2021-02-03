@@ -1,1 +1,20 @@
-<p>signup works!</p>
+<ons-page>
+  <form class="center">
+    <input type="hidden" name="userName" [(ngModel)]="model.userName"/>
+    <ons-row>
+      <ons-col>
+        <ons-input placeholder="Your native language" name="nativeLanguage" [(ngModel)]="model.nativeLanguage"></ons-input>
+      </ons-col>
+    </ons-row>
+    <ons-row>
+      <ons-col>
+        <ons-input placeholder="Language to learn" name="learnLanguage" [(ngModel)]="model.learnLanguage"></ons-input>
+      </ons-col>
+    </ons-row>
+    <ons-row>
+      <ons-col>
+        <ons-button (click)="onSignupClick()">Signup</ons-button>
+      </ons-col>
+    </ons-row>
+  </form>
+</ons-page>

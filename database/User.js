@@ -14,7 +14,7 @@ class User extends DB
 	 * @param {string} name
 	 * @return {Promise<object>}
 	 */
-	find	NameMaybeInsert (name)
+	findNameMaybeInsert (name)
 	{
 		return new Promise(async (resolve) =>
 		{
@@ -63,32 +63,12 @@ class User extends DB
 	 * @param {string}  learnable
 	 * @return {Promise<insertOneWriteOpResult>}
 	 */
-	insertOne (name, native, learnable)
+	async set (name, native, learnable)
 	{
-		return new Promise((resolve) =>
-		{
-			const user = new Model(name, native, learnable);
+		const user = new Model(name, native, learnable);
 
-			super.insertOne(this.table, user)
-				 .then(resolve);
-		});
+		return await super.insertOne(this.table, user);
 	};
-
-	/**
-	 * @param {string} name
-	 * @return {Promise<insertOneWriteOpResult>}
-	 */
-	insertOnlyName (name)
-	{
-		return new Promise((resolve) =>
-		{
-
-			const user = new Model(name);
-
-			super.insertOne(this.table, user)
-				 .then(resolve);
-		});
-	}
 }
 
 module.exports = User;

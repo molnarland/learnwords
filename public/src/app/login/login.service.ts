@@ -1,31 +1,20 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { HttpService } from '../http.service';
 import { LoginForm } from '../models/LoginForm';
 
+type LoginReturn = Observable<{user: any|null}>; //TODO change any
+
 @Injectable()
-export class LoginService {
-  loginUrl = 'api/v1/login';
+export class LoginService extends HttpService {
+  loginUrl = 'api/v1/auth/login';
 
-  constructor(private http: HttpClient) { }
-
-  login(loginForm: LoginForm): void {
-    return this.http.post(this.loginUrl, loginForm).pipe(
-      catchError(this.handleError),
-    );
+  constructor(http: HttpClient) {
+    super(http);
   }
 
-  private handleError(error: any): Observable<never> {
-    if (error.error instanceof ErrorEvent) {
-      console.error('An error occurred:', error.error.message);
-    } else {
-      console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.error}`
-      );
-    }
-
-    return throwError('Something bad happened; please try again later.');
+  login(loginForm: LoginForm): LoginReturn {
+    return super.post<LoginForm>(this.loginUrl, loginForm) as LoginReturn;
   }
 }

@@ -11,13 +11,22 @@ import { LoginService } from './login.service';
 })
 export class LoginComponent {
 
-  model = new LoginForm('kukucs');
+  model = new LoginForm('');
 
   constructor(private loginService: LoginService, private router: Router) { }
 
   onLoginClick(): void {
     this.loginService.login(this.model).subscribe(response => {
-      this.router.navigate(['/app/signup']);
+      if (response.user) {
+        this.router.navigate(['app/menu']);
+      }
+      else {
+        this.router.navigate(['/app/signup'], {
+          queryParams: {
+            userName: this.model.userName
+          }
+        });
+      }
     });
   }
 }
