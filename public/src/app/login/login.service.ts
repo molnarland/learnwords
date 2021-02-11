@@ -8,7 +8,7 @@ type LoginReturn = Observable<{user: any|null}>; //TODO change any
 
 @Injectable()
 export class LoginService extends HttpService {
-  loginUrl = 'api/v1/auth/login';
+  loginUrl = 'auth/login';
 
   constructor(http: HttpClient) {
     super(http);

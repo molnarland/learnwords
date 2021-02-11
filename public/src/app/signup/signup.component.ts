@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { SignupForm } from '../models/SignupForm';
+import { PATH_MENU } from '../paths.const';
 import { SignupService } from './signup.service';
 
 
 @Component({
-  selector: 'app-signup',
+  selector: 'ons-page[signup]',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.sass'],
   providers: [SignupService],
@@ -30,7 +31,7 @@ export class SignupComponent implements OnInit {
     this.signupService.signup(this.model).subscribe(response => {
       // save userId globally such as cookie or localeStorage
       if (response.success) {
-        this.router.navigate(['app/menu']);
+        this.router.navigate([PATH_MENU]);
       }
     });
   }

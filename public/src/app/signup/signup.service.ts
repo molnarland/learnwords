@@ -8,7 +8,7 @@ type SignupReturn = Observable<{success: boolean, userId: string}>;
 
 @Injectable()
 export class SignupService extends HttpService {
-  signupUrl = 'api/v1/auth/signup';
+  signupUrl = 'auth/signup';
 
   constructor(http: HttpClient) {
     super(http);

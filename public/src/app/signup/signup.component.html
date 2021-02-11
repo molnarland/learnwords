@@ -1,20 +1,23 @@
-<ons-page>
+<ons-toolbar>
+	<div class="center">
+		Sign Up
+	</div>
+</ons-toolbar>
+<div class="content">
   <form class="center">
     <input type="hidden" name="userName" [(ngModel)]="model.userName"/>
-    <ons-row>
+    <ons-list>
+      <ons-list-item>
+        <ons-input placeholder="Your native language" name="nativeLanguage" [(ngModel)]="model.nativeLanguage" class="large-input"></ons-input>
+      </ons-list-item>
+      <ons-list-item>
+        <ons-input placeholder="Language to learn" name="learnLanguage" [(ngModel)]="model.learnLanguage" class="large-input"></ons-input>
+      </ons-list-item>
+    </ons-list>
+    <ons-row class="padding">
       <ons-col>
-        <ons-input placeholder="Your native language" name="nativeLanguage" [(ngModel)]="model.nativeLanguage"></ons-input>
-      </ons-col>
-    </ons-row>
-    <ons-row>
-      <ons-col>
-        <ons-input placeholder="Language to learn" name="learnLanguage" [(ngModel)]="model.learnLanguage"></ons-input>
-      </ons-col>
-    </ons-row>
-    <ons-row>
-      <ons-col>
-        <ons-button (click)="onSignupClick()">Signup</ons-button>
+        <ons-button (click)="onSignupClick()" modifier="large">Signup</ons-button>
       </ons-col>
     </ons-row>
   </form>
-</ons-page>
+</div>

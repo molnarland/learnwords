@@ -5,8 +5,6 @@ import { catchError, retry } from 'rxjs/operators';
 
 @Injectable()
 export class HttpService {
-  loginUrl = 'api/v1/login';
-
   constructor(protected http: HttpClient) { }
 
   post<T>(url: string, body: T): Observable<{}> {

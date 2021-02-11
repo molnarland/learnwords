@@ -1,14 +1,19 @@
-<ons-page>
+<ons-toolbar>
+	<div class="center">
+		Log In
+	</div>
+</ons-toolbar>
+<div class="content padding">
 	<form class="center">
 		<ons-row>
-			<ons-col>
-				<ons-input placeholder="Your name" name="userName" [(ngModel)]="model.userName"></ons-input>
+			<ons-col width="100%">
+				<ons-input placeholder="Your name" name="userName" [(ngModel)]="model.userName" class="large-input"></ons-input>
 			</ons-col>
 		</ons-row>
 		<ons-row>
-			<ons-col>
-				<ons-button (click)="onLoginClick()">Login</ons-button>
+			<ons-col width="100%">
+				<ons-button (click)="onLoginClick()" modifier="large">Login</ons-button>
 			</ons-col>
 		</ons-row>
 	</form>
-</ons-page>
+</div>

@@ -4,7 +4,7 @@
   * akármilyen név
   * natív nyelvedet kell beírni
   * tanulni kívánt nyelv
-* login (1)
+* login (1 + 1)
   * nevedet kell megadni
   
 * menu
