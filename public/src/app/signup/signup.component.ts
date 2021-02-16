@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { completeLogin } from '../helpers/completeLogin';
 import { SignupForm } from '../models/SignupForm';
 import { PATH_MENU } from '../paths.const';
 import { SignupService } from './signup.service';
@@ -29,9 +30,8 @@ export class SignupComponent implements OnInit {
 
   onSignupClick(): void {
     this.signupService.signup(this.model).subscribe(response => {
-      // save userId globally such as cookie or localeStorage
       if (response.success) {
-        this.router.navigate([PATH_MENU]);
+        completeLogin(this.model.userName, this.router.navigate.bind(this.router));
       }
     });
   }

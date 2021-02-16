@@ -13,6 +13,12 @@ export class HttpService {
     );
   }
 
+  get<T>(url: string, params: T & {}): Observable<{}> {
+    const fullUrl = `${url}/${new URLSearchParams(params).toString()}`;
+
+    return this.http.get(fullUrl).pipe(catchError(this.handleError),);
+  }
+
   private handleError(error: any): Observable<never> {
     if (error.error instanceof ErrorEvent) {
       console.error('An error occurred:', error.error.message);

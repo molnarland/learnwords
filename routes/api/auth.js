@@ -4,10 +4,10 @@ const fs = require('fs');
 const User = require('../../database/User');
 
 router.post('/login', async (req, res) => {
-	const user = new User();
-	const response = await user.get(req.body.userName);
+  const user = new User();
+  const response = await user.get(req.body.userName);
 
-	res.send({user: response});
+  res.send({ user: response });
 });
 
 router.post('/signup', async (req, res) => {
@@ -17,5 +17,13 @@ router.post('/signup', async (req, res) => {
 
   res.send({ success: response.result.ok === 1, userId: response.insertedId });
 });
+
+router.get('/user', async (req, res) => {
+  const { userName } = req.body;
+  const user = new User();
+  const response = await user.get(userName);
+
+  res.send({ user: response });
+})
 
 module.exports = router;
