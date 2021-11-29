@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { completeLogin } from '../helpers/completeLogin';
-import { SignupForm } from '../models/SignupForm';
 import { PATH_MENU } from '../paths.const';
 import { SignupService } from './signup.service';
 
@@ -13,8 +13,12 @@ import { SignupService } from './signup.service';
   providers: [SignupService],
 })
 export class SignupComponent implements OnInit {
-
-  model = new SignupForm('', '', '');
+  form = new FormGroup({
+    userName: new FormControl('', [Validators.required]),
+    nativeLanguage: new FormControl('', [Validators.required, Validators.pattern(/[a-zA-z0-9\ ]+/)]),
+    learnLanguage: new FormControl('', [Validators.required, Validators.pattern(/[a-zA-z0-9\ ]+/)]),
+  });
+  hideUserNameField: boolean = false;
 
   constructor(
     private signupService: SignupService,
@@ -23,17 +27,23 @@ export class SignupComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log('brrrrrrrrrrrrrrrrrr');
     this.route.queryParams.subscribe(params => {
-      this.model.userName = params.userName;
+      if (params.userName) {
+        this.userName?.setValue(params.userName)
+        this.hideUserNameField = true;
+      }
     });
   }
 
   onSignupClick(): void {
-    this.signupService.signup(this.model).subscribe(response => {
+    this.signupService.signup(this.form.value).subscribe(response => {
       if (response.success) {
-        completeLogin(this.model.userName, this.router.navigate.bind(this.router));
+        completeLogin(this.userName?.value, this.router.navigate.bind(this.router));
       }
     });
   }
+
+  get userName() { return this.form.get('userName'); }
+  get nativeLanguage() { return this.form.get('nativeLanguage'); }
+  get learnLanguage() { return this.form.get('learnLanguage'); }
 }

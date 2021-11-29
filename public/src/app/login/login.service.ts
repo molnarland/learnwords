@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HttpService } from '../http.service';
-import { LoginForm } from '../models/LoginForm';
 
 type User = {
   _id: string;
@@ -12,7 +11,8 @@ type User = {
 }
 
 type LoginReturn = Observable<{ user: User | null }>;
-type GetUserReturn = Observable<{user: User | null }>;
+type GetUserReturn = Observable<{ user: User | null }>;
+type UserNameObject = {userName: string};
 
 @Injectable({ providedIn: 'root' })
 export class LoginService extends HttpService {
@@ -23,11 +23,11 @@ export class LoginService extends HttpService {
     super(http);
   }
 
-  login(loginForm: LoginForm): LoginReturn {
-    return super.post<LoginForm>(this.loginUrl, loginForm) as LoginReturn;
+  login(userName: string): LoginReturn {
+    return super.post<UserNameObject>(this.loginUrl, {userName}) as LoginReturn;
   }
 
   getUser(userName: string): GetUserReturn {
-    return super.get<{userName: string}>(this.getUserUrl, {userName}) as GetUserReturn;
+    return super.get<UserNameObject>(this.getUserUrl, {userName}) as GetUserReturn;
   }
 }

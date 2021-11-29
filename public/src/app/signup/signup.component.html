@@ -4,19 +4,46 @@
 	</div>
 </ons-toolbar>
 <div class="content">
-  <form class="center">
-    <input type="hidden" name="userName" [(ngModel)]="model.userName"/>
+  <form class="center" [formGroup]="form">
     <ons-list>
-      <ons-list-item>
-        <ons-input placeholder="Your native language" name="nativeLanguage" [(ngModel)]="model.nativeLanguage" class="large-input"></ons-input>
+      <ons-list-item [class.hidden]="hideUserNameField">
+        <ons-input 
+          class="large-input"
+					[class.invalid-input]="userName?.status !== 'VALID'"
+          placeholder="Your user name" 
+          name="userName" 
+					formControlName="userName"
+          required
+        ></ons-input>
       </ons-list-item>
       <ons-list-item>
-        <ons-input placeholder="Language to learn" name="learnLanguage" [(ngModel)]="model.learnLanguage" class="large-input"></ons-input>
+        <ons-input
+          class="large-input"
+					[class.invalid-input]="nativeLanguage?.status !== 'VALID'"
+          placeholder="Your native language"
+          name="nativeLanguage"
+					formControlName="nativeLanguage"
+          required
+        ></ons-input>
+      </ons-list-item>
+      <ons-list-item>
+        <ons-input 
+          class="large-input"
+					[class.invalid-input]="learnLanguage?.status !== 'VALID'"
+          placeholder="Language to learn"
+          name="learnLanguage"
+					formControlName="learnLanguage"
+          required
+        ></ons-input>
       </ons-list-item>
     </ons-list>
-    <ons-row class="padding"kicsit >
+    <ons-row class="padding" >
       <ons-col>
-        <ons-button (click)="onSignupClick()" modifier="large">Signup</ons-button>
+        <ons-button
+          (click)="onSignupClick()"
+					[disabled]="form.invalid" 
+          modifier="large"
+        >Signup</ons-button>
       </ons-col>
     </ons-row>
   </form>
