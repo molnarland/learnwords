@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { STORAGE_USER_NAME } from '../localStorage.const';
+import { PATH_LOGIN } from '../paths.const';
 
 @Component({
   selector: 'ons-page[menu]',
@@ -7,9 +10,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenuComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
 
+  onLogoutClick(): void {
+    localStorage.removeItem(STORAGE_USER_NAME) 
+    this.router.navigate([PATH_LOGIN])
+  }
 }
