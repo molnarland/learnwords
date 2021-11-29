@@ -1,5 +1,4 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 const fs = require('fs');
 const User = require('../../database/User');
 
@@ -18,8 +17,8 @@ router.post('/signup', async (req, res) => {
   res.send({ success: response.result.ok === 1, userId: response.insertedId });
 });
 
-router.get('/user', async (req, res) => {
-  const { userName } = req.body;
+router.get('/user/:userName', async (req, res) => {
+  const { userName } = req.params;
   const user = new User();
   const response = await user.get(userName);
 

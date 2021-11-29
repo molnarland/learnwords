@@ -1,8 +1,9 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-import { OnsenModule } from 'ngx-onsenui';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { OnsenModule, OnsNavigator } from 'ngx-onsenui';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,6 +23,7 @@ import { APIInterceptor } from './api.interceptor';
     BrowserModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     OnsenModule,
     AppRoutingModule
   ],
@@ -38,3 +40,5 @@ import { APIInterceptor } from './api.interceptor';
   ],
 })
 export class AppModule { }
+
+platformBrowserDynamic().bootstrapModule(AppModule);

@@ -14,10 +14,10 @@ type User = {
 type LoginReturn = Observable<{ user: User | null }>;
 type GetUserReturn = Observable<{user: User | null }>;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class LoginService extends HttpService {
   loginUrl = 'auth/login';
-  getUserUrl = 'auth/user';
+  getUserUrl = 'auth/user/:userName';
 
   constructor(http: HttpClient) {
     super(http);

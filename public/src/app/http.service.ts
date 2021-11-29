@@ -14,9 +14,12 @@ export class HttpService {
   }
 
   get<T>(url: string, params: T & {}): Observable<{}> {
-    const fullUrl = `${url}/${new URLSearchParams(params).toString()}`;
+    for (const [paramName, paramValue] of Object.entries(params))
+    {
+      url = url.replace(`:${paramName}`, String(paramValue));
+    }
 
-    return this.http.get(fullUrl).pipe(catchError(this.handleError),);
+    return this.http.get(url).pipe(catchError(this.handleError),);
   }
 
   private handleError(error: any): Observable<never> {

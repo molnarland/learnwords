@@ -23,6 +23,7 @@ export class SignupComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log('brrrrrrrrrrrrrrrrrr');
     this.route.queryParams.subscribe(params => {
       this.model.userName = params.userName;
     });

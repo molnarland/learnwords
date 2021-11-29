@@ -2,17 +2,33 @@
 	<div class="center">
 		Log In
 	</div>
+	<div class="right">
+		<ons-toolbar-button	(click)="onSignupClick()">
+			Sign up
+		</ons-toolbar-button>
+	</div>
 </ons-toolbar>
 <div class="content padding">
-	<form class="center">
+	<form class="center" [formGroup]="form">
 		<ons-row>
 			<ons-col width="100%">
-				<ons-input placeholder="Your name" name="userName" [(ngModel)]="model.userName" class="large-input"></ons-input>
+				<ons-input 
+					class="large-input"
+					[class.invalid-input]="userName?.status !== 'VALID'"
+					placeholder="Your name"
+					name="userName"
+					formControlName="userName"
+					required
+				></ons-input>
 			</ons-col>
 		</ons-row>
 		<ons-row>
 			<ons-col width="100%">
-				<ons-button (click)="onLoginClick()" modifier="large">Login</ons-button>
+				<ons-button 
+					(click)="onLoginClick()" 
+					[disabled]="form.invalid" 
+					modifier="large"
+				>Login</ons-button>
 			</ons-col>
 		</ons-row>
 	</form>
