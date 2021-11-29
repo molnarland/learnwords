@@ -3,7 +3,7 @@
 		Sign Up
 	</div>
 </ons-toolbar>
-<div class="content">
+<div class="content padding-side">
   <form class="center" [formGroup]="form">
     <ons-list>
       <ons-list-item [class.hidden]="hideUserNameField">
@@ -37,7 +37,7 @@
         ></ons-input>
       </ons-list-item>
     </ons-list>
-    <ons-row class="padding" >
+    <ons-row>
       <ons-col>
         <ons-button
           (click)="onSignupClick()"
