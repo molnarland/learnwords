@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms'
 import { Router, ParamMap } from '@angular/router';
 import { OnsNavigator } from 'ngx-onsenui';
 import { completeLogin } from '../helpers/completeLogin';
-import { PATH_SIGNUP } from '../paths.const';
+import { PATH_SIGNUP } from '../app-paths.const';
 import { LoginService } from './login.service';
 
 @Component({

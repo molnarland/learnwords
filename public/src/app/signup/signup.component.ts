@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { completeLogin } from '../helpers/completeLogin';
-import { PATH_MENU } from '../paths.const';
+import { PATH_MENU } from '../app-paths.const';
 import { SignupService } from './signup.service';
 
 

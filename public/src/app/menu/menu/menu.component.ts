@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { STORAGE_USER_NAME } from '../localStorage.const';
-import { PATH_LOGIN } from '../paths.const';
+import { STORAGE_USER_NAME } from '../../localStorage.const';
+import { PATH_LOGIN } from '../../app-paths.const';
 
 @Component({
   selector: 'ons-page[menu]',

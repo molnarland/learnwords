@@ -2,14 +2,14 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { OnsenModule, OnsNavigator } from 'ngx-onsenui';
+import { OnsenModule } from 'ngx-onsenui';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppRoutingModule } from './app-routing.module';
+import { MenuModule } from './menu/menu.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
-import { MenuComponent } from './menu/menu.component';
 import { APIInterceptor } from './api.interceptor';
 
 @NgModule({
@@ -17,7 +17,6 @@ import { APIInterceptor } from './api.interceptor';
     AppComponent,
     LoginComponent,
     SignupComponent,
-    MenuComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +24,8 @@ import { APIInterceptor } from './api.interceptor';
     FormsModule,
     ReactiveFormsModule,
     OnsenModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MenuModule,
   ],
   providers: [
     {
