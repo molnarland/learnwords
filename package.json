@@ -16,10 +16,10 @@
     "production": "cd public/ && node_modules/.bin/gulp --type=production js:header js:index js:menu sass remove:maps"
   },
   "dependencies": {
-    "body-parser": "^1.16.1",
+    "body-parser": "^1.20.1",
     "cookie-parser": "^1.4.3",
     "debug": "~2.6.0",
-    "express": "^4.14.1",
+    "express": "^4.18.2",
     "express-session": "^1.15.1",
     "mongodb": "^3.6.3",
     "morgan": "^1.7.0",
